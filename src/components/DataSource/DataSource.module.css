@@ -1,0 +1,11 @@
+.dataSourceWrapper {
+	text-align: center;
+}
+.createBotArea {
+	display: flex;
+	justify-content: space-around;
+}
+
+.webInputWrap {
+	display: flex;
+}
