@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useMemo } from "react";
 import {
 	Input,
 	InputNumber,
@@ -8,15 +8,22 @@ import {
 	Slider,
 	Select,
 	Space,
+	Switch,
+	Checkbox,
+	ColorPicker,
+	Image,
 } from "antd";
+import { ReloadOutlined, CloseOutlined, SendOutlined } from "@ant-design/icons";
+import { Color, ColorPickerProps } from "antd/es/color-picker";
 import s from "./Settings.module.css";
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
+const { TextArea } = Input;
 
 export const Settings: React.FC = () => {
-	const [chatbotId, setChatbotId] = useState<string>("7ihbdi777d62w28");
-	const [charCount, setCharCount] = useState<number>(82918);
+	const [chatbotId] = useState<string>("7ihbdi777d62w28");
+	const [charCount] = useState<number>(82918);
 	const [name, setName] = useState<string>("bot45562");
 	const [basePrompt, setBasePrompt] = useState<string>(
 		"I want you to act as a document that I am having a conversation with. Your name is 'AI Assistant'. You will provide me with answers from the given info. If the answer is not included, say exactly 'Hmm, I am not sure.' and stop after that. Refuse to answer any question not about the info. Never break character."
@@ -30,20 +37,81 @@ export const Settings: React.FC = () => {
 	const [limitHitMessage, setLimitHitMessage] = useState<string>(
 		"Too many messages in a row"
 	);
+	// Состояние для переключателей и инпутов
+	const [showTitleCustomer, setShowTitleCustomer] = useState<boolean>(false);
+	const [titleCustomer, setTitleCustomer] = useState<string>("");
+	const [showNameCustomer, setShowNameCustomer] = useState<boolean>(false);
+	const [nameCustomer, setNameCustomer] = useState<string>("");
+	const [showEmailCustomer, setShowEmailCustomer] = useState<boolean>(false);
+	const [emailCustomer, setEmailCustomer] = useState<string>("");
+	const [showPhoneCustomer, setShowPhoneCustomer] = useState<boolean>(false);
+	const [phoneNumberCustomer, setPhoneNumberCustomer] = useState<string>("");
+	// Новые переменные состояния
+	const [initialMessages, setInitialMessages] = useState<string>(
+		"how can i help you?"
+	);
+	const [suggestedMessages, setSuggestedMessages] = useState<string>("");
+	const [theme, setTheme] = useState<string>("light");
+	const [profilePicture, setProfilePicture] = useState<string>("");
+	const [removeProfilePicture, setRemoveProfilePicture] = useState<boolean>(
+		false
+	);
+	const [userMessageColor, setUserMessageColor] = useState<Color | string>(
+		"#2D5CFF"
+	);
+	const [chatIcon, setChatIcon] = useState<string>("");
+	const [chatBubbleButtonColor, setChatBubbleButtonColor] = useState<
+		Color | string
+	>("#2D5CFF");
+	const [chatBubbleButtonAlignment, setChatBubbleButtonAlignment] = useState<
+		string
+	>("right");
 
-	const resetHandler = () => {
-		setChatbotId("");
-		setCharCount(0);
-		setName("");
-		setBasePrompt("");
-		setModel("");
-		setTemperature(0);
-		setVisibility("Private");
-		setDomains("");
-		setMessageLimit(20);
-		setMessagePeriod(240);
-		setLimitHitMessage("Too many messages in a row");
+	const hexStringUserMessage: any = useMemo(
+		() =>
+			typeof userMessageColor === "string"
+				? userMessageColor
+				: userMessageColor.toHexString(),
+		[userMessageColor]
+	);
+	const hexStringButtonColor: any = useMemo(
+		() =>
+			typeof chatBubbleButtonColor === "string"
+				? chatBubbleButtonColor
+				: chatBubbleButtonColor.toHexString(),
+		[chatBubbleButtonColor]
+	);
+	const [formatHex, setFormatHex] = useState<ColorPickerProps["format"]>(
+		"hex"
+	);
+
+	const handleProfilePictureChange = (
+		event: ChangeEvent<HTMLInputElement>
+	) => {
+		if (event.target.files && event.target.files.length > 0) {
+			setProfilePicture(URL.createObjectURL(event.target.files[0]));
+		}
 	};
+
+	const handleChatIconChange = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			setChatIcon(URL.createObjectURL(event.target.files[0]));
+		}
+	};
+
+	const resetBasePrompt = () => {
+		setBasePrompt(
+			"I want you to act as a document that I am having a conversation with. Your name is 'AI Assistant'. You will provide me with answers from the given info. If the answer is not included, say exactly 'Hmm, I am not sure.' and stop after that. Refuse to answer any question not about the info. Never break character."
+		);
+	};
+	const resetTitle = () => setTitleCustomer("");
+	const resetName = () => setNameCustomer("");
+	const resetEmail = () => setEmailCustomer("");
+	const resetPhoneNumber = () => setPhoneNumberCustomer("");
+	const resetInitialMessages = () => setInitialMessages("");
+	const resetSuggestedMessages = () => setSuggestedMessages("");
+	const resetProfilePicture = () => setProfilePicture("");
+	const resetChatIcon = () => setChatIcon("");
 
 	const handleChange = (
 		setState: React.Dispatch<React.SetStateAction<string>>
@@ -73,7 +141,9 @@ export const Settings: React.FC = () => {
 					onChange={handleChange(setModel)}
 				/>
 			</Form.Item>
-			<Button onClick={resetHandler}>Reset</Button>
+			<Button type="primary" onClick={resetBasePrompt}>
+				Reset
+			</Button>
 
 			<Paragraph>
 				1 message using gpt-3.5-turbo costs 1 message credit. 1 message
@@ -170,6 +240,266 @@ export const Settings: React.FC = () => {
 				value={limitHitMessage}
 				onChange={handleChange(setLimitHitMessage)}
 			/>
+			<Title level={3}>Collect Customer Info</Title>
+			<Title level={5}>Title</Title>
+			<Switch
+				checked={showTitleCustomer}
+				onChange={setShowTitleCustomer}
+			/>
+			{showTitleCustomer && (
+				<Form.Item label="">
+					<Space direction="vertical">
+						<Input
+							style={{
+								width: "430px",
+								marginTop: "5px",
+							}}
+							value={titleCustomer}
+							onChange={handleChange(setTitleCustomer)}
+						/>
+						<Button type="primary" onClick={resetTitle}>
+							Reset Title
+						</Button>
+					</Space>
+				</Form.Item>
+			)}
+
+			<Title level={5}>Name</Title>
+			<Switch checked={showNameCustomer} onChange={setShowNameCustomer} />
+			{showNameCustomer && (
+				<Form.Item label="">
+					<Space direction="vertical">
+						<Input
+							style={{
+								width: "430px",
+								marginTop: "5px",
+							}}
+							value={nameCustomer}
+							onChange={handleChange(setName)}
+						/>
+						<Button type="primary" onClick={resetName}>
+							Reset Name
+						</Button>
+					</Space>
+				</Form.Item>
+			)}
+
+			<Title level={5}>Email</Title>
+			<Switch
+				checked={showEmailCustomer}
+				onChange={setShowEmailCustomer}
+			/>
+			{showEmailCustomer && (
+				<Form.Item label="">
+					<Space direction="vertical">
+						<Input
+							style={{
+								width: "430px",
+								marginTop: "5px",
+							}}
+							value={emailCustomer}
+							onChange={handleChange(setEmailCustomer)}
+						/>
+						<Button type="primary" onClick={resetEmail}>
+							Reset Email
+						</Button>
+					</Space>
+				</Form.Item>
+			)}
+
+			<Title level={5}>Phone Number</Title>
+			<Switch
+				checked={showPhoneCustomer}
+				onChange={setShowPhoneCustomer}
+			/>
+			{showPhoneCustomer && (
+				<Form.Item label="">
+					<Space direction="vertical">
+						<Input
+							value={phoneNumberCustomer}
+							style={{
+								width: "430px",
+								marginTop: "5px",
+							}}
+							onChange={handleChange(setPhoneNumberCustomer)}
+						/>
+						<Button type="primary" onClick={resetPhoneNumber}>
+							Reset Phone
+						</Button>
+					</Space>
+				</Form.Item>
+			)}
+			<Space direction="horizontal" align="start" size={50}>
+				<div>
+					<Title level={3}>Chat Interface</Title>
+					<Title level={5}>applies when embedded on a website</Title>
+					<Title level={5}>Initial Messages</Title>
+					<Space direction="vertical">
+						<TextArea
+							style={{
+								width: "430px",
+								marginBottom: "5px",
+							}}
+							rows={4}
+							value={initialMessages}
+							onChange={handleChange(setInitialMessages)}
+						/>
+						<Button type="primary" onClick={resetInitialMessages}>
+							Reset
+						</Button>
+					</Space>
+
+					<Title level={5}>Suggested Messages</Title>
+					<Space direction="vertical">
+						<TextArea
+							style={{
+								width: "430px",
+								marginBottom: "5px",
+							}}
+							rows={4}
+							value={suggestedMessages}
+							onChange={handleChange(setSuggestedMessages)}
+						/>
+						<Button type="primary" onClick={resetSuggestedMessages}>
+							Reset
+						</Button>
+					</Space>
+					<Title level={5}>Theme</Title>
+					<Select value={theme} onChange={setTheme}>
+						<Option value="light">Light</Option>
+						<Option value="dark">Dark</Option>
+					</Select>
+
+					<Title level={5}>Update chatbot profile picture</Title>
+					<Space direction="vertical">
+						<Checkbox
+							checked={removeProfilePicture}
+							onChange={(e) => {
+								setRemoveProfilePicture(e.target.checked);
+								resetProfilePicture();
+							}}
+						>
+							Remove profile picture
+						</Checkbox>
+
+						{!removeProfilePicture && (
+							<>
+								<Input
+									style={{
+										width: "430px",
+										marginTop: "5px",
+									}}
+									type="file"
+									accept="image/*"
+									onChange={handleProfilePictureChange}
+								/>
+								{/* <div>
+									{profilePicture && (
+										<Image
+											src={profilePicture}
+											width={100}
+											height={100}
+											alt="Preview"
+										/>
+									)}
+								</div> */}
+							</>
+						)}
+					</Space>
+					<Title level={5}>User Message Color</Title>
+					<ColorPicker
+						format={formatHex}
+						value={userMessageColor}
+						onChange={setUserMessageColor}
+						onFormatChange={setFormatHex}
+					/>
+
+					<Title level={5}>Update chat icon</Title>
+					<Input
+						style={{
+							width: "430px",
+							marginTop: "5px",
+						}}
+						type="file"
+						accept="image/*"
+						onChange={handleChatIconChange}
+					/>
+					<div>
+						{chatIcon && (
+							<Image
+								src={chatIcon}
+								alt="Preview"
+								width={100}
+								height={100}
+							/>
+						)}
+					</div>
+
+					<Title level={5}>Chat Bubble Button Color</Title>
+					<ColorPicker
+						format={formatHex}
+						value={chatBubbleButtonColor}
+						onChange={setChatBubbleButtonColor}
+						onFormatChange={setFormatHex}
+					/>
+					<Title level={5}>Align Chat Bubble Button</Title>
+					<Select
+						value={chatBubbleButtonAlignment}
+						onChange={setChatBubbleButtonAlignment}
+					>
+						<Option value="right">Right</Option>
+						<Option value="left">Left</Option>
+					</Select>
+				</div>
+				<div className={s.chatPreview}>
+					<div
+						style={{
+							minHeight: "50px",
+							width: "95%",
+							margin: "0 auto",
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+							borderBottom: "1px solid rgb(234, 234, 234)",
+						}}
+					>
+						<div>
+							{!removeProfilePicture && profilePicture && (
+								<Image
+									style={{
+										maxHeight: 100,
+										maxWidth: 50,
+										borderRadius: "20px",
+										margin: "3px 0",
+									}}
+									src={profilePicture}
+									alt="Профиль"
+								/>
+							)}
+						</div>
+						<Space>
+							<ReloadOutlined />
+							<CloseOutlined />
+						</Space>
+					</div>
+
+					<div style={{ width: "100%", height: "72%" }}>
+						{/* Your content here */}
+					</div>
+
+					<div style={{ width: "100%", height: "50px" }}>
+						<Input
+							suffix={<SendOutlined />}
+							style={{
+								height: "50px",
+								width: "95%",
+								margin: "0 10px",
+							}}
+							placeholder="Enter your message"
+						/>
+					</div>
+				</div>
+			</Space>
 		</div>
 	);
 };

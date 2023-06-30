@@ -1,0 +1,9 @@
+.chatPreview {
+	border: 1px solid rgb(234, 234, 234);
+	border-radius: 3px;
+	max-width: 400px;
+	width: 100vw;
+	max-height: 600px;
+	height: 100vw;
+	margin-top: 45px;
+}
