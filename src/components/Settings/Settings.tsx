@@ -37,7 +37,7 @@ export const Settings: React.FC = () => {
 	const [limitHitMessage, setLimitHitMessage] = useState<string>(
 		"Too many messages in a row"
 	);
-	// Состояние для переключателей и инпутов
+
 	const [showTitleCustomer, setShowTitleCustomer] = useState<boolean>(false);
 	const [titleCustomer, setTitleCustomer] = useState<string>("");
 	const [showNameCustomer, setShowNameCustomer] = useState<boolean>(false);
@@ -46,7 +46,7 @@ export const Settings: React.FC = () => {
 	const [emailCustomer, setEmailCustomer] = useState<string>("");
 	const [showPhoneCustomer, setShowPhoneCustomer] = useState<boolean>(false);
 	const [phoneNumberCustomer, setPhoneNumberCustomer] = useState<string>("");
-	// Новые переменные состояния
+
 	const [initialMessages, setInitialMessages] = useState<string>(
 		"how can i help you?"
 	);
@@ -111,7 +111,7 @@ export const Settings: React.FC = () => {
 	const resetInitialMessages = () => setInitialMessages("");
 	const resetSuggestedMessages = () => setSuggestedMessages("");
 	const resetProfilePicture = () => setProfilePicture("");
-	const resetChatIcon = () => setChatIcon("");
+	// const resetChatIcon = () => setChatIcon("");
 
 	const handleChange = (
 		setState: React.Dispatch<React.SetStateAction<string>>
@@ -229,7 +229,7 @@ export const Settings: React.FC = () => {
 					value={messagePeriod}
 					onChange={(value) => {
 						if (value !== null) {
-							setMessageLimit(value);
+							setMessagePeriod(value);
 						}
 					}}
 				/>
