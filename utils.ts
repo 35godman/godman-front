@@ -25,6 +25,7 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
       vector: queryEmbedding,
       includeMetadata: true,
       includeValues: true,
+      namespace: 'user-123',
     },
   });
   // 5. Log the number of matches
@@ -42,9 +43,12 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
 
       const chain = loadQAStuffChain(llm);
       //8. Extract and concatenate page content from matched documents
-      const concatenatedPageContent = queryResponse.matches
+      let concatenatedPageContent = queryResponse.matches
         .map((match) => match.metadata.pageContent.replace(/\n/g, ''))
         .join(' ');
+      if (concatenatedPageContent.length > 6100) {
+        concatenatedPageContent = concatenatedPageContent.substring(0, 6100);
+      }
       const tokens = await calculateMaxTokens({
         prompt: concatenatedPageContent,
         modelName: 'gpt-3.5-turbo-0613',
@@ -158,6 +162,7 @@ export const updatePinecone = async (client, indexName, docs) => {
         await index.upsert({
           upsertRequest: {
             vectors: batch,
+            namespace: 'user-123',
           },
         });
         // Empty the batch
