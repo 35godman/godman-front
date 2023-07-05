@@ -9,12 +9,15 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
+    "@pinecone-database/pinecone": "^0.1.6",
     "antd": "^5.6.3",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "eslint-config-next": "^13.4.7",
+    "langchain": "^0.0.99",
+    "mammoth": "^1.6.0",
     "next": "latest",
-    "puppeteer": "^20.7.3",
+    "pdf-parse": "^1.1.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0"
