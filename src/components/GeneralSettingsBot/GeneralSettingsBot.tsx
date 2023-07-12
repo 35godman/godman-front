@@ -17,17 +17,17 @@ export const GeneralSettingsBot: React.FC = () => {
     {
       key: '4',
       label: 'Embled on site',
-      content: <div>Здесь будет компонент Embled on site</div>,
+      children: <div>Здесь будет компонент Embled on site</div>,
     },
     {
       key: '5',
       label: 'Share',
-      content: <div>Здесь будет компонент Share</div>,
+      children: <div>Здесь будет компонент Share</div>,
     },
     {
       key: '6',
       label: 'Delete Bot',
-      content: <div>Здесь будет компонент Delete Bot</div>,
+      children: <div>Здесь будет компонент Delete Bot</div>,
     },
   ];
   return (

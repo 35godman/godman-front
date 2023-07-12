@@ -87,7 +87,7 @@ export const DataSource: React.FC = () => {
     const data = new FormData();
 
     // Append all files to the FormData instance
-    files.forEach((file) => {
+    files.forEach(file => {
       if (file.originFileObj) {
         data.append(`files`, file.originFileObj);
       }
@@ -111,21 +111,12 @@ export const DataSource: React.FC = () => {
     setCountCharsInText(e.target.value.length);
   };
 
-  return (
-    <div className={s.dataSourceWrapper}>
-      <Tabs
-        style={{
-          width: '700px',
-          height: '600px',
-          justifyContent: 'center',
-          boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
-          padding: '15px',
-          marginTop: '30px',
-        }}
-        defaultActiveKey="Files"
-        onChange={handleTabClick}
-      >
-        <TabPane tab="Files" key="Files">
+  const tabs = [
+    {
+      key: 'Files',
+      label: 'Files',
+      children: (
+        <>
           <Dragger
             name="file"
             multiple
@@ -142,8 +133,14 @@ export const DataSource: React.FC = () => {
             looking into the issue. Make sure the text is OCR&apos;d, i.e. you
             can copy it.
           </Paragraph>
-        </TabPane>
-        <TabPane tab="Text" key="Text">
+        </>
+      ),
+    },
+    {
+      key: 'Text',
+      label: 'Text',
+      children: (
+        <>
           <Input
             placeholder="chatbot name"
             style={{ marginBottom: '16px' }}
@@ -156,8 +153,14 @@ export const DataSource: React.FC = () => {
             value={textAreaValue}
             onChange={handleTextAreaChange}
           />
-        </TabPane>
-        <TabPane tab="Website" key="Website">
+        </>
+      ),
+    },
+    {
+      key: 'Website',
+      label: 'Website',
+      children: (
+        <>
           <div className={s.webInputWrap}>
             <Input
               placeholder="Enter website URL"
@@ -180,8 +183,14 @@ export const DataSource: React.FC = () => {
             value={parsedContent}
             disabled
           />
-        </TabPane>
-        <TabPane tab="Q&A" key="Q&A">
+        </>
+      ),
+    },
+    {
+      key: 'Q&A',
+      label: 'Q&A',
+      children: (
+        <>
           <Button onClick={handleAddQna}>Add</Button>
           {isTextAreaVisible && (
             <>
@@ -212,8 +221,26 @@ export const DataSource: React.FC = () => {
                 <TextArea rows={2} value={qna.answer} disabled />
               </div>
             ))}
-        </TabPane>
-      </Tabs>
+        </>
+      ),
+    },
+  ];
+
+  return (
+    <div className={s.dataSourceWrapper}>
+      <Tabs
+        style={{
+          width: '700px',
+          height: '600px',
+          justifyContent: 'center',
+          boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+          padding: '15px',
+          marginTop: '30px',
+        }}
+        defaultActiveKey="Files"
+        onChange={handleTabClick}
+        items={tabs}
+      />
       <div className={s.createBotArea}>
         {countFiles > 0 && (
           <p>
