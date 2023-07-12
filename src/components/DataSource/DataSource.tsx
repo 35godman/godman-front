@@ -6,8 +6,25 @@ import s from './DataSource.module.css';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import globalService from '@/service/globalService';
+import { DataSourcePropsType } from './DataSourcePropsType';
 
-export const DataSource: React.FC = () => {
+export const DataSource: React.FC<DataSourcePropsType> = ({
+  activeTabP,
+  filesP,
+  chatbotNameP,
+  textAreaValueP,
+  websiteUrlP,
+  parsedContentP,
+  isTextAreaVisibleP,
+  countFilesP,
+  countCharsInFilesP,
+  countCharsInTextP,
+  countCharsInWebsiteP,
+  countQnaP,
+  qnaListP,
+  newQuestionP,
+  newAnswerP,
+}) => {
   const router = useRouter();
   const { Dragger } = Upload;
   const { Paragraph } = Typography;

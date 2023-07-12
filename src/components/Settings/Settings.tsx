@@ -19,12 +19,41 @@ import { Color, ColorPickerProps } from 'antd/es/color-picker';
 import s from './Settings.module.css';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
 import { UserMessage } from '../UserMessage/UserMessage';
+import { SettingsPropsType } from './SettingsPropsType';
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
 
-export const Settings: React.FC = () => {
+export const Settings: React.FC<SettingsPropsType> = ({
+  chatbotIdP,
+  charCountP,
+  nameP,
+  basePromptP,
+  modelP,
+  temperatureP,
+  visibilityP,
+  domainsP,
+  messageLimitP,
+  messagePeriodP,
+  limitHitMessageP,
+  showTitleCustomerP,
+  titleCustomerP,
+  showNameCustomerP,
+  nameCustomerP,
+  showEmailCustomerP,
+  emailCustomerP,
+  showPhoneCustomerP,
+  phoneNumberCustomerP,
+  initialMessagesP,
+  suggestedMessagesP,
+  themeP,
+  profilePictureP,
+  removeProfilePictureP,
+  userMessageColorP,
+  chatFooterColorP,
+  chatMessageColorP,
+}) => {
   const [chatbotId] = useState<string>('7ihbdi777d62w28');
   const [charCount] = useState<number>(82918);
   const [name, setName] = useState<string>('bot45562');

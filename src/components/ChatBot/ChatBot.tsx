@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './ChatBot.module.css';
 import { Suggestion } from '../Suggestion/Suggestion';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
@@ -7,14 +7,46 @@ import { Button, Input } from 'antd';
 import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import { Image } from 'antd';
 
-export const ChatBot: React.FC = () => {
-  const [chatMessageColor, setChatMessageColor] = useState('#E3E5E8');
-  const [footerColor, setFooterColor] = useState('#E3E5E8');
-  const [userMessageColor, setUserMessageColor] = useState('#CBD5E3');
-  const [profilePicture, setProfilePicture] = useState(
+type ChatBotProps = {
+  chatMC?: string;
+  footerC?: string;
+  userMC?: string;
+  profilePic?: string;
+  botName?: string;
+};
+
+export const ChatBot: React.FC<ChatBotProps> = ({
+  chatMC,
+  footerC,
+  userMC,
+  profilePic,
+  botName,
+}) => {
+  const [chatMessageColor, setChatMessageColor] = useState<string>('#E3E5E8');
+  const [footerColor, setFooterColor] = useState<string>('#E3E5E8');
+  const [userMessageColor, setUserMessageColor] = useState<string>('#CBD5E3');
+  const [profilePicture, setProfilePicture] = useState<string>(
     'https://static.vecteezy.com/system/resources/previews/007/225/199/non_2x/robot-chat-bot-concept-illustration-vector.jpg',
   );
-  const [name, setName] = useState('Bot77777');
+  const [name, setName] = useState<string>('Bot77777');
+
+  useEffect(() => {
+    if (chatMC && chatMC.length > 0) {
+      setChatMessageColor(chatMC);
+    }
+    if (footerC && footerC.length > 0) {
+      setFooterColor(footerC);
+    }
+    if (userMC && userMC.length > 0) {
+      setUserMessageColor(userMC);
+    }
+    if (profilePic && profilePic.length > 0) {
+      setProfilePicture(profilePic);
+    }
+    if (botName && botName.length > 0) {
+      setName(botName);
+    }
+  }, [botName, chatMC, footerC, profilePic, userMC]);
   return (
     <div className={s.chatPreview}>
       <div className={s.chatPreviewHeader}>
