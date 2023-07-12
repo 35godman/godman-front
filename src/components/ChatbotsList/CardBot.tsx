@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from 'antd';
+import { useRouter } from 'next/router';
 const { Meta } = Card;
 
 type CardBotProps = {
@@ -12,6 +13,7 @@ export const CardBot: React.FC<CardBotProps> = ({
   nameBot,
   botID,
 }) => {
+  const router = useRouter();
   const [cardPhoto, setCardPhoto] = useState('./chatbot-image.png');
   const [botName, setBotName] = useState('General');
   const [botIDCurrent, setBotIDCurrent] = useState('HHu23uuss31');
@@ -32,6 +34,7 @@ export const CardBot: React.FC<CardBotProps> = ({
       hoverable
       style={{ width: 240 }}
       cover={<img alt="example" src={cardPhoto} />}
+      onClick={() => router.push(`/gs-bot?id=${botIDCurrent}`)}
     >
       <Meta title={botName} description={botIDCurrent} />
     </Card>

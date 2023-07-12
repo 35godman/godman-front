@@ -6,4 +6,14 @@
 
 .botsListHeader {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  max-width: 1440px;
+}
+
+.botListAll {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1vh;
 }

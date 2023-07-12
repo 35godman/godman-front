@@ -28,7 +28,7 @@ export const Login: React.FC = () => {
         dispatch(setUser(response.data.user));
         setLoggedin(true);
         notification.success({
-          message: 'Exelent!',
+          message: 'Excellent!',
           description: 'You have successfully logged in',
         });
       }

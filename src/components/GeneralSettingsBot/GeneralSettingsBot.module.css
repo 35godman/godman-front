@@ -1,0 +1,10 @@
+.fullWidthTabs .ant-tabs {
+  display: flex !important;
+  justify-content: space-around !important;
+}
+
+.fullWidthTabs .ant-tabs-tab {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}

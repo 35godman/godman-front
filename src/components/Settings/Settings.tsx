@@ -46,7 +46,7 @@ export const Settings: React.FC = () => {
   const [nameCustomer, setNameCustomer] = useState<string>('');
   const [showEmailCustomer, setShowEmailCustomer] = useState<boolean>(false);
   const [emailCustomer, setEmailCustomer] = useState<string>('');
-  const [showPhoneCustomer, setShowPhoneCustomer] = useState<boolean>(false);
+  const [showPhoneCustomer, setShowPhoneCustomer] = useState<boolean>(true);
   const [phoneNumberCustomer, setPhoneNumberCustomer] = useState<string>('');
 
   const [initialMessages, setInitialMessages] = useState<string>(
@@ -434,6 +434,7 @@ export const Settings: React.FC = () => {
             <Option value="left">Left</Option>
           </Select>
         </div>
+        {/* Prev Chat_________________________ */}
         <div className={s.chatPreview}>
           <div className={s.chatPreviewHeader}>
             <div>
@@ -455,11 +456,10 @@ export const Settings: React.FC = () => {
               )}
             </div>
           </div>
-          {/* Prev Chat_________________________ */}
           <div className={s.chatPreviewContent}>
             <Suggestion
               backgroundColor={hexStringUserMessage}
-              textProp="What is Chatbase?"
+              textProp="What is Godman?"
             />
             <Suggestion
               backgroundColor={hexStringUserMessage}
@@ -467,13 +467,16 @@ export const Settings: React.FC = () => {
             />
             <Suggestion
               backgroundColor={hexStringUserMessage}
-              textProp="How can Chatbase benefit my website?"
+              textProp="How can Godman benefit my website?"
             />
             <Suggestion
               backgroundColor={hexStringUserMessage}
               textProp="What features does astrum have?"
             />
-						<ChatMessage text='Welcome to Arsturn, I am your AI assistant - Arsturn. How can I help you today?' color={hexStringFooterColor} />
+            <ChatMessage
+              text="Welcome to Godman, I am your AI assistant - Godman. How can I help you today?"
+              color={hexStringFooterColor}
+            />
           </div>
 
           <div
