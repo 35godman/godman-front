@@ -9,7 +9,6 @@ import globalService from '@/service/globalService';
 
 export const DataSource: React.FC = () => {
   const router = useRouter();
-  const TabPane = Tabs.TabPane;
   const { Dragger } = Upload;
   const { Paragraph } = Typography;
   const { TextArea } = Input;

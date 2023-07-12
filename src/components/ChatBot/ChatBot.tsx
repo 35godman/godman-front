@@ -14,7 +14,7 @@ export const ChatBot: React.FC = () => {
   const [profilePicture, setProfilePicture] = useState(
     'https://static.vecteezy.com/system/resources/previews/007/225/199/non_2x/robot-chat-bot-concept-illustration-vector.jpg',
   );
-  const [name, setName] = useState('');
+  const [name, setName] = useState('Bot77777');
   return (
     <div className={s.chatPreview}>
       <div className={s.chatPreviewHeader}>

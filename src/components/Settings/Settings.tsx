@@ -18,6 +18,7 @@ import { Suggestion } from '../Suggestion/Suggestion';
 import { Color, ColorPickerProps } from 'antd/es/color-picker';
 import s from './Settings.module.css';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
+import { UserMessage } from '../UserMessage/UserMessage';
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
@@ -61,14 +62,19 @@ export const Settings: React.FC = () => {
   const [userMessageColor, setUserMessageColor] = useState<Color | string>(
     '#E3E5E8',
   );
-  const [chatIcon, setChatIcon] = useState<string>('');
+  // const [chatIcon, setChatIcon] = useState<string>('');
   const [chatFooterColor, setchatFooterColor] = useState<Color | string>(
     '#E3E5E8',
   );
-  const [chatBubbleButtonAlignment, setChatBubbleButtonAlignment] = useState<
-    string
-  >('right');
+  const [chatMessageColor, setChatMessageColor] = useState<Color | string>(
+    '#E3E5E8',
+  );
+  // const [chatBubbleButtonAlignment, setChatBubbleButtonAlignment] = useState<
+  //   string
+  // >('right');
+  const [language, setLanguage] = useState<string>('EN');
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const hexStringUserMessage: any = useMemo(
     () =>
       typeof userMessageColor === 'string'
@@ -76,6 +82,15 @@ export const Settings: React.FC = () => {
         : userMessageColor.toHexString(),
     [userMessageColor],
   );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const hexStringChatMessage: any = useMemo(
+    () =>
+      typeof chatMessageColor === 'string'
+        ? chatMessageColor
+        : chatMessageColor.toHexString(),
+    [chatMessageColor],
+  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const hexStringFooterColor: any = useMemo(
     () =>
       typeof chatFooterColor === 'string'
@@ -91,11 +106,11 @@ export const Settings: React.FC = () => {
     }
   };
 
-  const handleChatIconChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setChatIcon(URL.createObjectURL(event.target.files[0]));
-    }
-  };
+  // const handleChatIconChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files.length > 0) {
+  //     setChatIcon(URL.createObjectURL(event.target.files[0]));
+  //   }
+  // };
 
   const resetBasePrompt = () => {
     setBasePrompt(
@@ -401,8 +416,15 @@ export const Settings: React.FC = () => {
             onChange={setUserMessageColor}
             onFormatChange={setFormatHex}
           />
+          <Title level={5}>Bot Message Color</Title>
+          <ColorPicker
+            format={formatHex}
+            value={chatMessageColor}
+            onChange={setChatMessageColor}
+            onFormatChange={setFormatHex}
+          />
 
-          <Title level={5}>Update chat icon</Title>
+          {/* <Title level={5}>Update chat icon</Title>
           <Input
             style={{
               width: '430px',
@@ -416,7 +438,7 @@ export const Settings: React.FC = () => {
             {chatIcon && (
               <Image src={chatIcon} alt="Preview" width={100} height={100} />
             )}
-          </div>
+          </div> */}
 
           <Title level={5}>Chat Bubble Button Color</Title>
           <ColorPicker
@@ -425,13 +447,18 @@ export const Settings: React.FC = () => {
             onChange={setchatFooterColor}
             onFormatChange={setFormatHex}
           />
-          <Title level={5}>Align Chat Bubble Button</Title>
+          {/* <Title level={5}>Align Chat Bubble Button</Title>
           <Select
             value={chatBubbleButtonAlignment}
             onChange={setChatBubbleButtonAlignment}
           >
             <Option value="right">Right</Option>
             <Option value="left">Left</Option>
+          </Select> */}
+          <Title level={5}>Bot language</Title>
+          <Select value={language} onChange={setLanguage}>
+            <Option value="EN">English</Option>
+            <Option value="RU">Russian</Option>
           </Select>
         </div>
         {/* Prev Chat_________________________ */}
@@ -458,42 +485,60 @@ export const Settings: React.FC = () => {
           </div>
           <div className={s.chatPreviewContent}>
             <Suggestion
-              backgroundColor={hexStringUserMessage}
+              backgroundColor={hexStringChatMessage}
               textProp="What is Godman?"
             />
             <Suggestion
-              backgroundColor={hexStringUserMessage}
+              backgroundColor={hexStringChatMessage}
               textProp="What is the pricing?"
             />
             <Suggestion
-              backgroundColor={hexStringUserMessage}
+              backgroundColor={hexStringChatMessage}
               textProp="How can Godman benefit my website?"
             />
             <Suggestion
-              backgroundColor={hexStringUserMessage}
+              backgroundColor={hexStringChatMessage}
               textProp="What features does astrum have?"
             />
             <ChatMessage
               text="Welcome to Godman, I am your AI assistant - Godman. How can I help you today?"
-              color={hexStringFooterColor}
+              color={hexStringChatMessage}
+            />
+            <UserMessage
+              text="Im Harry. Whats the wheather tooday?"
+              color={hexStringUserMessage}
             />
           </div>
 
           <div
             className={s.chatPreviewFooter}
-            style={{ backgroundColor: hexStringFooterColor }}
+            style={{
+              backgroundColor: hexStringFooterColor,
+            }}
           >
             <Button
               className={s.chatPreviewReloadButton}
               // type="primary"
               shape="circle"
               size="large"
-              icon={<ReloadOutlined style={{ fontSize: '24px' }} />}
+              icon={
+                <ReloadOutlined
+                  style={{
+                    fontSize: '24px',
+                  }}
+                />
+              }
             />
 
             <Input
               className={s.chatPreviewInput}
-              suffix={<SendOutlined style={{ fontSize: '20px' }} />}
+              suffix={
+                <SendOutlined
+                  style={{
+                    fontSize: '20px',
+                  }}
+                />
+              }
               placeholder="Enter your message"
             />
           </div>
