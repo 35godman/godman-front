@@ -5,6 +5,7 @@ import { loadQAStuffChain } from 'langchain/chains';
 import { Document } from 'langchain/document';
 import { timeout } from './config';
 import { calculateMaxTokens } from 'langchain/base_language';
+import { encode, decode } from 'gpt-3-encoder';
 
 export const queryPineconeVectorStoreAndQueryLLM = async (
   client,
@@ -19,9 +20,9 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
   // 3. Create query embedding
   const queryEmbedding = await new OpenAIEmbeddings().embedQuery(question);
   // 4. Query Pinecone index and return top 10 matches
-  let queryResponse = await index.query({
+  const queryResponse = await index.query({
     queryRequest: {
-      topK: 10,
+      topK: 1,
       vector: queryEmbedding,
       includeMetadata: true,
       includeValues: true,
@@ -37,34 +38,30 @@ export const queryPineconeVectorStoreAndQueryLLM = async (
     try {
       const llm = new OpenAI({
         modelName: 'gpt-3.5-turbo-0613',
-        maxTokens: 1000,
+        maxTokens: 300,
         temperature: 1,
       });
+      console.log('=>(utils.ts:43) llm', llm);
 
       const chain = loadQAStuffChain(llm);
       //8. Extract and concatenate page content from matched documents
       let concatenatedPageContent = queryResponse.matches
         .map((match) => match.metadata.pageContent.replace(/\n/g, ''))
         .join(' ');
-      if (concatenatedPageContent.length > 6100) {
-        concatenatedPageContent = concatenatedPageContent.substring(0, 6100);
+      if (concatenatedPageContent.length > 500) {
+        concatenatedPageContent = concatenatedPageContent.substring(0, 500);
       }
-      const tokens = await calculateMaxTokens({
-        prompt: concatenatedPageContent,
-        modelName: 'gpt-3.5-turbo-0613',
-      });
-      console.log('=>(utils.ts:52) tokens', tokens);
-      console.log(
-        '=>(utils.ts:44) concatenatedPageContent',
-        concatenatedPageContent.length,
-      );
+
+      const encoded = encode(concatenatedPageContent);
+      console.log('Encoded this string looks like: ', encoded.length);
       // 9. Execute the chain with input documents and question
       const result = await chain.call({
         input_documents: [
-          new Document({ pageContent: concatenatedPageContent }),
+          new Document({
+            pageContent: concatenatedPageContent,
+          }),
         ],
-        question: question,
-        max_tokens: 1000,
+        question: 'USE only Russian language in answer' + question,
       });
       //10. Log the answer
       console.log(`Answer: ${result.text}`);
