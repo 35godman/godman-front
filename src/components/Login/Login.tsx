@@ -63,7 +63,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push('/data-source');
+      router.push('/general-navigation');
     }
   }, [isLoggedIn]);
 
