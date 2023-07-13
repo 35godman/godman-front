@@ -103,7 +103,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({
     const data = new FormData();
 
     // Append all files to the FormData instance
-    files.forEach(file => {
+    files.forEach((file) => {
       if (file.originFileObj) {
         data.append(`files`, file.originFileObj);
       }
