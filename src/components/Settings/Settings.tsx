@@ -54,49 +54,72 @@ export const Settings: React.FC<SettingsPropsType> = ({
   chatFooterColorP,
   chatMessageColorP,
 }) => {
-  const [chatbotId] = useState<string>('7ihbdi777d62w28');
-  const [charCount] = useState<number>(82918);
-  const [name, setName] = useState<string>('bot45562');
+  const [chatbotId] = useState<string>(chatbotIdP || '7ihbdi777d62w28');
+  const [charCount] = useState<number>(charCountP || 82918);
+  const [name, setName] = useState<string>(nameP || 'bot45562');
   const [basePrompt, setBasePrompt] = useState<string>(
-    "I want you to act as a document that I am having a conversation with. Your name is 'AI Assistant'. You will provide me with answers from the given info. If the answer is not included, say exactly 'Hmm, I am not sure.' and stop after that. Refuse to answer any question not about the info. Never break character.",
+    basePromptP ||
+      "I want you to act as a document that I am having a conversation with. Your name is 'AI Assistant'. You will provide me with answers from the given info. If the answer is not included, say exactly 'Hmm, I am not sure.' and stop after that. Refuse to answer any question not about the info. Never break character.",
   );
-  const [model, setModel] = useState<string>('gpt-3.5 turbo');
-  const [temperature, setTemperature] = useState<number>(0);
-  const [visibility, setVisibility] = useState<string>('Private');
-  const [domains, setDomains] = useState<string>('');
-  const [messageLimit, setMessageLimit] = useState<number>(20);
-  const [messagePeriod, setMessagePeriod] = useState<number>(240);
+  const [model, setModel] = useState<string>(modelP || 'gpt-3.5 turbo');
+  const [temperature, setTemperature] = useState<number>(temperatureP || 0);
+  const [visibility, setVisibility] = useState<string>(
+    visibilityP || 'Private',
+  );
+  const [domains, setDomains] = useState<string>(domainsP || '');
+  const [messageLimit, setMessageLimit] = useState<number>(messageLimitP || 20);
+  const [messagePeriod, setMessagePeriod] = useState<number>(
+    messagePeriodP || 240,
+  );
   const [limitHitMessage, setLimitHitMessage] = useState<string>(
-    'Too many messages in a row',
+    limitHitMessageP || 'Too many messages in a row',
   );
 
-  const [showTitleCustomer, setShowTitleCustomer] = useState<boolean>(false);
-  const [titleCustomer, setTitleCustomer] = useState<string>('');
-  const [showNameCustomer, setShowNameCustomer] = useState<boolean>(false);
-  const [nameCustomer, setNameCustomer] = useState<string>('');
-  const [showEmailCustomer, setShowEmailCustomer] = useState<boolean>(false);
-  const [emailCustomer, setEmailCustomer] = useState<string>('');
-  const [showPhoneCustomer, setShowPhoneCustomer] = useState<boolean>(true);
-  const [phoneNumberCustomer, setPhoneNumberCustomer] = useState<string>('');
+  const [showTitleCustomer, setShowTitleCustomer] = useState<boolean>(
+    showTitleCustomerP || false,
+  );
+  const [titleCustomer, setTitleCustomer] = useState<string>(
+    titleCustomerP || '',
+  );
+  const [showNameCustomer, setShowNameCustomer] = useState<boolean>(
+    showNameCustomerP || false,
+  );
+  const [nameCustomer, setNameCustomer] = useState<string>(nameCustomerP || '');
+  const [showEmailCustomer, setShowEmailCustomer] = useState<boolean>(
+    showEmailCustomerP || false,
+  );
+  const [emailCustomer, setEmailCustomer] = useState<string>(
+    emailCustomerP || '',
+  );
+  const [showPhoneCustomer, setShowPhoneCustomer] = useState<boolean>(
+    showPhoneCustomerP || true,
+  );
+  const [phoneNumberCustomer, setPhoneNumberCustomer] = useState<string>(
+    phoneNumberCustomerP || '',
+  );
 
   const [initialMessages, setInitialMessages] = useState<string>(
-    'how can i help you?',
+    initialMessagesP || 'how can i help you?',
   );
-  const [suggestedMessages, setSuggestedMessages] = useState<string>('');
-  const [theme, setTheme] = useState<string>('light');
-  const [profilePicture, setProfilePicture] = useState<string>('');
+  const [suggestedMessages, setSuggestedMessages] = useState<string>(
+    suggestedMessagesP || '',
+  );
+  const [theme, setTheme] = useState<string>(themeP || 'light');
+  const [profilePicture, setProfilePicture] = useState<string>(
+    profilePictureP || '',
+  );
   const [removeProfilePicture, setRemoveProfilePicture] = useState<boolean>(
-    false,
+    removeProfilePictureP || false,
   );
   const [userMessageColor, setUserMessageColor] = useState<Color | string>(
-    '#E3E5E8',
+    userMessageColorP || '#E3E5E8',
   );
   // const [chatIcon, setChatIcon] = useState<string>('');
   const [chatFooterColor, setchatFooterColor] = useState<Color | string>(
-    '#E3E5E8',
+    chatFooterColorP || '#E3E5E8',
   );
   const [chatMessageColor, setChatMessageColor] = useState<Color | string>(
-    '#E3E5E8',
+    chatMessageColorP || '#E3E5E8',
   );
   // const [chatBubbleButtonAlignment, setChatBubbleButtonAlignment] = useState<
   //   string
@@ -469,7 +492,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
             )}
           </div> */}
 
-          <Title level={5}>Chat Bubble Button Color</Title>
+          <Title level={5}>Chat Footer Color</Title>
           <ColorPicker
             format={formatHex}
             value={chatFooterColor}

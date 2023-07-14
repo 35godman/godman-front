@@ -8,7 +8,7 @@ import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import { Image } from 'antd';
 
 type ChatBotProps = {
-  chatMC?: string;
+  chatMC?: string; //MC - Mesage color
   footerC?: string;
   userMC?: string;
   profilePic?: string;
