@@ -187,16 +187,18 @@ export const Login: React.FC = () => {
     );
   };
 
+  const tabs = [
+    { key: '1', label: 'Login', children: renderLoginForm() },
+    {
+      key: '6',
+      label: 'Registration',
+      children: renderRegistrationForm(),
+    },
+  ];
+
   return (
     <div className={s.loginWrapper}>
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="Login" key="1">
-          {renderLoginForm()}
-        </TabPane>
-        <TabPane tab="Registration" key="2">
-          {renderRegistrationForm()}
-        </TabPane>
-      </Tabs>
+      <Tabs defaultActiveKey="1" centered items={tabs} />
     </div>
   );
 };
