@@ -1,63 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Checkbox, Form, Input, Tabs, Modal, notification } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Tabs,
+  Modal,
+  notification,
+  Spin,
+} from 'antd';
 import { LoginValues, RegisterValues } from '@/types/types';
 import s from './Login.module.css';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { setUser } from '@/redux/slices/userSlice';
-import { useAppDispatch } from '../../redux/store';
-import { AxiosError } from '@/types/types';
+import { useAppDispatch } from '@/redux/store';
+import globalService from '@/service/globalService';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const { TabPane } = Tabs;
 
 export const Login: React.FC = () => {
   const dispatch = useAppDispatch();
-
+  const [reloginLoad, setReloginLoad] = useState<boolean>(false);
   const router = useRouter();
   const [isLoggedIn, setLoggedin] = useState<boolean>(false);
 
   const loginHandler = async (values: LoginValues) => {
-    try {
-      const response = await axios.post(
-        'http://localhost:5050/api/auth/login',
-        values,
-      );
-      if (response.status === 201) {
-        Cookies.set('access_token', response.data.token.access_token);
-        dispatch(setUser(response.data.user));
-        setLoggedin(true);
-        notification.success({
-          message: 'Excellent!',
-          description: 'You have successfully logged in',
-        });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const registerHandler = async (values: RegisterValues) => {
-    try {
-      const response = await axios.post(
-        'http://localhost:5050/api/user/register',
-        values,
-      );
-      if (response.status === 201) {
-        Modal.success({
-          title: `User ${values.username} registered`,
-        });
-      }
-    } catch (e) {
-      const err = e as AxiosError;
-      console.log(err);
-      Modal.error({
-        title: err.response.data.message,
+    const response = await globalService.post('auth/login', values);
+    if (response.status === 201) {
+      Cookies.set('access_token', response.data.token.access_token);
+      dispatch(setUser(response.data.user));
+      setLoggedin(true);
+      notification.success({
+        message: 'Excellent!',
+        description: 'You have successfully logged in',
       });
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const initialRender = useRef(true);
+
+  useEffect(() => {
+    if (initialRender.current) {
+      const relogin = async () => {
+        setReloginLoad(true);
+        try {
+          await globalService.get('auth/relogin');
+          await router.push('/chatbot-list');
+        } catch (e) {
+          console.error(e);
+        }
+        setReloginLoad(false);
+      };
+      relogin();
+      initialRender.current = false;
+    }
+  }, [router]);
+
+  const registerHandler = async (values: RegisterValues) => {
+    const response = await globalService.post('user/register', values);
+    if (response.status === 201) {
+      Modal.success({
+        title: `User ${values.username} registered`,
+      });
+    }
+  };
+
+  const onFinishFailed = (errorInfo: never) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -65,7 +76,7 @@ export const Login: React.FC = () => {
     if (isLoggedIn) {
       router.push('/general-navigation');
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, router]);
 
   const renderLoginForm = () => {
     return (
@@ -77,7 +88,7 @@ export const Login: React.FC = () => {
           style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={loginHandler}
-          onFinishFailed={onFinishFailed}
+          //onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item
@@ -99,7 +110,7 @@ export const Login: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input your password!',
+                message: <FormattedMessage id={'enter_pass'} />,
               },
             ]}
           >
@@ -111,12 +122,14 @@ export const Login: React.FC = () => {
             valuePropName="checked"
             wrapperCol={{ offset: 8, span: 16 }}
           >
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>
+              <FormattedMessage id={'remember_me'} />
+            </Checkbox>
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
-              Submit
+              <FormattedMessage id={'submit'} />
             </Button>
           </Form.Item>
         </Form>
@@ -134,7 +147,7 @@ export const Login: React.FC = () => {
           style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={registerHandler}
-          onFinishFailed={onFinishFailed}
+          //onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item
@@ -179,7 +192,7 @@ export const Login: React.FC = () => {
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
-              Submit
+              <FormattedMessage id={'submit'} />
             </Button>
           </Form.Item>
         </Form>
@@ -198,6 +211,9 @@ export const Login: React.FC = () => {
 
   return (
     <div className={s.loginWrapper}>
+      <Modal open={reloginLoad} closable={false} footer={false}>
+        <Spin size={'large'} />
+      </Modal>
       <Tabs defaultActiveKey="1" centered items={tabs} />
     </div>
   );

@@ -1,6 +1,26 @@
-import React from "react";
-import s from "./Header.module.css";
+import React, { useCallback } from 'react';
+import s from './Header.module.css';
+import globalService from '@/service/globalService';
 
+import { User } from '@/types/models/globals';
+import { AxiosResponse } from 'axios';
+import { setUser } from '@/redux/slices/userSlice';
+import { useAppDispatch } from '@/redux/store';
+import { useRouter } from 'next/router';
+import { withAuth } from '@/auth/withAuth';
 export const Header = () => {
-	return <div className={s.generalHeader}>Header</div>;
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  // const getUser = useCallback(async () => {
+  //   try {
+  //     const response: AxiosResponse<User> = await globalService.get(
+  //       'auth/relogin',
+  //     );
+  //     const { data } = response;
+  //     dispatch(setUser(data));
+  //   } catch (err) {
+  //     await router.push('/login');
+  //   }
+  // }, [dispatch]);
+  return <div className={s.generalHeader}>Header</div>;
 };

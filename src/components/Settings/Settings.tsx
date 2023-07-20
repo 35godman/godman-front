@@ -178,11 +178,11 @@ export const Settings: React.FC<SettingsPropsType> = ({
   const resetProfilePicture = () => setProfilePicture('');
   // const resetChatIcon = () => setChatIcon("");
 
-  const handleChange = (
-    setState: React.Dispatch<React.SetStateAction<string>>,
-  ) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setState(e.target.value);
-  };
+  const handleChange =
+    (setState: React.Dispatch<React.SetStateAction<string>>) =>
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setState(e.target.value);
+    };
 
   return (
     <div className={s.settings}>
@@ -221,7 +221,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
         max={1}
         step={0.1}
         onChange={(value: number) => setTemperature(value)}
-        value={typeof temperature === 'number' ? temperature : 0}
+        value={temperature}
       />
       <Title level={5}>Visibility</Title>
       <Form.Item label="">
@@ -281,7 +281,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
           min={1}
           height={5}
           value={messageLimit}
-          onChange={value => {
+          onChange={(value) => {
             if (value !== null) {
               setMessageLimit(value);
             }
@@ -291,7 +291,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
         <InputNumber
           min={1}
           value={messagePeriod}
-          onChange={value => {
+          onChange={(value) => {
             if (value !== null) {
               setMessagePeriod(value);
             }
@@ -429,7 +429,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
           <Space direction="vertical">
             <Checkbox
               checked={removeProfilePicture}
-              onChange={e => {
+              onChange={(e) => {
                 setRemoveProfilePicture(e.target.checked);
                 resetProfilePicture();
               }}

@@ -8,10 +8,10 @@ export type RegisterValues = {
   email: string;
 };
 
-export type AxiosError = Error & {
-  response: {
-    data: {
-      message: string;
-    };
-  };
-};
+// export type AxiosError = Error & {
+//   response: {
+//     data: {
+//       message: string;
+//     };
+//   };
+// };

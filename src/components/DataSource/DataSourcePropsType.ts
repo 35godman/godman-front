@@ -1,4 +1,5 @@
 import { UploadFile } from 'antd/lib/upload/interface';
+import { User } from '@/types/models/globals';
 
 export type DataSourcePropsType = {
   activeTabP?: string;
@@ -15,5 +16,6 @@ export type DataSourcePropsType = {
   countQnaP?: number;
   qnaListP?: Array<{ question: string; answer: string }>;
   newQuestionP?: string;
+  user: User;
   newAnswerP?: string;
 };

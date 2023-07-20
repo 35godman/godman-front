@@ -7,24 +7,12 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import globalService from '@/service/globalService';
 import { DataSourcePropsType } from './DataSourcePropsType';
+import { Document, Page } from 'react-pdf';
+import { getDocument } from 'pdfjs-dist';
+import { pdfjs } from 'react-pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-export const DataSource: React.FC<DataSourcePropsType> = ({
-  activeTabP,
-  filesP,
-  chatbotNameP,
-  textAreaValueP,
-  websiteUrlP,
-  parsedContentP,
-  isTextAreaVisibleP,
-  countFilesP,
-  countCharsInFilesP,
-  countCharsInTextP,
-  countCharsInWebsiteP,
-  countQnaP,
-  qnaListP,
-  newQuestionP,
-  newAnswerP,
-}) => {
+export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
   const router = useRouter();
   const { Dragger } = Upload;
   const { Paragraph } = Typography;
@@ -41,6 +29,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({
   const [countCharsInText, setCountCharsInText] = useState<number>(0); //Cчетчик символов в текте (Text)
   const [countCharsInWebsite, setCountCharsInWebsite] = useState<number>(0); //Cчетчик символов c сайта
   const [countQna, setCountQna] = useState<number>(0);
+  const [fileInfo, setFileInfo] = useState([]);
   const [qnaList, setQnaList] = useState<
     Array<{ question: string; answer: string }>
   >([]);
@@ -93,10 +82,85 @@ export const DataSource: React.FC<DataSourcePropsType> = ({
       console.log(error);
     }
   };
+  // const handleUpload = (info: UploadChangeParam<UploadFile<unknown>>) => {
+  //   setFiles(info.fileList);
+  //   setCountFiles(info.fileList.length);
+  //
+  //   info.fileList.forEach(async (file) => {
+  //     const result = await countCharsInPdf(file);
+  //     console.log('=>(DataSource.tsx:91) result', result);
+  //     // setFileInfo((prevState) => ({
+  //     //   ...prevState,
+  //     //   [file.uid]: result,
+  //     // }));
+  //   });
+  // };
 
-  const handleUpload = (info: UploadChangeParam<UploadFile<any>>) => {
-    setFiles(info.fileList);
-    setCountFiles(info.fileList.length);
+  const countCharsInFile = (file: UploadFile<unknown>): Promise<any> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = function (evt) {
+        const fileContents = evt.target.result as string; // The contents of the file
+        console.log('=>(DataSource.tsx:99) fileContents', fileContents);
+        const numCharacters = fileContents.length; // The number of characters in the file
+        console.log(
+          `The file ${file.name} contains ${numCharacters} characters.`,
+        );
+        resolve({
+          name: file.name,
+          charsLength: numCharacters,
+        });
+      };
+      reader.readAsText(file.originFileObj as Blob); // Reads the file as text
+    });
+  };
+  const countCharsInPdf = async (file) => {
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onload = async function (evt) {
+        try {
+          const pdf = await getDocument(evt.target.result).promise;
+          let totalText = '';
+
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const textContent = await page.getTextContent();
+            const strings = textContent.items.map((item) => item.str);
+            totalText += strings.join('');
+          }
+
+          console.log(
+            `The file ${file.name} contains ${totalText.length} characters.`,
+          );
+          resolve({
+            name: file.name,
+            charsLength: totalText.length,
+          });
+        } catch (e) {
+          reject(e);
+        }
+      };
+      reader.readAsArrayBuffer(file.originFileObj);
+    });
+  };
+  const handleUpload = async (file) => {
+    const data = new FormData();
+    data.append('file', file);
+
+    const response = await axios.post('/api/pdfCharCount', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    if (response.data && response.data.charCount) {
+      console.log('Number of characters in the file:', response.data.charCount);
+    }
+
+    // This function must return a Promise
+    // Resolve the Promise with a truthy value to signal successful upload
+    // Reject the Promise with a new Error to signal an upload failure
+    return Promise.resolve('Upload successful');
   };
 
   const handleCustomUpload = async () => {
@@ -138,17 +202,26 @@ export const DataSource: React.FC<DataSourcePropsType> = ({
             multiple
             onChange={handleUpload}
             style={{ marginBottom: '16px' }}
+            itemRender={(originNode, file) => {
+              const info = fileInfo[file.uid];
+              return (
+                <div>
+                  {originNode}
+                  <p>{info?.charsLength} characters</p>
+                </div>
+              );
+            }}
           >
             <p>Upload files</p>
           </Dragger>
           <Button onClick={handleCustomUpload} disabled={!files.length}>
             Upload
           </Button>
-          <Paragraph type="warning" style={{ marginTop: '15px' }}>
-            NOTE: Uploading a PDF using safari doesn&apos;t work, we&apos;re
-            looking into the issue. Make sure the text is OCR&apos;d, i.e. you
-            can copy it.
-          </Paragraph>
+          {/*<Paragraph type="warning" style={{ marginTop: '15px' }}>*/}
+          {/*  NOTE: Uploading a PDF using safari doesn&apos;t work, we&apos;re*/}
+          {/*  looking into the issue. Make sure the text is OCR&apos;d, i.e. you*/}
+          {/*  can copy it.*/}
+          {/*</Paragraph>*/}
         </>
       ),
     },

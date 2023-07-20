@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import Cookies from 'js-cookie';
 import { prodApiConfig, testApiConfig } from '@/config/axios.config';
+import { Modal } from 'antd';
 
 let globalService: AxiosInstance;
 const nodeEnv = 'development'; //process.env.NODE_ENV;
@@ -33,12 +34,15 @@ globalService.interceptors.response.use(
     return response;
   },
   (error) => {
-    // Modal.error({
-    //   title: "Request Error",
-    //   content: error.message,
-    // });
+    if (error.config.method === 'post') {
+      Modal.error({
+        title: 'Request Error',
+        content: error.response.data.message,
+      });
+    }
+
     console.error(error);
-    return Promise.reject(error);
+    return Promise.resolve({ error });
   },
 );
 

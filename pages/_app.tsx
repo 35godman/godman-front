@@ -3,14 +3,13 @@ import React from 'react';
 import '../styles.css';
 import { Provider } from 'react-redux';
 import store from '@/redux/store';
-import GeneralLayout from '../layouts/GeneralLayout';
-
+import { Layout } from '../layouts/Layout';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <GeneralLayout>
+      <Layout>
         <Component {...pageProps} />
-      </GeneralLayout>
+      </Layout>
     </Provider>
   );
 }
