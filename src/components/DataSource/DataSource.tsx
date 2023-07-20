@@ -1,16 +1,12 @@
 import { Tabs, Upload, Typography, Button, Input } from 'antd';
 import React, { useState } from 'react';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import s from './DataSource.module.css';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import globalService from '@/service/globalService';
-import { DataSourcePropsType } from './DataSourcePropsType';
-import { Document, Page } from 'react-pdf';
-import { getDocument } from 'pdfjs-dist';
-import { pdfjs } from 'react-pdf';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import { DataSourcePropsType, FileSize } from './DataSourcePropsType';
 
 export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
   const router = useRouter();
@@ -19,6 +15,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
   const { TextArea } = Input;
   const [, setActiveTab] = useState<string>('Files');
   const [files, setFiles] = useState<UploadFile<any>[]>([]);
+  console.log('=>(DataSource.tsx:18) files', files);
   const [chatbotName, setChatbotName] = useState<string>('');
   const [textAreaValue, setTextAreaValue] = useState<string>('');
   const [websiteUrl, setWebsiteUrl] = useState<string>('');
@@ -29,7 +26,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
   const [countCharsInText, setCountCharsInText] = useState<number>(0); //Cчетчик символов в текте (Text)
   const [countCharsInWebsite, setCountCharsInWebsite] = useState<number>(0); //Cчетчик символов c сайта
   const [countQna, setCountQna] = useState<number>(0);
-  const [fileInfo, setFileInfo] = useState([]);
+  const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
   const [qnaList, setQnaList] = useState<
     Array<{ question: string; answer: string }>
   >([]);
@@ -82,85 +79,23 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
       console.log(error);
     }
   };
-  // const handleUpload = (info: UploadChangeParam<UploadFile<unknown>>) => {
-  //   setFiles(info.fileList);
-  //   setCountFiles(info.fileList.length);
-  //
-  //   info.fileList.forEach(async (file) => {
-  //     const result = await countCharsInPdf(file);
-  //     console.log('=>(DataSource.tsx:91) result', result);
-  //     // setFileInfo((prevState) => ({
-  //     //   ...prevState,
-  //     //   [file.uid]: result,
-  //     // }));
-  //   });
-  // };
-
-  const countCharsInFile = (file: UploadFile<unknown>): Promise<any> => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = function (evt) {
-        const fileContents = evt.target.result as string; // The contents of the file
-        console.log('=>(DataSource.tsx:99) fileContents', fileContents);
-        const numCharacters = fileContents.length; // The number of characters in the file
-        console.log(
-          `The file ${file.name} contains ${numCharacters} characters.`,
-        );
-        resolve({
-          name: file.name,
-          charsLength: numCharacters,
-        });
-      };
-      reader.readAsText(file.originFileObj as Blob); // Reads the file as text
-    });
-  };
-  const countCharsInPdf = async (file) => {
-    const reader = new FileReader();
-    return new Promise((resolve, reject) => {
-      reader.onload = async function (evt) {
-        try {
-          const pdf = await getDocument(evt.target.result).promise;
-          let totalText = '';
-
-          for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const textContent = await page.getTextContent();
-            const strings = textContent.items.map((item) => item.str);
-            totalText += strings.join('');
-          }
-
-          console.log(
-            `The file ${file.name} contains ${totalText.length} characters.`,
-          );
-          resolve({
-            name: file.name,
-            charsLength: totalText.length,
-          });
-        } catch (e) {
-          reject(e);
-        }
-      };
-      reader.readAsArrayBuffer(file.originFileObj);
-    });
-  };
-  const handleUpload = async (file) => {
+  const handleUpload = async (info: UploadChangeParam<UploadFile<unknown>>) => {
+    setFiles(info.fileList);
+    setCountFiles(info.fileList.length);
     const data = new FormData();
-    data.append('file', file);
 
-    const response = await axios.post('/api/pdfCharCount', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    // Append all files to the FormData instance
+    files.forEach((file) => {
+      if (file.originFileObj) {
+        data.append(`files`, file.originFileObj);
+      }
     });
 
-    if (response.data && response.data.charCount) {
-      console.log('Number of characters in the file:', response.data.charCount);
-    }
-
-    // This function must return a Promise
-    // Resolve the Promise with a truthy value to signal successful upload
-    // Reject the Promise with a new Error to signal an upload failure
-    return Promise.resolve('Upload successful');
+    const response: AxiosResponse<FileSize[]> = await globalService.post(
+      '/file-upload/get-char-length',
+      data,
+    );
+    setFileInfo(response.data);
   };
 
   const handleCustomUpload = async () => {
@@ -177,9 +112,11 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
      */
     data.append('chatbot_id', '64ad3d201ff3cf1fb154fd54');
 
-    await globalService.post('/file-upload/upload', data);
-
-    console.log('Upload Files', files);
+    const response: AxiosResponse<FileSize[]> = await globalService.post(
+      '/file-upload/upload',
+      data,
+    );
+    setFileInfo(response.data);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -203,13 +140,24 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
             onChange={handleUpload}
             style={{ marginBottom: '16px' }}
             itemRender={(originNode, file) => {
-              const info = fileInfo[file.uid];
-              return (
-                <div>
-                  {originNode}
-                  <p>{info?.charsLength} characters</p>
-                </div>
-              );
+              console.log('=>(DataSource.tsx:156) fileInfo', fileInfo);
+              if (file && fileInfo) {
+                const fileSize = fileInfo.find(
+                  (item) => item.name === file.name,
+                );
+                console.log('=>(DataSource.tsx:148) fileSize', fileSize);
+                if (fileSize) {
+                  {
+                    files.map((item) => {
+                      return (
+                        <div key={item.name}>
+                          {item.name} {fileSize.textSize}
+                        </div>
+                      );
+                    });
+                  }
+                }
+              }
             }}
           >
             <p>Upload files</p>

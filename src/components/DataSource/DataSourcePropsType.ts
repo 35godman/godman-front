@@ -19,3 +19,8 @@ export type DataSourcePropsType = {
   user: User;
   newAnswerP?: string;
 };
+
+export type FileSize = {
+  name: string;
+  textSize: number;
+};
