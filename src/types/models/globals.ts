@@ -5,6 +5,7 @@ import { QAState } from '@/types/models/chatbotCustom/QA.type';
 import { MessageState } from '@/types/models/chatbotCustom/messageState';
 import { LimitState } from '@/types/models/chatbotCustom/limit.type';
 import { CustomerInfo } from '@/types/models/chatbotCustom/customer-info.type';
+import { Language } from '@/types/enums/lang';
 export type User = {
   _id: string;
 
@@ -22,7 +23,13 @@ export type User = {
 
   char_limit: number;
 
-  language: 'russian' | 'english';
+  language: Language;
+
+  createdAt: string;
+
+  updatedAt: string;
+
+  __v: number;
 };
 
 export type FileUpload = {
@@ -40,9 +47,9 @@ export type Conversation = {
 export type Chatbot = {
   _id: string;
 
-  owner: User;
-
   chatbot_name: string;
+
+  owner: User;
 
   settings: ChatbotSettings;
 
@@ -82,17 +89,25 @@ export type ChatbotSettings = {
 
   domains: string[];
 
+  new_domains: string;
+
   rate_limit: LimitState;
 
   customer_info: CustomerInfo;
 
   initial_messages: string[];
 
+  new_initial_messages: string;
+
   suggested_messages: string[];
+
+  new_suggested_messages: string;
 
   theme: 'light' | 'dark';
 
   profile_picture_path: string;
+
+  remove_profile_picture_checked: boolean;
 
   display_name: string;
 

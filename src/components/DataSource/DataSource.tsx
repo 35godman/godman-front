@@ -1,4 +1,4 @@
-import { Tabs, Upload, Typography, Button, Input } from 'antd';
+import { Tabs, Upload, Typography, Button, Input, List } from 'antd';
 import React, { useState } from 'react';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import axios, { AxiosResponse } from 'axios';
@@ -7,26 +7,32 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import globalService from '@/service/globalService';
 import { DataSourcePropsType, FileSize } from './DataSourcePropsType';
+import crawlService from '@/service/crawlService';
+import { CrawledLink } from '@/components/DataSource/crawledLink.type';
 
 export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
   const router = useRouter();
+
   const { Dragger } = Upload;
   const { Paragraph } = Typography;
   const { TextArea } = Input;
+
   const [, setActiveTab] = useState<string>('Files');
   const [files, setFiles] = useState<UploadFile<any>[]>([]);
-  console.log('=>(DataSource.tsx:18) files', files);
   const [chatbotName, setChatbotName] = useState<string>('');
   const [textAreaValue, setTextAreaValue] = useState<string>('');
   const [websiteUrl, setWebsiteUrl] = useState<string>('');
-  const [parsedContent, setParsedContent] = useState<string>('');
+  const [parsedContent, setParsedContent] = useState<CrawledLink[]>([]);
   const [isTextAreaVisible, setIsTextAreaVisible] = useState<boolean>(false);
   const [countFiles, setCountFiles] = useState<number>(0); //Cчетчик файлов
   const [countCharsInFiles, setCountCharsInFiles] = useState<number>(0); //Счетчик символов в файлах
   const [countCharsInText, setCountCharsInText] = useState<number>(0); //Cчетчик символов в текте (Text)
+
   const [countCharsInWebsite, setCountCharsInWebsite] = useState<number>(0); //Cчетчик символов c сайта
   const [countQna, setCountQna] = useState<number>(0);
+
   const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
+
   const [qnaList, setQnaList] = useState<
     Array<{ question: string; answer: string }>
   >([]);
@@ -68,34 +74,46 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
 
   const handleWebsiteParse = async () => {
     try {
-      const res = await axios.post('/api/parse', {
-        url: websiteUrl,
-      });
-      if (res.data && res.data.parsedContent) {
-        setParsedContent(res.data.parsedContent);
-        setCountCharsInWebsite(res.data.parsedContent.length);
-      }
+      const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
+        '/crawler/crawl',
+        {
+          weblink: websiteUrl,
+          chatbot_id: '64ad3c264cea6f6d06ce84fd',
+        },
+      );
+      setParsedContent(res.data);
     } catch (error) {
       console.log(error);
     }
   };
   const handleUpload = async (info: UploadChangeParam<UploadFile<unknown>>) => {
-    setFiles(info.fileList);
-    setCountFiles(info.fileList.length);
+    const { file, fileList } = info;
+    setFiles(fileList);
+    setCountFiles(fileList.length);
     const data = new FormData();
+    if (file.status === 'removed') {
+      const filteredFileInfo = fileInfo.filter(
+        (item) => item.name !== file.name,
+      );
+      setFileInfo([...filteredFileInfo]);
+    }
+    if (file.status === 'done') {
+      files.forEach((file) => {
+        if (file.originFileObj) {
+          data.append(
+            `files`,
+            file.originFileObj,
+            encodeURIComponent(file.name),
+          );
+        }
+      });
 
-    // Append all files to the FormData instance
-    files.forEach((file) => {
-      if (file.originFileObj) {
-        data.append(`files`, file.originFileObj);
-      }
-    });
-
-    const response: AxiosResponse<FileSize[]> = await globalService.post(
-      '/file-upload/get-char-length',
-      data,
-    );
-    setFileInfo(response.data);
+      const response: AxiosResponse<FileSize[]> = await globalService.post(
+        '/file-upload/get-char-length',
+        data,
+      );
+      setFileInfo(response.data);
+    }
   };
 
   const handleCustomUpload = async () => {
@@ -107,13 +125,10 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
         data.append(`files`, file.originFileObj);
       }
     });
-    /**
-     * @ROMAN тут надо в глобал редакс стейт записывать нынешний id chatbot
-     */
     data.append('chatbot_id', '64ad3d201ff3cf1fb154fd54');
 
     const response: AxiosResponse<FileSize[]> = await globalService.post(
-      '/file-upload/upload',
+      '/file-upload/multi-upload',
       data,
     );
     setFileInfo(response.data);
@@ -128,6 +143,13 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
     setCountCharsInText(e.target.value.length);
   };
 
+  const deleteCrawledLink = (link: CrawledLink) => {
+    const removedParsedContent = [...parsedContent];
+    setParsedContent(
+      removedParsedContent.filter((item) => item.url !== link.url),
+    );
+  };
+
   const tabs = [
     {
       key: 'Files',
@@ -139,37 +161,22 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
             multiple
             onChange={handleUpload}
             style={{ marginBottom: '16px' }}
-            itemRender={(originNode, file) => {
-              console.log('=>(DataSource.tsx:156) fileInfo', fileInfo);
-              if (file && fileInfo) {
-                const fileSize = fileInfo.find(
-                  (item) => item.name === file.name,
-                );
-                console.log('=>(DataSource.tsx:148) fileSize', fileSize);
-                if (fileSize) {
-                  {
-                    files.map((item) => {
-                      return (
-                        <div key={item.name}>
-                          {item.name} {fileSize.textSize}
-                        </div>
-                      );
-                    });
-                  }
-                }
-              }
-            }}
+            accept={'.docx,.txt,.pdf'}
           >
             <p>Upload files</p>
           </Dragger>
           <Button onClick={handleCustomUpload} disabled={!files.length}>
             Upload
           </Button>
-          {/*<Paragraph type="warning" style={{ marginTop: '15px' }}>*/}
-          {/*  NOTE: Uploading a PDF using safari doesn&apos;t work, we&apos;re*/}
-          {/*  looking into the issue. Make sure the text is OCR&apos;d, i.e. you*/}
-          {/*  can copy it.*/}
-          {/*</Paragraph>*/}
+          <List
+            dataSource={fileInfo}
+            renderItem={(item) => (
+              <List.Item>
+                <Typography.Text mark>{item.name}</Typography.Text>
+                {item.textSize}
+              </List.Item>
+            )}
+          ></List>
         </>
       ),
     },
@@ -178,12 +185,6 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
       label: 'Text',
       children: (
         <>
-          <Input
-            placeholder="chatbot name"
-            style={{ marginBottom: '16px' }}
-            value={chatbotName}
-            onChange={handleInputChange}
-          />
           <TextArea
             placeholder="Введите текст"
             rows={15}
@@ -212,14 +213,20 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
               Parse website
             </Button>
           </div>
-
-          <TextArea
-            style={{ marginTop: '5px' }}
-            placeholder="Parsed website content will appear here"
-            rows={15}
-            value={parsedContent}
-            disabled
-          />
+          <List
+            dataSource={parsedContent}
+            renderItem={(item) => (
+              <List.Item>
+                <Typography.Text mark className={s.crawledLinkHeading}>
+                  {item.url}
+                </Typography.Text>
+                {item.size}
+                <Button onClick={() => deleteCrawledLink(item)}>
+                  <DeleteOutlined />
+                </Button>
+              </List.Item>
+            )}
+          ></List>
         </>
       ),
     },
@@ -266,14 +273,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
   return (
     <div className={s.dataSourceWrapper}>
       <Tabs
-        style={{
-          width: '700px',
-          height: '600px',
-          justifyContent: 'center',
-          boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
-          padding: '15px',
-          marginTop: '30px',
-        }}
+        className={s.tab}
         defaultActiveKey="Files"
         onChange={handleTabClick}
         items={tabs}
@@ -293,7 +293,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
       <Button
         type="primary"
         style={{ width: '300px', height: '60px', marginTop: '15px' }}
-        onClick={() => router.push('/settings')}
+        onClick={() => router.push('/')}
       >
         CREATE CHAT BOT
       </Button>

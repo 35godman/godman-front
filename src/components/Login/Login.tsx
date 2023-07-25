@@ -14,8 +14,8 @@ import s from './Login.module.css';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { setUser } from '@/redux/slices/userSlice';
-import { useAppDispatch } from '@/redux/store';
+import { setUser } from '@/features/slices/userSlice';
+import { useAppDispatch } from '@/features/store';
 import globalService from '@/service/globalService';
 import { FormattedMessage, useIntl } from 'react-intl';
 

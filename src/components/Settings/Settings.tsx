@@ -12,6 +12,8 @@ import {
   Checkbox,
   ColorPicker,
   Image,
+  Upload,
+  message,
 } from 'antd';
 import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import { Suggestion } from '../Suggestion/Suggestion';
@@ -20,294 +22,241 @@ import s from './Settings.module.css';
 import { ChatMessage } from '../ChatMessage/ChatMessage';
 import { UserMessage } from '../UserMessage/UserMessage';
 import { SettingsPropsType } from './SettingsPropsType';
+import { Prompts } from '@/types/enums/prompts';
+import _ from 'lodash';
+import { Chatbot, ChatbotSettings } from '@/types/models/globals';
+import { VisibilityOptions } from '@/types/models/chatbotCustom/visibility.type';
+import { CustomerInfo } from '@/types/models/chatbotCustom/customer-info.type';
+import { LimitState } from '@/types/models/chatbotCustom/limit.type';
+import SwitchForm from '@/components/Settings/formItems/SwitchForm/SwitchForm';
+import ChatPreview from '@/components/ChatPreview/ChatPreview';
+import globalService from '@/service/globalService';
+import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
+import { AxiosResponse } from 'axios';
+import { FileSize } from '@/components/DataSource/DataSourcePropsType';
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
 
 export const Settings: React.FC<SettingsPropsType> = ({
-  chatbotIdP,
-  charCountP,
-  nameP,
-  basePromptP,
-  modelP,
-  temperatureP,
-  visibilityP,
-  domainsP,
-  messageLimitP,
-  messagePeriodP,
-  limitHitMessageP,
-  showTitleCustomerP,
-  titleCustomerP,
-  showNameCustomerP,
-  nameCustomerP,
-  showEmailCustomerP,
-  emailCustomerP,
-  showPhoneCustomerP,
-  phoneNumberCustomerP,
-  initialMessagesP,
-  suggestedMessagesP,
-  themeP,
-  profilePictureP,
-  removeProfilePictureP,
-  userMessageColorP,
-  chatFooterColorP,
-  chatMessageColorP,
+  chatbot,
+  setChatbot,
 }) => {
-  const [chatbotId] = useState<string>(chatbotIdP || '7ihbdi777d62w28');
-  const [charCount] = useState<number>(charCountP || 82918);
-  const [name, setName] = useState<string>(nameP || 'bot45562');
-  const [basePrompt, setBasePrompt] = useState<string>(
-    basePromptP ||
-      "I want you to act as a document that I am having a conversation with. Your name is 'AI Assistant'. You will provide me with answers from the given info. If the answer is not included, say exactly 'Hmm, I am not sure.' and stop after that. Refuse to answer any question not about the info. Never break character.",
-  );
-  const [model, setModel] = useState<string>(modelP || 'gpt-3.5 turbo');
-  const [temperature, setTemperature] = useState<number>(temperatureP || 0);
-  const [visibility, setVisibility] = useState<string>(
-    visibilityP || 'Private',
-  );
-  const [domains, setDomains] = useState<string>(domainsP || '');
-  const [messageLimit, setMessageLimit] = useState<number>(messageLimitP || 20);
-  const [messagePeriod, setMessagePeriod] = useState<number>(
-    messagePeriodP || 240,
-  );
-  const [limitHitMessage, setLimitHitMessage] = useState<string>(
-    limitHitMessageP || 'Too many messages in a row',
-  );
+  const [fileInfo, setFileInfo] = useState<UploadFile | null>(null);
 
-  const [showTitleCustomer, setShowTitleCustomer] = useState<boolean>(
-    showTitleCustomerP || false,
-  );
-  const [titleCustomer, setTitleCustomer] = useState<string>(
-    titleCustomerP || '',
-  );
-  const [showNameCustomer, setShowNameCustomer] = useState<boolean>(
-    showNameCustomerP || false,
-  );
-  const [nameCustomer, setNameCustomer] = useState<string>(nameCustomerP || '');
-  const [showEmailCustomer, setShowEmailCustomer] = useState<boolean>(
-    showEmailCustomerP || false,
-  );
-  const [emailCustomer, setEmailCustomer] = useState<string>(
-    emailCustomerP || '',
-  );
-  const [showPhoneCustomer, setShowPhoneCustomer] = useState<boolean>(
-    showPhoneCustomerP || true,
-  );
-  const [phoneNumberCustomer, setPhoneNumberCustomer] = useState<string>(
-    phoneNumberCustomerP || '',
-  );
+  const resetBasePrompt = () => {
+    setChatbot({
+      ...chatbot,
+      settings: {
+        ...chatbot.settings,
+        base_prompt: Prompts.DEFAULT,
+      },
+    });
+  };
 
-  const [initialMessages, setInitialMessages] = useState<string>(
-    initialMessagesP || 'how can i help you?',
-  );
-  const [suggestedMessages, setSuggestedMessages] = useState<string>(
-    suggestedMessagesP || '',
-  );
-  const [theme, setTheme] = useState<string>(themeP || 'light');
-  const [profilePicture, setProfilePicture] = useState<string>(
-    profilePictureP || '',
-  );
-  const [removeProfilePicture, setRemoveProfilePicture] = useState<boolean>(
-    removeProfilePictureP || false,
-  );
-  const [userMessageColor, setUserMessageColor] = useState<Color | string>(
-    userMessageColorP || '#E3E5E8',
-  );
-  // const [chatIcon, setChatIcon] = useState<string>('');
-  const [chatFooterColor, setchatFooterColor] = useState<Color | string>(
-    chatFooterColorP || '#E3E5E8',
-  );
-  const [chatMessageColor, setChatMessageColor] = useState<Color | string>(
-    chatMessageColorP || '#E3E5E8',
-  );
-  // const [chatBubbleButtonAlignment, setChatBubbleButtonAlignment] = useState<
-  //   string
-  // >('right');
-  const [language, setLanguage] = useState<string>('EN');
+  const addToArrayOfString = (
+    key: 'new_suggested_messages' | 'new_initial_messages' | 'new_domains',
+    value: string,
+  ) => {
+    const newChatbot = { ...chatbot };
+    newChatbot.settings[key] = value;
+    setChatbot(newChatbot);
+  };
+  const changeChatbotSetting = <K extends keyof ChatbotSettings>(
+    key: K,
+    value: ChatbotSettings[K],
+  ) => {
+    setChatbot({
+      ...chatbot,
+      settings: {
+        ...chatbot.settings,
+        [key]: value,
+      },
+    });
+  };
+  const changeRateLimitSetting = <K extends keyof LimitState>(
+    key: K,
+    value: LimitState[K],
+  ) => {
+    const newChatbot: Chatbot = _.cloneDeep(chatbot);
+    newChatbot.settings.rate_limit[key] = value;
+    setChatbot(newChatbot);
+  };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const hexStringUserMessage: any = useMemo(
-    () =>
-      typeof userMessageColor === 'string'
-        ? userMessageColor
-        : userMessageColor.toHexString(),
-    [userMessageColor],
-  );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const hexStringChatMessage: any = useMemo(
-    () =>
-      typeof chatMessageColor === 'string'
-        ? chatMessageColor
-        : chatMessageColor.toHexString(),
-    [chatMessageColor],
-  );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const hexStringFooterColor: any = useMemo(
-    () =>
-      typeof chatFooterColor === 'string'
-        ? chatFooterColor
-        : chatFooterColor.toHexString(),
-    [chatFooterColor],
-  );
-  const [formatHex, setFormatHex] = useState<ColorPickerProps['format']>('hex');
+  const changeCustomerInfoSetting = <K extends keyof CustomerInfo>(
+    key: K,
+    value: CustomerInfo[K],
+  ) => {
+    const newChatbot: Chatbot = _.cloneDeep(chatbot);
+    newChatbot.settings.customer_info[key] = value;
+    setChatbot(newChatbot);
+  };
 
-  const handleProfilePictureChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setProfilePicture(URL.createObjectURL(event.target.files[0]));
+  const handleUpload = (info: UploadChangeParam<UploadFile<unknown>>) => {
+    const { file, fileList } = info;
+    setFileInfo(file);
+  };
+
+  const handleSubmit = async (_: unknown) => {
+    const body = {
+      chatbot_id: chatbot._id,
+      updated_chatbot: chatbot,
+    };
+    console.log('=>(Settings.tsx:108) body', body);
+
+    await globalService.post('');
+
+    /**
+     * @COMMENT
+     * sending profile_picture_here
+     */
+    const data = new FormData();
+    if (fileInfo && fileInfo.originFileObj) {
+      data.append('file', fileInfo.originFileObj);
+      const response: AxiosResponse<FileSize[]> = await globalService.post(
+        '/file-upload/multi-upload',
+        data,
+      );
     }
   };
 
-  // const handleChatIconChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.files && event.target.files.length > 0) {
-  //     setChatIcon(URL.createObjectURL(event.target.files[0]));
-  //   }
-  // };
-
-  const resetBasePrompt = () => {
-    setBasePrompt(
-      "I want you to act as a document that I am having a conversation with. Your name is 'AI Assistant'. You will provide me with answers from the given info. If the answer is not included, say exactly 'Hmm, I am not sure.' and stop after that. Refuse to answer any question not about the info. Never break character.",
-    );
-  };
-  const resetTitle = () => setTitleCustomer('');
-  const resetName = () => setNameCustomer('');
-  const resetEmail = () => setEmailCustomer('');
-  const resetPhoneNumber = () => setPhoneNumberCustomer('');
-  const resetInitialMessages = () => setInitialMessages('');
-  const resetSuggestedMessages = () => setSuggestedMessages('');
-  const resetProfilePicture = () => setProfilePicture('');
-  // const resetChatIcon = () => setChatIcon("");
-
-  const handleChange =
-    (setState: React.Dispatch<React.SetStateAction<string>>) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setState(e.target.value);
-    };
+  console.log('=>(Settings.tsx:88) chatbot', chatbot);
+  if (!chatbot) return null;
 
   return (
     <div className={s.settings}>
       <Title level={5}>Chatbot id</Title>
-      <Title level={5}>{chatbotId}</Title>
+      <Title level={5}>{chatbot._id}</Title>
       <Title level={5}>Number of characters</Title>
-      <Paragraph>{charCount}</Paragraph>
+      <Paragraph>{chatbot.settings.num_of_characters}</Paragraph>
       <Title level={5}>Bot name</Title>
-      <Form.Item label="">
-        <Input value={name} onChange={handleChange(setName)} />
-      </Form.Item>
-      <Title level={5}>Model:</Title>
-      <Form.Item label="">
-        <Input value={model} onChange={handleChange(setName)} />
-      </Form.Item>
-      <Title level={5}>Base Prompt (system message):</Title>
-      <Form.Item label="">
-        <Input.TextArea
-          rows={4}
-          value={basePrompt}
-          onChange={handleChange(setModel)}
-        />
-      </Form.Item>
-      <Button type="primary" onClick={resetBasePrompt}>
-        Reset
-      </Button>
-
-      <Paragraph>
-        1 message using gpt-3.5-turbo costs 1 message credit. 1 message using
-        gpt-4 costs 20 message credits.
-      </Paragraph>
-
-      <Title level={5}>Temperature {temperature}</Title>
-      <Slider
-        min={0}
-        max={1}
-        step={0.1}
-        onChange={(value: number) => setTemperature(value)}
-        value={temperature}
-      />
-      <Title level={5}>Visibility</Title>
-      <Form.Item label="">
-        <Select
-          value={visibility}
-          onChange={(value: string) => setVisibility(value)}
-        >
-          <Option value="Private">Private</Option>
-          <Option value="Public">Public</Option>
-          <Option value="Embeddable">
-            Private but can be embedded on website
-          </Option>
-        </Select>
-      </Form.Item>
-      <Paragraph>
-        &apos;Private&apos;: No one can access your chatbot except you (your
-        account)
-      </Paragraph>
-      <Paragraph>
-        &apos;Private but can be embedded on website&apos;: Other people
-        can&apos;t access your chatbot if you send them the link, but you can
-        still embed it on your website and your website visitors will be able to
-        use it. (make sure to set your domains)
-      </Paragraph>
-      <Paragraph>
-        &apos;Public&apos;: Anyone with the link can access it on chatbase.co
-        and can be embedded on your website.
-      </Paragraph>
-      <Paragraph>
-        Set to public if you want to be able to send a link of your chatbot to
-        someone to try it.
-      </Paragraph>
-      <Title level={5}>Domains</Title>
-      <Form.Item label="">
-        <Input.TextArea
-          rows={4}
-          value={domains}
-          onChange={handleChange(setDomains)}
-          placeholder="example.com"
-        />
-      </Form.Item>
-      <Paragraph>Enter each domain in a new line</Paragraph>
-      <Paragraph>
-        Domains you want to embed your chatbot on. Your chatbot visibility has
-        to be &apos;Public&apos; or &apos;Private but can be embedded on
-        website&apos; for this to work.
-      </Paragraph>
-      <Title level={5}>Rate Limiting</Title>
-      <Paragraph>
-        Limit the number of messages sent from one device on the iframe and chat
-        bubble (this limit will not be applied to you on chatbase.co, only on
-        your website for your users to prevent abuse).
-      </Paragraph>
-      <Space direction="horizontal" align="start">
-        <Paragraph>Limit to only</Paragraph>
-        <InputNumber
-          min={1}
-          height={5}
-          value={messageLimit}
-          onChange={(value) => {
-            if (value !== null) {
-              setMessageLimit(value);
+      <Form onFinish={handleSubmit}>
+        <Form.Item label="">
+          <Input
+            value={chatbot.chatbot_name}
+            onChange={(e) =>
+              changeChatbotSetting('display_name', e.target.value)
             }
-          }}
-        />
-        <Paragraph>messages every</Paragraph>
-        <InputNumber
-          min={1}
-          value={messagePeriod}
-          onChange={(value) => {
-            if (value !== null) {
-              setMessagePeriod(value);
+          />
+        </Form.Item>
+        <Title level={5}>Model:</Title>
+        <Form.Item label="">
+          <Input value={chatbot.settings.model} disabled />
+        </Form.Item>
+        <Title level={5}>Base Prompt (system message):</Title>
+        <Form.Item label="">
+          <Input.TextArea
+            rows={4}
+            value={chatbot.settings.base_prompt}
+            onChange={(e) =>
+              changeChatbotSetting('base_prompt', e.target.value)
             }
-          }}
+          />
+        </Form.Item>
+        <Button type="primary" onClick={resetBasePrompt}>
+          Reset
+        </Button>
+
+        <Paragraph>
+          1 message using gpt-3.5-turbo costs 1 message credit.
+        </Paragraph>
+
+        <Title level={5}>Temperature {chatbot.settings.temperature}</Title>
+        <Slider
+          min={0}
+          max={1}
+          step={0.1}
+          onChange={(temp) => changeChatbotSetting('temperature', temp)}
+          value={chatbot.settings.temperature}
         />
-        <Paragraph>seconds</Paragraph>
-      </Space>
-      <Title level={5}>Show this message to show when limit is hit</Title>
-      <Input
-        value={limitHitMessage}
-        onChange={handleChange(setLimitHitMessage)}
-      />
-      <Title level={3}>Collect Customer Info</Title>
-      <Title level={5}>Title</Title>
-      <Switch checked={showTitleCustomer} onChange={setShowTitleCustomer} />
-      {showTitleCustomer && (
+        <Title level={5}>Visibility</Title>
+        <Form.Item label="">
+          <Select
+            value={chatbot.settings.visibility}
+            onChange={(vis: VisibilityOptions) =>
+              changeChatbotSetting('visibility', vis)
+            }
+          >
+            <Option value="private">Private</Option>
+            <Option value="public">Public</Option>
+            <Option value="embedded">
+              Private but can be embedded on website
+            </Option>
+          </Select>
+        </Form.Item>
+        <Paragraph>
+          &apos;Private&apos;: No one can access your chatbot except you (your
+          account)
+        </Paragraph>
+        <Paragraph>
+          &apos;Private but can be embedded on website&apos;: Other people
+          can&apos;t access your chatbot if you send them the link, but you can
+          still embed it on your website and your website visitors will be able
+          to use it. (make sure to set your domains)
+        </Paragraph>
+        <Paragraph>
+          &apos;Public&apos;: Anyone with the link can access it on chatbase.co
+          and can be embedded on your website.
+        </Paragraph>
+        <Paragraph>
+          Set to public if you want to be able to send a link of your chatbot to
+          someone to try it.
+        </Paragraph>
+        <Title level={5}>Domains</Title>
+        <Form.Item label="">
+          <Input.TextArea
+            rows={4}
+            value={chatbot.settings.new_domains}
+            onChange={(e) => addToArrayOfString('new_domains', e.target.value)}
+            placeholder="example.com"
+          />
+        </Form.Item>
+        <Paragraph>Enter each domain in a new line</Paragraph>
+        <Paragraph>
+          Domains you want to embed your chatbot on. Your chatbot visibility has
+          to be &apos;Public&apos; or &apos;Private but can be embedded on
+          website&apos; for this to work.
+        </Paragraph>
+        <Title level={5}>Rate Limiting</Title>
+        <Paragraph>
+          Limit the number of messages sent from one device on the iframe and
+          chat bubble (this limit will not be applied to you on chatbase.co,
+          only on your website for your users to prevent abuse).
+        </Paragraph>
+        <Space direction="horizontal" align="start">
+          <Paragraph>Limit to only</Paragraph>
+          <InputNumber
+            min={1}
+            height={5}
+            value={chatbot.settings.rate_limit.messages_limit}
+            onChange={(value) => {
+              if (value) {
+                changeRateLimitSetting('messages_limit', value);
+              }
+            }}
+          />
+          <Paragraph>messages every</Paragraph>
+          <InputNumber
+            min={1}
+            value={chatbot.settings.rate_limit.seconds}
+            onChange={(value) => {
+              if (value) {
+                changeRateLimitSetting('seconds', value);
+              }
+            }}
+          />
+          <Paragraph>seconds</Paragraph>
+        </Space>
+        <Title level={5}>Show this message to show when limit is hit</Title>
+        <Input
+          value={chatbot.settings.rate_limit.limit_end_message}
+          onChange={(e) =>
+            changeRateLimitSetting('messages_limit', parseInt(e.target.value))
+          }
+        />
+        <Title level={3}>Collect Customer Info</Title>
+        <Title level={5}>Title</Title>
         <Form.Item label="">
           <Space direction="vertical">
             <Input
@@ -315,168 +264,123 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 width: '430px',
                 marginTop: '5px',
               }}
-              value={titleCustomer}
-              onChange={handleChange(setTitleCustomer)}
+              value={chatbot.settings.customer_info.title}
+              onChange={(e) =>
+                changeCustomerInfoSetting('title', e.target.value)
+              }
             />
-            <Button type="primary" onClick={resetTitle}>
+            <Button
+              type="primary"
+              onClick={() => changeCustomerInfoSetting('title', '')}
+            >
               Reset Title
             </Button>
           </Space>
         </Form.Item>
-      )}
 
-      <Title level={5}>Name</Title>
-      <Switch checked={showNameCustomer} onChange={setShowNameCustomer} />
-      {showNameCustomer && (
-        <Form.Item label="">
-          <Space direction="vertical">
-            <Input
-              style={{
-                width: '430px',
-                marginTop: '5px',
-              }}
-              value={nameCustomer}
-              onChange={handleChange(setName)}
-            />
-            <Button type="primary" onClick={resetName}>
-              Reset Name
-            </Button>
-          </Space>
-        </Form.Item>
-      )}
+        <div className={s.switchContainer}>
+          <Title level={5}>Name</Title>
+          <SwitchForm
+            checkedValue={chatbot.settings.customer_info.name_checked}
+            switchKeyName={'name_checked'}
+            inputKeyName={'name'}
+            inputValue={chatbot.settings.customer_info.name}
+            onChange={changeCustomerInfoSetting}
+          />
 
-      <Title level={5}>Email</Title>
-      <Switch checked={showEmailCustomer} onChange={setShowEmailCustomer} />
-      {showEmailCustomer && (
-        <Form.Item label="">
-          <Space direction="vertical">
-            <Input
-              style={{
-                width: '430px',
-                marginTop: '5px',
-              }}
-              value={emailCustomer}
-              onChange={handleChange(setEmailCustomer)}
-            />
-            <Button type="primary" onClick={resetEmail}>
-              Reset Email
-            </Button>
-          </Space>
-        </Form.Item>
-      )}
+          <Title level={5}>Email</Title>
 
-      <Title level={5}>Phone Number</Title>
-      <Switch checked={showPhoneCustomer} onChange={setShowPhoneCustomer} />
-      {showPhoneCustomer && (
-        <Form.Item label="">
-          <Space direction="vertical">
-            <Input
-              value={phoneNumberCustomer}
-              style={{
-                width: '430px',
-                marginTop: '5px',
-              }}
-              onChange={handleChange(setPhoneNumberCustomer)}
-            />
-            <Button type="primary" onClick={resetPhoneNumber}>
-              Reset Phone
-            </Button>
-          </Space>
-        </Form.Item>
-      )}
-      <Space direction="horizontal" align="start" size={50}>
-        <div>
-          <Title level={3}>Chat Interface</Title>
-          <Title level={5}>applies when embedded on a website</Title>
-          <Title level={5}>Initial Messages</Title>
-          <Space direction="vertical">
-            <TextArea
-              style={{
-                width: '430px',
-                marginBottom: '5px',
-              }}
-              rows={4}
-              value={initialMessages}
-              onChange={handleChange(setInitialMessages)}
-            />
-            <Button type="primary" onClick={resetInitialMessages}>
-              Reset
-            </Button>
-          </Space>
+          <SwitchForm
+            checkedValue={chatbot.settings.customer_info.email_checked}
+            switchKeyName={'email_checked'}
+            inputKeyName={'email'}
+            inputValue={chatbot.settings.customer_info.email}
+            onChange={changeCustomerInfoSetting}
+          />
 
-          <Title level={5}>Suggested Messages</Title>
-          <Space direction="vertical">
-            <TextArea
-              style={{
-                width: '430px',
-                marginBottom: '5px',
-              }}
-              rows={4}
-              value={suggestedMessages}
-              onChange={handleChange(setSuggestedMessages)}
-            />
-            <Button type="primary" onClick={resetSuggestedMessages}>
-              Reset
-            </Button>
-          </Space>
-          <Title level={5}>Theme</Title>
-          <Select value={theme} onChange={setTheme}>
-            <Option value="light">Light</Option>
-            <Option value="dark">Dark</Option>
-          </Select>
+          <Title level={5}>Phone Number</Title>
+          <SwitchForm
+            onChange={changeCustomerInfoSetting}
+            inputValue={chatbot.settings.customer_info.phone}
+            switchKeyName={'phone_checked'}
+            inputKeyName={'phone'}
+            checkedValue={chatbot.settings.customer_info.phone_checked}
+          />
+        </div>
 
-          <Title level={5}>Update chatbot profile picture</Title>
-          <Space direction="vertical">
-            <Checkbox
-              checked={removeProfilePicture}
-              onChange={(e) => {
-                setRemoveProfilePicture(e.target.checked);
-                resetProfilePicture();
-              }}
+        <Space direction="horizontal" align="start" size={50}>
+          <div>
+            <Title level={3}>Chat Interface</Title>
+            <Title level={5}>applies when embedded on a website</Title>
+            <Title level={5}>Initial Messages</Title>
+            <Space direction="vertical">
+              <TextArea
+                style={{
+                  width: '430px',
+                  marginBottom: '5px',
+                }}
+                rows={4}
+                value={chatbot.settings.new_initial_messages}
+                onChange={(e) =>
+                  addToArrayOfString('new_initial_messages', e.target.value)
+                }
+              />
+            </Space>
+
+            <Title level={5}>Suggested Messages</Title>
+            <Space direction="vertical">
+              <TextArea
+                style={{
+                  width: '430px',
+                  marginBottom: '5px',
+                }}
+                rows={4}
+                value={chatbot.settings.new_suggested_messages}
+                onChange={(e) =>
+                  addToArrayOfString('new_suggested_messages', e.target.value)
+                }
+              />
+            </Space>
+            <Title level={5}>Theme</Title>
+            <Select
+              value={chatbot.settings.theme}
+              onChange={(theme) => changeChatbotSetting('theme', theme)}
             >
-              Remove profile picture
-            </Checkbox>
+              <Option value="light">Light</Option>
+              <Option value="dark">Dark</Option>
+            </Select>
 
-            {!removeProfilePicture && (
-              <>
-                <Input
-                  style={{
-                    width: '430px',
-                    marginTop: '5px',
-                  }}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleProfilePictureChange}
-                />
-                {/* <div>
-									{profilePicture && (
-										<Image
-											src={profilePicture}
-											width={100}
-											height={100}
-											alt="Preview"
-										/>
-									)}
-								</div> */}
-              </>
-            )}
-          </Space>
-          <Title level={5}>User Message Color</Title>
-          <ColorPicker
-            format={formatHex}
-            value={userMessageColor}
-            onChange={setUserMessageColor}
-            onFormatChange={setFormatHex}
-          />
-          <Title level={5}>Bot Message Color</Title>
-          <ColorPicker
-            format={formatHex}
-            value={chatMessageColor}
-            onChange={setChatMessageColor}
-            onFormatChange={setFormatHex}
-          />
+            <Title level={5}>Update chatbot profile picture</Title>
+            <Space direction="vertical">
+              <Checkbox
+                checked={chatbot.settings.remove_profile_picture_checked}
+                onChange={(e) =>
+                  changeChatbotSetting(
+                    'remove_profile_picture_checked',
+                    e.target.checked,
+                  )
+                }
+              >
+                Remove profile picture
+              </Checkbox>
 
-          {/* <Title level={5}>Update chat icon</Title>
+              {!chatbot.settings.remove_profile_picture_checked && (
+                <>
+                  <Upload onChange={handleUpload} multiple={false} maxCount={1}>
+                    <Button>Загрузить фото профиля</Button>
+                  </Upload>
+                </>
+              )}
+            </Space>
+            <Title level={5}>User Message Color</Title>
+            <ColorPicker
+              format={'hex'}
+              onChange={(color) => {
+                changeChatbotSetting('user_message_color', color.toHexString());
+              }}
+              defaultValue={chatbot.settings.user_message_color}
+            />
+            {/* <Title level={5}>Update chat icon</Title>
           <Input
             style={{
               width: '430px',
@@ -492,110 +396,33 @@ export const Settings: React.FC<SettingsPropsType> = ({
             )}
           </div> */}
 
-          <Title level={5}>Chat Footer Color</Title>
-          <ColorPicker
-            format={formatHex}
-            value={chatFooterColor}
-            onChange={setchatFooterColor}
-            onFormatChange={setFormatHex}
-          />
-          {/* <Title level={5}>Align Chat Bubble Button</Title>
-          <Select
-            value={chatBubbleButtonAlignment}
-            onChange={setChatBubbleButtonAlignment}
-          >
-            <Option value="right">Right</Option>
-            <Option value="left">Left</Option>
-          </Select> */}
-          <Title level={5}>Bot language</Title>
-          <Select value={language} onChange={setLanguage}>
-            <Option value="EN">English</Option>
-            <Option value="RU">Russian</Option>
-          </Select>
-        </div>
-        {/* Prev Chat_________________________ */}
-        <div className={s.chatPreview}>
-          <div className={s.chatPreviewHeader}>
-            <div>
-              {!removeProfilePicture && profilePicture && (
-                <div className={s.ChatPreviewImgWrapper}>
-                  <Image
-                    src={profilePicture}
-                    alt="Профиль"
-                    style={{
-                      maxHeight: '80px',
-                      maxWidth: '40px',
-                      borderRadius: '30px',
-                      margin: '3px 0',
-                      marginRight: '10px',
-                    }}
-                  />
-                  <div className={s.chatPreviewName}>{name}</div>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className={s.chatPreviewContent}>
-            <Suggestion
-              backgroundColor={hexStringChatMessage}
-              textProp="What is Godman?"
-            />
-            <Suggestion
-              backgroundColor={hexStringChatMessage}
-              textProp="What is the pricing?"
-            />
-            <Suggestion
-              backgroundColor={hexStringChatMessage}
-              textProp="How can Godman benefit my website?"
-            />
-            <Suggestion
-              backgroundColor={hexStringChatMessage}
-              textProp="What features does astrum have?"
-            />
-            <ChatMessage
-              text="Welcome to Godman, I am your AI assistant - Godman. How can I help you today?"
-              color={hexStringChatMessage}
-            />
-            <UserMessage
-              text="Im Harry. Whats the wheather tooday?"
-              color={hexStringUserMessage}
-            />
-          </div>
-
-          <div
-            className={s.chatPreviewFooter}
-            style={{
-              backgroundColor: hexStringFooterColor,
-            }}
-          >
-            <Button
-              className={s.chatPreviewReloadButton}
-              // type="primary"
-              shape="circle"
-              size="large"
-              icon={
-                <ReloadOutlined
-                  style={{
-                    fontSize: '24px',
-                  }}
-                />
-              }
+            <Title level={5}>Chat Bubble Color</Title>
+            <ColorPicker
+              format={'hex'}
+              defaultValue={chatbot.settings.chat_bubble_color}
+              onChange={(color) => {
+                changeChatbotSetting('chat_bubble_color', color.toHexString());
+              }}
             />
 
-            <Input
-              className={s.chatPreviewInput}
-              suffix={
-                <SendOutlined
-                  style={{
-                    fontSize: '20px',
-                  }}
-                />
-              }
-              placeholder="Enter your message"
-            />
+            <Title level={5}>Bot language</Title>
+            <Select
+              value={chatbot.settings.language}
+              onChange={(lang) => changeChatbotSetting('language', lang)}
+            >
+              <Option value="EN">English</Option>
+              <Option value="RU">Russian</Option>
+            </Select>
           </div>
-        </div>
-      </Space>
+          {/* Prev Chat_________________________ */}
+          <ChatPreview chatbot={chatbot} />
+        </Space>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

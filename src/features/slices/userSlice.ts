@@ -1,6 +1,7 @@
 // userSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '@/models/User/User';
+import { User } from '@/types/models/globals';
+import { Language } from '@/types/enums/lang';
 
 const initialState: User = {
   chatbot_limit: 0,
@@ -8,12 +9,13 @@ const initialState: User = {
   char_limit: 0,
   _id: '',
   email: '',
-  plan: '',
+  plan: 'free',
   username: '',
   password: '',
   createdAt: '',
   updatedAt: '',
   __v: 0,
+  language: Language.RU,
 };
 
 export const userSlice = createSlice({
@@ -30,4 +32,4 @@ export const userSlice = createSlice({
 export const { setUser } = userSlice.actions;
 
 // Export reducer
-export default userSlice.reducer;
+export const userReducer = userSlice.reducer;

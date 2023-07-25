@@ -9,3 +9,20 @@
 .webInputWrap {
 	display: flex;
 }
+.textFont {
+	color: #ea7b7b;
+
+}
+
+.tab {
+	width: 700px;
+	height: 600px;
+	justify-content: center;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	padding: 15px;
+	margin-top: 30px;
+	overflow-y: auto;
+}
+.crawledLinkHeading {
+	width: 300px;
+}

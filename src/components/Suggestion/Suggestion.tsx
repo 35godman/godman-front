@@ -4,19 +4,8 @@ import s from './Suggestion.module.css';
 
 type SuggestionProps = {
   textProp: string;
-  backgroundColor: string;
 };
 
-export const Suggestion: React.FC<SuggestionProps> = ({
-  textProp,
-  backgroundColor,
-}) => {
-  return (
-    <Button
-      style={{ backgroundColor: backgroundColor }}
-      className={s.SuggestionBtn}
-    >
-      {textProp}
-    </Button>
-  );
+export const Suggestion: React.FC<SuggestionProps> = ({ textProp }) => {
+  return <Button className={s.SuggestionBtn}>{textProp}</Button>;
 };

@@ -61,3 +61,11 @@
   width: 50px !important;
   height: 50px !important;
 }
+.switchContainer {
+  display:flex;
+  flex-direction: column;
+  width: 30%;
+}
+.userMessage {
+
+}

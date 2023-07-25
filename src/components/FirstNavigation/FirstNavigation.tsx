@@ -5,6 +5,7 @@ import s from './FirstNavigation.module.css';
 
 export const FirstNavigation = () => {
   const router = useRouter();
+
   return (
     <div className={s.btnsWrapper}>
       <Button className={s.btn} onClick={() => router.push('/data-source')}>
