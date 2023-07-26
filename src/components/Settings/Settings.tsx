@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useMemo } from 'react';
+import React, { useState, ChangeEvent, useMemo, useEffect } from 'react';
 import {
   Input,
   InputNumber,
@@ -19,11 +19,9 @@ import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import { Suggestion } from '../Suggestion/Suggestion';
 import { Color, ColorPickerProps } from 'antd/es/color-picker';
 import s from './Settings.module.css';
-import { ChatMessage } from '../ChatMessage/ChatMessage';
 import { UserMessage } from '../UserMessage/UserMessage';
 import { SettingsPropsType } from './SettingsPropsType';
 import { Prompts } from '@/types/enums/prompts';
-import _ from 'lodash';
 import { Chatbot, ChatbotSettings } from '@/types/models/globals';
 import { VisibilityOptions } from '@/types/models/chatbotCustom/visibility.type';
 import { CustomerInfo } from '@/types/models/chatbotCustom/customer-info.type';
@@ -34,6 +32,9 @@ import globalService from '@/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { AxiosResponse } from 'axios';
 import { FileSize } from '@/components/DataSource/DataSourcePropsType';
+import { removeStaticFieldsFromObject } from '@/helpers/obj/removeStaticFieldsFromObject';
+import { convertMessagesToArray } from '@/helpers/obj/convertMessagesToArray';
+import { useRouter } from 'next/router';
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
@@ -42,9 +43,11 @@ const { TextArea } = Input;
 export const Settings: React.FC<SettingsPropsType> = ({
   chatbot,
   setChatbot,
+  setNewDataUpdated,
+  newDataUpdated,
 }) => {
   const [fileInfo, setFileInfo] = useState<UploadFile | null>(null);
-
+  const router = useRouter();
   const resetBasePrompt = () => {
     setChatbot({
       ...chatbot,
@@ -79,18 +82,41 @@ export const Settings: React.FC<SettingsPropsType> = ({
     key: K,
     value: LimitState[K],
   ) => {
-    const newChatbot: Chatbot = _.cloneDeep(chatbot);
-    newChatbot.settings.rate_limit[key] = value;
-    setChatbot(newChatbot);
+    setChatbot({
+      ...chatbot,
+      settings: {
+        ...chatbot.settings,
+        rate_limit: {
+          ...chatbot.settings.rate_limit,
+          [key]: value,
+        },
+      },
+    });
   };
 
   const changeCustomerInfoSetting = <K extends keyof CustomerInfo>(
     key: K,
     value: CustomerInfo[K],
   ) => {
-    const newChatbot: Chatbot = _.cloneDeep(chatbot);
-    newChatbot.settings.customer_info[key] = value;
-    setChatbot(newChatbot);
+    setChatbot({
+      ...chatbot,
+      settings: {
+        ...chatbot.settings,
+        customer_info: {
+          ...chatbot.settings.customer_info,
+          [key]: value,
+        },
+      },
+    });
+  };
+  const changeChatbotRootSetting = <K extends keyof Chatbot>(
+    key: K,
+    value: Chatbot[K],
+  ) => {
+    setChatbot({
+      ...chatbot,
+      [key]: value,
+    });
   };
 
   const handleUpload = (info: UploadChangeParam<UploadFile<unknown>>) => {
@@ -98,14 +124,29 @@ export const Settings: React.FC<SettingsPropsType> = ({
     setFileInfo(file);
   };
 
-  const handleSubmit = async (_: unknown) => {
+  const handleSubmit = async () => {
+    const updatedChatbot = { ...chatbot };
+    /**
+     * @COMMENT converting string to arr
+     */
+    updatedChatbot.settings.initial_messages = convertMessagesToArray(
+      updatedChatbot.settings.new_initial_messages,
+    );
+    updatedChatbot.settings.suggested_messages = convertMessagesToArray(
+      updatedChatbot.settings.new_suggested_messages,
+    );
+    updatedChatbot.settings.domains = convertMessagesToArray(
+      updatedChatbot.settings.new_domains,
+    );
+
     const body = {
-      chatbot_id: chatbot._id,
-      updated_chatbot: chatbot,
+      chatbot_id: updatedChatbot._id,
+      chatbot: removeStaticFieldsFromObject(updatedChatbot),
     };
     console.log('=>(Settings.tsx:108) body', body);
 
-    await globalService.post('');
+    const response = await globalService.post('/chatbot/settings-update', body);
+    console.log('=>(Settings.tsx:122) response', response);
 
     /**
      * @COMMENT
@@ -115,12 +156,32 @@ export const Settings: React.FC<SettingsPropsType> = ({
     if (fileInfo && fileInfo.originFileObj) {
       data.append('file', fileInfo.originFileObj);
       const response: AxiosResponse<FileSize[]> = await globalService.post(
-        '/file-upload/multi-upload',
+        '/file-upload/single-upload',
         data,
       );
     }
+
+    message.info('Successfully uploaded');
+    await router.reload();
   };
 
+  /**
+   * @COMMENT
+   * as we use string[] in model and just string here, we joint and update the new_values.
+   */
+  useEffect(() => {
+    if (chatbot && !newDataUpdated) {
+      const customChatbot = { ...chatbot };
+      customChatbot.settings.new_domains =
+        customChatbot.settings.domains.join('\n');
+      customChatbot.settings.new_suggested_messages =
+        customChatbot.settings.suggested_messages.join('\n');
+      customChatbot.settings.new_initial_messages =
+        customChatbot.settings.initial_messages.join('\n');
+      setNewDataUpdated(true);
+      setChatbot(customChatbot);
+    }
+  }, [newDataUpdated, chatbot]);
   console.log('=>(Settings.tsx:88) chatbot', chatbot);
   if (!chatbot) return null;
 
@@ -131,12 +192,13 @@ export const Settings: React.FC<SettingsPropsType> = ({
       <Title level={5}>Number of characters</Title>
       <Paragraph>{chatbot.settings.num_of_characters}</Paragraph>
       <Title level={5}>Bot name</Title>
+
       <Form onFinish={handleSubmit}>
         <Form.Item label="">
           <Input
             value={chatbot.chatbot_name}
             onChange={(e) =>
-              changeChatbotSetting('display_name', e.target.value)
+              changeChatbotRootSetting('chatbot_name', e.target.value)
             }
           />
         </Form.Item>
@@ -252,7 +314,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
         <Input
           value={chatbot.settings.rate_limit.limit_end_message}
           onChange={(e) =>
-            changeRateLimitSetting('messages_limit', parseInt(e.target.value))
+            changeRateLimitSetting('limit_end_message', e.target.value)
           }
         />
         <Title level={3}>Collect Customer Info</Title>
@@ -372,6 +434,14 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 </>
               )}
             </Space>
+            <Form.Item label="">
+              <Input
+                value={chatbot.settings.display_name}
+                onChange={(e) =>
+                  changeChatbotSetting('display_name', e.target.value)
+                }
+              />
+            </Form.Item>
             <Title level={5}>User Message Color</Title>
             <ColorPicker
               format={'hex'}

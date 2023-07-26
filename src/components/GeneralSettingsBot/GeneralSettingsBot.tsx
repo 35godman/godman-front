@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Tabs } from 'antd';
 import { useRouter } from 'next/router';
 import { ChatBot } from '../ChatBot/ChatBot';
@@ -8,7 +8,9 @@ import s from './GeneralSettingsBot.module.css';
 import axios, { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
 import { Chatbot, User } from '@/types/models/globals';
-
+import { useAppDispatch } from '@/features/store';
+import { addChatbot } from '@/features/slices/chatbotSlice';
+import { setUser } from '@/features/slices/userSlice';
 type GeneralSettingsBotProps = {
   user_data: User;
 };
@@ -17,50 +19,56 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
   user_data,
 }) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { id } = router.query;
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
+  const fetchedRef = useRef(false);
   /**
    * @COMMENT
    * here's we create a new state to check if the new_domains, new_suggested_messages, new_initial_messages are uploaded
    */
   const [newDataUpdated, setNewDataUpdated] = useState<boolean>(false);
-  const getChatbotSettings = useCallback(async () => {
-    const response: AxiosResponse<Chatbot> = await globalService.get(
-      `/chatbot/find/${id}`,
-    );
-    setChatbot(response.data);
-  }, [id]);
   useEffect(() => {
-    getChatbotSettings();
-  }, [getChatbotSettings]);
+    const getChatbotSettings = async () => {
+      if (id && !fetchedRef.current) {
+        fetchedRef.current = true;
+        const response: AxiosResponse<Chatbot> = await globalService.get(
+          `/chatbot/find/${id}`,
+        );
 
-  /**
-   * @COMMENT
-   * as we use string[] in model and just string here, we joint and update the new_values.
-   */
+        setChatbot(response.data);
+      }
+    };
+    getChatbotSettings();
+  }, [dispatch, id]);
+
   useEffect(() => {
-    if (chatbot && !newDataUpdated) {
-      const customChatbot = { ...chatbot };
-      customChatbot.settings.new_domains =
-        customChatbot.settings.domains.join('\n');
-      customChatbot.settings.new_suggested_messages =
-        customChatbot.settings.suggested_messages.join('\n');
-      customChatbot.settings.new_initial_messages =
-        customChatbot.settings.initial_messages.join('\n');
-      setNewDataUpdated(true);
-    }
-  }, [chatbot, newDataUpdated]);
+    dispatch(setUser(user_data));
+  }, [dispatch, user_data]);
 
   const tabs = [
-    { key: '1', label: 'Chatbot', children: <ChatBot /> },
+    {
+      key: '1',
+      label: 'Chatbot',
+      children: <ChatBot chatbot={chatbot as Chatbot} />,
+    },
     {
       key: '2',
       label: 'Settings',
       children: (
-        <Settings chatbot={chatbot as Chatbot} setChatbot={setChatbot} />
+        <Settings
+          chatbot={chatbot as Chatbot}
+          setChatbot={setChatbot}
+          setNewDataUpdated={setNewDataUpdated}
+          newDataUpdated={newDataUpdated}
+        />
       ),
     },
-    // { key: '3', label: 'Sources', children: <DataSource /> },
+    {
+      key: '3',
+      label: 'Sources',
+      children: <DataSource chatbot={chatbot as Chatbot} />,
+    },
     {
       key: '4',
       label: 'Embled on site',

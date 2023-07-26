@@ -2,23 +2,21 @@ import axios, { AxiosInstance } from 'axios';
 import Cookies from 'js-cookie';
 import { Modal } from 'antd';
 
-let crawlService: AxiosInstance;
+let fileUploadService: AxiosInstance;
 const nodeEnv = process.env.NODE_ENV;
 
 if (nodeEnv === 'development') {
-  crawlService = axios.create({
+  fileUploadService = axios.create({
     baseURL: 'http://localhost:5050/v1',
-    timeout: 90000,
     headers: { WithCredentials: true },
   });
 } else {
-  crawlService = axios.create({
+  fileUploadService = axios.create({
     baseURL: '/v1',
-    timeout: 90000,
     headers: { WithCredentials: true },
   });
 }
-crawlService.interceptors.request.use(
+fileUploadService.interceptors.request.use(
   (config) => {
     // Get the access token from the cookie
     const token = Cookies.get('access_token');
@@ -35,22 +33,22 @@ crawlService.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-// crawlService.interceptors.response.use(
-//   (response) => {
-//     // Any status code that lie within the range of 2xx cause this function to trigger
-//     return response;
-//   },
-//   (error) => {
-//     if (error.config.method === 'post') {
-//       Modal.error({
-//         title: 'Request Error',
-//         content: error.response.data.message,
-//       });
-//     }
-//
-//     console.error(error);
-//     return Promise.resolve({ error });
-//   },
-// );
+fileUploadService.interceptors.response.use(
+  (response) => {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    return response;
+  },
+  (error) => {
+    if (error.config.method === 'post') {
+      Modal.error({
+        title: 'Request Error',
+        content: error.response.data.message,
+      });
+    }
 
-export default crawlService;
+    console.error(error);
+    return Promise.resolve({ error });
+  },
+);
+
+export default fileUploadService;

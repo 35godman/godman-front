@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { prodApiConfig, testApiConfig } from '@/config/axios.config';
 
 export let authService: AxiosInstance;
-const nodeEnv = 'development'; //process.env.NODE_ENV;
+const nodeEnv = process.env.NODE_ENV;
 
 if (nodeEnv === 'development') {
   authService = axios.create(testApiConfig);

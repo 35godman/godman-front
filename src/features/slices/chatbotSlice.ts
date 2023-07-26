@@ -9,14 +9,14 @@ export const chatbotSlice = createSlice({
   name: 'chatbot',
   initialState,
   reducers: {
-    setChatbot: (state, action: PayloadAction<Chatbot>) => {
+    addChatbot: (state, action: PayloadAction<Chatbot>) => {
       return action.payload;
     },
   },
 });
 
 // Export actions
-export const { setChatbot } = chatbotSlice.actions;
+export const { addChatbot } = chatbotSlice.actions;
 
 // Export reducer
 export const chatbotReducer = chatbotSlice.reducer;

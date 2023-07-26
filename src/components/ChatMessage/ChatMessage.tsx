@@ -1,10 +1,12 @@
 import React from 'react';
 import s from './ChatMessage.module.css';
 
-type ChatMessageProps = {
+type InitialChatMessageProps = {
   textProp: string;
 };
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({ textProp }) => {
+export const InitialChatMessage: React.FC<InitialChatMessageProps> = ({
+  textProp,
+}) => {
   return <div className={s.ChatMessage}>{textProp}</div>;
 };

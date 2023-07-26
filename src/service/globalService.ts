@@ -4,7 +4,7 @@ import { prodApiConfig, testApiConfig } from '@/config/axios.config';
 import { Modal } from 'antd';
 
 let globalService: AxiosInstance;
-const nodeEnv = 'development'; //process.env.NODE_ENV;
+const nodeEnv = process.env.NODE_ENV;
 
 if (nodeEnv === 'development') {
   globalService = axios.create(testApiConfig);

@@ -3,6 +3,8 @@ import { Chatbot } from '@/types/models/globals';
 export type SettingsPropsType = {
   chatbot: Chatbot;
   setChatbot: (chatbot: Chatbot) => void;
+  setNewDataUpdated: (y: boolean) => void;
+  newDataUpdated: boolean;
 };
 // chatbotIdP?: string;
 // charCountP?: number;

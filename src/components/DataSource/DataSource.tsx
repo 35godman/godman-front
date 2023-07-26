@@ -6,11 +6,16 @@ import s from './DataSource.module.css';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import globalService from '@/service/globalService';
-import { DataSourcePropsType, FileSize } from './DataSourcePropsType';
 import crawlService from '@/service/crawlService';
 import { CrawledLink } from '@/components/DataSource/crawledLink.type';
+import { FileSize } from '@/components/DataSource/DataSourcePropsType';
+import { Chatbot } from '@/types/models/globals';
+import fileUploadService from '@/service/pineconeService';
 
-export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
+type DataSourceProps = {
+  chatbot: Chatbot;
+};
+export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
   const router = useRouter();
 
   const { Dragger } = Upload;
@@ -32,6 +37,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
   const [countQna, setCountQna] = useState<number>(0);
 
   const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
+  console.log('=>(DataSource.tsx:35) fileInfo', fileInfo);
 
   const [qnaList, setQnaList] = useState<
     Array<{ question: string; answer: string }>
@@ -91,7 +97,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
     setFiles(fileList);
     setCountFiles(fileList.length);
     const data = new FormData();
-    if (file.status === 'removed') {
+    if (file.status === 'removed' && Array.isArray(fileInfo)) {
       const filteredFileInfo = fileInfo.filter(
         (item) => item.name !== file.name,
       );
@@ -116,16 +122,16 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
     }
   };
 
-  const handleCustomUpload = async () => {
+  const loadFilesOnServer = async () => {
     const data = new FormData();
 
     // Append all files to the FormData instance
     files.forEach((file) => {
       if (file.originFileObj) {
-        data.append(`files`, file.originFileObj);
+        data.append(`files`, file.originFileObj, encodeURIComponent(file.name));
       }
     });
-    data.append('chatbot_id', '64ad3d201ff3cf1fb154fd54');
+    data.append('chatbot_id', chatbot._id);
 
     const response: AxiosResponse<FileSize[]> = await globalService.post(
       '/file-upload/multi-upload',
@@ -150,6 +156,12 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
     );
   };
 
+  const handleRetrain = async () => {
+    await fileUploadService.post('/embedding/setup', {
+      chatbot_id: chatbot._id,
+    });
+  };
+
   const tabs = [
     {
       key: 'Files',
@@ -165,7 +177,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
           >
             <p>Upload files</p>
           </Dragger>
-          <Button onClick={handleCustomUpload} disabled={!files.length}>
+          <Button onClick={loadFilesOnServer} disabled={!files.length}>
             Upload
           </Button>
           <List
@@ -293,7 +305,7 @@ export const DataSource: React.FC<DataSourcePropsType> = ({ user }) => {
       <Button
         type="primary"
         style={{ width: '300px', height: '60px', marginTop: '15px' }}
-        onClick={() => router.push('/')}
+        onClick={handleRetrain}
       >
         CREATE CHAT BOT
       </Button>
