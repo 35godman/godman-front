@@ -24,24 +24,23 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   const [questionValue, setQuestionValue] = useState<string>('');
   const user = useSelector((state: RootState) => state.user);
   const [messages, setMessages] = useState<MessageState[]>([]);
-  //console.log('=>(ChatBot.tsx:27) messages', messages);
+  console.log('=>(ChatBot.tsx:27) messages', messages);
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
   const [currentMessageIndex, setCurrentMessageIndex] = useState<number | null>(
     null,
   );
 
   const sendMessage = async () => {
-    setMessages((prevState) => [
-      ...prevState,
+    const newMessages = [
+      ...messages,
       {
         content: questionValue,
         role: 'user',
       },
-    ]);
-    setMessages((prevState) => [
-      ...prevState,
-      { content: '', role: 'assistant', id: '9' },
-    ]);
+      { content: '', role: 'assistant' },
+    ];
+    //setMessages(newMessages)
+
     setCurrentMessageIndex(9);
 
     const body = {
@@ -70,18 +69,18 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
           break;
         }
         const text = new TextDecoder().decode(value);
-        const newState = [...messages];
-        console.log('=>(ChatBot.tsx:82) newState', newState);
-        /**
-         * FIXME: попробовать вынести добавление вопроса пользователя в отдельную функцию
-         */
-        if (newState.length > 0) {
-          newState[newState.length - 1].content += text;
-        }
-
-        setMessages(newState);
+        answer += text;
+        // const newState = [...messages];
+        // console.log('=>(ChatBot.tsx:82) newState', newState);
+        // /**
+        //  * о
+        //  */
+        // if (newState.length > 0) {
+        //   newState[newState.length - 1].content += text;
       }
     }
+    const newState = [...messages];
+    console.log('=>(ChatBot.tsx:82) newState', newState);
   };
 
   return (

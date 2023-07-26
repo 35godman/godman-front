@@ -33,9 +33,15 @@ export type User = {
 };
 
 export type FileUpload = {
+  _id: string;
+
   originalName: string;
 
   storagePath: string;
+
+  chatbot: Chatbot;
+
+  char_length: number;
 };
 export type Conversation = {
   chatbot_id: Chatbot;
@@ -67,7 +73,7 @@ export type ChatbotSources = {
 
   text: string;
 
-  website: WebContent[];
+  website: FileUpload[];
 
   QA_list: QAState[];
 };

@@ -11,6 +11,8 @@ import { CrawledLink } from '@/components/DataSource/crawledLink.type';
 import { FileSize } from '@/components/DataSource/DataSourcePropsType';
 import { Chatbot } from '@/types/models/globals';
 import fileUploadService from '@/service/pineconeService';
+import CrawledComponent from '@/components/DataSource/CrawledComponent/CrawledComponent';
+import FileDragger from '@/components/DataSource/FileDragger/FileDragger';
 
 type DataSourceProps = {
   chatbot: Chatbot;
@@ -18,26 +20,18 @@ type DataSourceProps = {
 export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
   const router = useRouter();
 
-  const { Dragger } = Upload;
   const { Paragraph } = Typography;
   const { TextArea } = Input;
 
   const [, setActiveTab] = useState<string>('Files');
-  const [files, setFiles] = useState<UploadFile<any>[]>([]);
-  const [chatbotName, setChatbotName] = useState<string>('');
   const [textAreaValue, setTextAreaValue] = useState<string>('');
-  const [websiteUrl, setWebsiteUrl] = useState<string>('');
-  const [parsedContent, setParsedContent] = useState<CrawledLink[]>([]);
+
   const [isTextAreaVisible, setIsTextAreaVisible] = useState<boolean>(false);
-  const [countFiles, setCountFiles] = useState<number>(0); //Cчетчик файлов
   const [countCharsInFiles, setCountCharsInFiles] = useState<number>(0); //Счетчик символов в файлах
   const [countCharsInText, setCountCharsInText] = useState<number>(0); //Cчетчик символов в текте (Text)
 
   const [countCharsInWebsite, setCountCharsInWebsite] = useState<number>(0); //Cчетчик символов c сайта
   const [countQna, setCountQna] = useState<number>(0);
-
-  const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
-  console.log('=>(DataSource.tsx:35) fileInfo', fileInfo);
 
   const [qnaList, setQnaList] = useState<
     Array<{ question: string; answer: string }>
@@ -74,86 +68,9 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
     setActiveTab(key);
   };
 
-  const handleWebsiteUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setWebsiteUrl(e.target.value);
-  };
-
-  const handleWebsiteParse = async () => {
-    try {
-      const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
-        '/crawler/crawl',
-        {
-          weblink: websiteUrl,
-          chatbot_id: '64ad3c264cea6f6d06ce84fd',
-        },
-      );
-      setParsedContent(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleUpload = async (info: UploadChangeParam<UploadFile<unknown>>) => {
-    const { file, fileList } = info;
-    setFiles(fileList);
-    setCountFiles(fileList.length);
-    const data = new FormData();
-    if (file.status === 'removed' && Array.isArray(fileInfo)) {
-      const filteredFileInfo = fileInfo.filter(
-        (item) => item.name !== file.name,
-      );
-      setFileInfo([...filteredFileInfo]);
-    }
-    if (file.status === 'done') {
-      files.forEach((file) => {
-        if (file.originFileObj) {
-          data.append(
-            `files`,
-            file.originFileObj,
-            encodeURIComponent(file.name),
-          );
-        }
-      });
-
-      const response: AxiosResponse<FileSize[]> = await globalService.post(
-        '/file-upload/get-char-length',
-        data,
-      );
-      setFileInfo(response.data);
-    }
-  };
-
-  const loadFilesOnServer = async () => {
-    const data = new FormData();
-
-    // Append all files to the FormData instance
-    files.forEach((file) => {
-      if (file.originFileObj) {
-        data.append(`files`, file.originFileObj, encodeURIComponent(file.name));
-      }
-    });
-    data.append('chatbot_id', chatbot._id);
-
-    const response: AxiosResponse<FileSize[]> = await globalService.post(
-      '/file-upload/multi-upload',
-      data,
-    );
-    setFileInfo(response.data);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChatbotName(e.target.value);
-  };
-
   const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(e.target.value);
     setCountCharsInText(e.target.value.length);
-  };
-
-  const deleteCrawledLink = (link: CrawledLink) => {
-    const removedParsedContent = [...parsedContent];
-    setParsedContent(
-      removedParsedContent.filter((item) => item.url !== link.url),
-    );
   };
 
   const handleRetrain = async () => {
@@ -162,33 +79,17 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
     });
   };
 
+  const saveText = () => {
+    await globalService.post('/file-upload/')
+  }
+
   const tabs = [
     {
       key: 'Files',
       label: 'Files',
       children: (
         <>
-          <Dragger
-            name="file"
-            multiple
-            onChange={handleUpload}
-            style={{ marginBottom: '16px' }}
-            accept={'.docx,.txt,.pdf'}
-          >
-            <p>Upload files</p>
-          </Dragger>
-          <Button onClick={loadFilesOnServer} disabled={!files.length}>
-            Upload
-          </Button>
-          <List
-            dataSource={fileInfo}
-            renderItem={(item) => (
-              <List.Item>
-                <Typography.Text mark>{item.name}</Typography.Text>
-                {item.textSize}
-              </List.Item>
-            )}
-          ></List>
+          <FileDragger chatbot={chatbot} />
         </>
       ),
     },
@@ -203,6 +104,7 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
             value={textAreaValue}
             onChange={handleTextAreaChange}
           />
+          <Button onClick={saveText}>Сохранить текст</Button>
         </>
       ),
     },
@@ -211,35 +113,8 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
       label: 'Website',
       children: (
         <>
-          <div className={s.webInputWrap}>
-            <Input
-              placeholder="Enter website URL"
-              style={{
-                marginBottom: '16px',
-                marginRight: '16px',
-              }}
-              value={websiteUrl}
-              onChange={handleWebsiteUrlChange}
-            />
-            <Button type="primary" onClick={handleWebsiteParse}>
-              Parse website
-            </Button>
-          </div>
-          <List
-            dataSource={parsedContent}
-            renderItem={(item) => (
-              <List.Item>
-                <Typography.Text mark className={s.crawledLinkHeading}>
-                  {item.url}
-                </Typography.Text>
-                {item.size}
-                <Button onClick={() => deleteCrawledLink(item)}>
-                  <DeleteOutlined />
-                </Button>
-              </List.Item>
-            )}
-          ></List>
-        </>
+          <CrawledComponent chatbot={chatbot} />
+        </Button>
       ),
     },
     {
@@ -290,24 +165,24 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
         onChange={handleTabClick}
         items={tabs}
       />
-      <div className={s.createBotArea}>
-        {countFiles > 0 && (
-          <p>
-            {countFiles} File(s) ({countCharsInFiles} chars )
-          </p>
-        )}
-        {countCharsInText > 0 && <p>{countCharsInText} text input chars </p>}
-        {countCharsInWebsite > 0 && (
-          <p>{countCharsInWebsite} Chars from web </p>
-        )}
-        {countQna > 0 && <p>{countQna} Q&A</p>}
-      </div>
+      {/*<div className={s.createBotArea}>*/}
+      {/*  {countFiles > 0 && (*/}
+      {/*      <p>*/}
+      {/*        {countFiles} File(s) ({countCharsInFiles} chars )*/}
+      {/*      </p>*/}
+      {/*  )}*/}
+      {/*  {countCharsInText > 0 && <p>{countCharsInText} text input chars </p>}*/}
+      {/*  {countCharsInWebsite > 0 && (*/}
+      {/*      <p>{countCharsInWebsite} Chars from web </p>*/}
+      {/*  )}*/}
+      {/*  {countQna > 0 && <p>{countQna} Q&A</p>}*/}
+      {/*</div>*/}
       <Button
         type="primary"
         style={{ width: '300px', height: '60px', marginTop: '15px' }}
         onClick={handleRetrain}
       >
-        CREATE CHAT BOT
+        Retrain chatbot
       </Button>
     </div>
   );
