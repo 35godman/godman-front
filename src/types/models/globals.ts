@@ -69,6 +69,7 @@ export type Chatbot = {
 };
 export type ChatbotSources = {
   id: string;
+
   files: FileUpload[];
 
   text: string;

@@ -11,6 +11,7 @@ import { Chatbot, User } from '@/types/models/globals';
 import { useAppDispatch } from '@/features/store';
 import { addChatbot } from '@/features/slices/chatbotSlice';
 import { setUser } from '@/features/slices/userSlice';
+import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
 type GeneralSettingsBotProps = {
   user_data: User;
 };
@@ -40,7 +41,7 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
       }
     };
     getChatbotSettings();
-  }, [dispatch, id]);
+  }, [dispatch, id, fetchedRef]);
 
   useEffect(() => {
     dispatch(setUser(user_data));
@@ -67,7 +68,9 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
     {
       key: '3',
       label: 'Sources',
-      children: <DataSource chatbot={chatbot as Chatbot} />,
+      children: (
+        <DataSource chatbot={chatbot as Chatbot} setChatbot={setChatbot} />
+      ),
     },
     {
       key: '4',
@@ -82,7 +85,11 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
     {
       key: '6',
       label: 'Delete Bot',
-      children: <div>Здесь будет компонент Delete Bot</div>,
+      children: (
+        <>
+          <DeleteTab chatbot={chatbot as Chatbot} />
+        </>
+      ),
     },
   ];
   return (

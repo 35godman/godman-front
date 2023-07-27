@@ -7,70 +7,37 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import globalService from '@/service/globalService';
 import crawlService from '@/service/crawlService';
-import { CrawledLink } from '@/components/DataSource/crawledLink.type';
+import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLink.type';
 import { FileSize } from '@/components/DataSource/DataSourcePropsType';
 import { Chatbot } from '@/types/models/globals';
 import fileUploadService from '@/service/pineconeService';
 import CrawledComponent from '@/components/DataSource/CrawledComponent/CrawledComponent';
 import FileDragger from '@/components/DataSource/FileDragger/FileDragger';
+import TextSource from '@/components/DataSource/TextSource/TextSource';
+import QAList from '@/components/DataSource/QA/QAList';
 
 type DataSourceProps = {
   chatbot: Chatbot;
+  setChatbot: (chatbot: Chatbot) => void;
 };
-export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
+export const DataSource: React.FC<DataSourceProps> = ({
+  chatbot,
+  setChatbot,
+}) => {
   const router = useRouter();
-
+  console.log('=>(TextSource.tsx:51) chatbot', chatbot);
   const { Paragraph } = Typography;
-  const { TextArea } = Input;
 
   const [, setActiveTab] = useState<string>('Files');
-  const [textAreaValue, setTextAreaValue] = useState<string>('');
 
-  const [isTextAreaVisible, setIsTextAreaVisible] = useState<boolean>(false);
   const [countCharsInFiles, setCountCharsInFiles] = useState<number>(0); //Счетчик символов в файлах
   const [countCharsInText, setCountCharsInText] = useState<number>(0); //Cчетчик символов в текте (Text)
 
   const [countCharsInWebsite, setCountCharsInWebsite] = useState<number>(0); //Cчетчик символов c сайта
   const [countQna, setCountQna] = useState<number>(0);
 
-  const [qnaList, setQnaList] = useState<
-    Array<{ question: string; answer: string }>
-  >([]);
-  const [newQuestion, setNewQuestion] = useState<string>('');
-  const [newAnswer, setNewAnswer] = useState<string>('');
-
-  const handleQuestionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNewQuestion(e.target.value);
-  };
-
-  const handleAnswerChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNewAnswer(e.target.value);
-  };
-
-  const handleAddQna = () => {
-    if (isTextAreaVisible) {
-      setQnaList([...qnaList, { question: newQuestion, answer: newAnswer }]);
-      setNewQuestion('');
-      setNewAnswer('');
-      setIsTextAreaVisible(false);
-      setCountQna(qnaList.length + 1);
-    } else {
-      setIsTextAreaVisible(true);
-    }
-  };
-
-  const handleRemoveQna = (index: number) => {
-    setQnaList(qnaList.filter((_, i) => i !== index));
-    setCountQna(qnaList.length - 1);
-  };
-
   const handleTabClick = (key: string) => {
     setActiveTab(key);
-  };
-
-  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextAreaValue(e.target.value);
-    setCountCharsInText(e.target.value.length);
   };
 
   const handleRetrain = async () => {
@@ -78,10 +45,6 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
       chatbot_id: chatbot._id,
     });
   };
-
-  const saveText = () => {
-    await globalService.post('/file-upload/')
-  }
 
   const tabs = [
     {
@@ -98,13 +61,7 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
       label: 'Text',
       children: (
         <>
-          <TextArea
-            placeholder="Введите текст"
-            rows={15}
-            value={textAreaValue}
-            onChange={handleTextAreaChange}
-          />
-          <Button onClick={saveText}>Сохранить текст</Button>
+          <TextSource chatbot={chatbot} setChatbot={setChatbot} />
         </>
       ),
     },
@@ -114,7 +71,7 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
       children: (
         <>
           <CrawledComponent chatbot={chatbot} />
-        </Button>
+        </>
       ),
     },
     {
@@ -122,36 +79,7 @@ export const DataSource: React.FC<DataSourceProps> = ({ chatbot }) => {
       label: 'Q&A',
       children: (
         <>
-          <Button onClick={handleAddQna}>Add</Button>
-          {isTextAreaVisible && (
-            <>
-              <TextArea
-                placeholder="Question"
-                rows={3}
-                style={{ marginTop: '5px' }}
-                value={newQuestion}
-                onChange={handleQuestionChange}
-              />
-              <TextArea
-                placeholder="Answer"
-                rows={7}
-                style={{ marginTop: '5px' }}
-                value={newAnswer}
-                onChange={handleAnswerChange}
-              />
-            </>
-          )}
-          {qnaList &&
-            qnaList.map((qna, index) => (
-              <div key={index}>
-                <DeleteOutlined
-                  type="delete"
-                  onClick={() => handleRemoveQna(index)}
-                />
-                <TextArea rows={2} value={qna.question} disabled />
-                <TextArea rows={2} value={qna.answer} disabled />
-              </div>
-            ))}
+          <QAList chatbot={chatbot} />
         </>
       ),
     },

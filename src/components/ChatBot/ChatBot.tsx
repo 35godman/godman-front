@@ -85,61 +85,104 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
 
   return (
     <>
-      {chatbot && chatbot.settings && (
-        <div className={s.chatPreview}>
-          <div className={s.chatPreviewHeader}>
-            <div>
-              <div className={s.ChatPreviewImgWrapper}>
-                <ProfilePicture
-                  remove_profile_picture_checked={
-                    chatbot.settings.remove_profile_picture_checked
-                  }
-                  profile_picture_path={chatbot.settings.profile_picture_path}
-                />
-                <div className={s.chatPreviewName}>
-                  {chatbot.settings.display_name}
-                </div>
-              </div>
+      {/*{chatbot && chatbot.settings && (*/}
+      {/*  <div className={s.chatPreview}>*/}
+      {/*    <div className={s.chatPreviewHeader}>*/}
+      {/*      <div>*/}
+      {/*        <div className={s.ChatPreviewImgWrapper}>*/}
+      {/*          <ProfilePicture*/}
+      {/*            remove_profile_picture_checked={*/}
+      {/*              chatbot.settings.remove_profile_picture_checked*/}
+      {/*            }*/}
+      {/*            profile_picture_path={chatbot.settings.profile_picture_path}*/}
+      {/*          />*/}
+      {/*          <div className={s.chatPreviewName}>*/}
+      {/*            {chatbot.settings.display_name}*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*    <div className={s.chatPreviewContent}>*/}
+      {/*      {chatbot.settings.initial_messages.map((message) => {*/}
+      {/*        return <InitialChatMessage textProp={message} key={message} />;*/}
+      {/*      })}*/}
+      {/*      {messages.map((message, index) => {*/}
+      {/*        return (*/}
+      {/*          <MessageDisplay*/}
+      {/*            key={index}*/}
+      {/*            role={message.role}*/}
+      {/*            text={message.content}*/}
+      {/*            chatbot={chatbot}*/}
+      {/*          />*/}
+      {/*        );*/}
+      {/*      })}*/}
+      {/*    </div>*/}
+
+      {/*    <div*/}
+      {/*      className={s.chatPreviewFooter}*/}
+      {/*      style={{ backgroundColor: chatbot.settings.chat_bubble_color }}*/}
+      {/*    >*/}
+      {/*      <Suggestion textProp="What is Godman?" />*/}
+      {/*      /!*<Button*!/*/}
+      {/*      /!*  className={s.chatPreviewReloadButton}*!/*/}
+      {/*      /!*  // type="primary"*!/*/}
+      {/*      /!*  shape="circle"*!/*/}
+      {/*      /!*  size="large"*!/*/}
+      {/*      /!*  icon={<ReloadOutlined style={{ fontSize: '24px' }} />}*!/*/}
+      {/*      /!*/
+      /*/}
+
+      {/*      <Input*/}
+      {/*        onChange={(e) => setQuestionValue(e.target.value)}*/}
+      {/*        className={s.chatPreviewInput}*/}
+      {/*        suffix={<SendMessageButton onclick={sendMessage} />}*/}
+      {/*        placeholder="Enter your message"*/}
+      {/*      />*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      <div className="min-h-screen px-4 flex flex-col">
+        <div className=" sticky top-0 w-full">
+          <div className="flex justify-between py-1 mb-4   z-10">
+            <div className="flex items-center">
+              <img className="rounded-full m-1 mr-2" />
             </div>
           </div>
-          <div className={s.chatPreviewContent}>
-            {chatbot.settings.initial_messages.map((message) => {
-              return <InitialChatMessage textProp={message} key={message} />;
-            })}
-            {messages.map((message, index) => {
-              return (
-                <MessageDisplay
-                  key={index}
-                  role={message.role}
-                  text={message.content}
-                  chatbot={chatbot}
-                />
-              );
-            })}
-          </div>
-
-          <div
-            className={s.chatPreviewFooter}
-            style={{ backgroundColor: chatbot.settings.chat_bubble_color }}
-          >
-            <Suggestion textProp="What is Godman?" />
-            <Button
-              className={s.chatPreviewReloadButton}
-              // type="primary"
-              shape="circle"
-              size="large"
-              icon={<ReloadOutlined style={{ fontSize: '24px' }} />}
-            />
-
-            <Input
-              onChange={(e) => setQuestionValue(e.target.value)}
-              className={s.chatPreviewInput}
-              suffix={<SendMessageButton onclick={sendMessage} />}
-              placeholder="Enter your message"
-            />
+        </div>
+        <div className="flex-grow ">Messages...</div>
+        <div className=" sticky bottom-0 bg-inherit">
+          <div>
+            <div className="py-3 flex overflow-x-auto">
+              <Suggestion textProp={'Hekk'} />
+            </div>
+            <div
+              className="flex pl-3 p-1 rounded mb-8"
+              style={{ background: 'white', border: '1px solid #e4e4e7' }}
+            >
+              <div className="flex items-center w-full ">
+                <textarea
+                  aria-label="chat input"
+                  className=" m-0 w-full min-h-[1.5rem] max-h-36 pr-7 resize-none border-0 bg-inherit flex-1 appearance-none rounded-md focus:ring-0 focus-visible:ring-0 focus:outline-none "
+                ></textarea>
+              </div>
+              <div className="flex items-end">
+                <Button className=" flex-none p-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    className="h-5 w-5"
+                  >
+                    <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"></path>
+                  </svg>
+                </Button>
+              </div>
+            </div>
+            <div></div>
           </div>
         </div>
-      )}
+        <div></div>
+      </div>
     </>
   );
 };

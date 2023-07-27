@@ -4,8 +4,10 @@ import { AxiosResponse } from 'axios/index';
 import { FileSize } from '@/components/DataSource/DataSourcePropsType';
 import globalService from '@/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
-import { Chatbot } from '@/types/models/globals';
+import { Chatbot, FileUpload } from '@/types/models/globals';
 import s from '@/components/DataSource/DataSource.module.css';
+import { DeleteOutlined } from '@ant-design/icons';
+import crawlService from '@/service/crawlService';
 
 type FileDraggerProps = {
   chatbot: Chatbot;
@@ -16,6 +18,13 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
   const [files, setFiles] = useState<UploadFile<any>[]>([]);
   const [countFiles, setCountFiles] = useState<number>(0); //Cчетчик файлов
   const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
+  const [alreadyUploadedFiles, setAlreadyUploadedFiles] = useState<
+    FileUpload[]
+  >(() => chatbot.sources.files);
+  console.log(
+    '=>(FileDragger.tsx:24) alreadyUploadedFiles',
+    alreadyUploadedFiles,
+  );
 
   const handleUpload = async (info: UploadChangeParam<UploadFile<unknown>>) => {
     const { file, fileList } = info;
@@ -63,6 +72,18 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
     );
     setFileInfo(response.data);
   };
+  const deleteAlreadyUploadedFiles = async (file: FileUpload) => {
+    const removedAlreadyUploadedLink = [...alreadyUploadedFiles];
+    const body = {
+      file_id: file._id,
+      chatbot_id: chatbot._id,
+      original_name: encodeURIComponent(file.originalName),
+    };
+    await crawlService.post('/file-upload/remove-file', body);
+    setAlreadyUploadedFiles(
+      removedAlreadyUploadedLink.filter((item) => item._id !== file._id),
+    );
+  };
   return (
     <>
       <Dragger
@@ -88,11 +109,14 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
       ></List>
       <Typography>Already uploaded</Typography>
       <List
-        dataSource={chatbot.sources.files}
+        dataSource={alreadyUploadedFiles}
         renderItem={(item) => (
           <List.Item>
             <Typography.Text mark>{item.originalName}</Typography.Text>
             {item.char_length}
+            <Button onClick={() => deleteAlreadyUploadedFiles(item)}>
+              <DeleteOutlined />
+            </Button>
           </List.Item>
         )}
       ></List>

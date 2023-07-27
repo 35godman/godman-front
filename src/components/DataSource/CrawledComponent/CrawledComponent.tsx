@@ -3,7 +3,7 @@ import s from '@/components/DataSource/DataSource.module.css';
 import { Button, Input, List, Typography } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { AxiosResponse } from 'axios/index';
-import { CrawledLink } from '@/components/DataSource/crawledLink.type';
+import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLink.type';
 import crawlService from '@/service/crawlService';
 import { Chatbot, FileUpload } from '@/types/models/globals';
 import { WebContent } from '@/types/models/chatbotCustom/web-content.type';
@@ -18,10 +18,6 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
   const [alreadyUploadedLinks, setAlreadyUploadedLinks] = useState<
     FileUpload[]
   >(() => chatbot.sources.website);
-  console.log(
-    '=>(CrawledComponent.tsx:21) alreadyUploadedLinks',
-    alreadyUploadedLinks,
-  );
   const handleWebsiteUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWebsiteUrl(e.target.value);
   };
@@ -52,7 +48,6 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
   };
 
   const deleteAlreadyUploadedLink = async (link: FileUpload) => {
-    console.log('=>(CrawledComponent.tsx:61) link', link);
     const removedAlreadyUploadedLink = [...alreadyUploadedLinks];
     const body = {
       web_link: link.originalName,
