@@ -24,49 +24,41 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = router.query;
-  const charsInChatbot = useSelector((state: RootState) => state.chars);
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
   const fetchedRef = useRef(false);
   const [newDataUpdated, setNewDataUpdated] = useState<boolean>(false);
 
-  const [allCharsLength, setAllCharsLength] = useState<number>(0);
-  const [initialCharsFromChatbotFetched, setInitialCharsFromChatbotFetched] =
-    useState<boolean>(false);
-  useEffect(() => {
-    if (!initialCharsFromChatbotFetched && chatbot) {
-      setAllCharsLength(chatbot.settings.num_of_characters);
-    }
-  }, [chatbot]);
+  //use callback
+  const getChatbotSettings = useCallback(async () => {
+    if (id) {
+      fetchedRef.current = true;
+      const response: AxiosResponse<Chatbot> = await globalService.get(
+        `/chatbot/find/${id}`,
+      );
 
-  useEffect(() => {
-    const getChatbotSettings = async () => {
-      if (id && !fetchedRef.current) {
-        fetchedRef.current = true;
-        const response: AxiosResponse<Chatbot> = await globalService.get(
-          `/chatbot/find/${id}`,
-        );
-
-        setChatbot(response.data);
-        //set initial files for charsCountSlice
-        const { files, website, QA_list } = response.data.sources;
-        for (const file of files) {
-          dispatch(addFile({ id: file._id, chars: file.char_length }));
-        }
-        for (const webFile of website) {
-          dispatch(addFile({ id: webFile._id, chars: webFile.char_length }));
-        }
-        for (const qa of QA_list) {
-          dispatch(
-            addFile({
-              id: qa._id,
-              chars: qa.answer.length + qa.question.length,
-            }),
-          );
-        }
+      setChatbot(response.data);
+      //set initial files for charsCountSlice
+      const { files, website, QA_list } = response.data.sources;
+      for (const file of files) {
+        dispatch(addFile({ id: file._id, chars: file.char_length }));
       }
-    };
+      for (const webFile of website) {
+        dispatch(addFile({ id: webFile._id, chars: webFile.char_length }));
+      }
+      for (const qa of QA_list) {
+        dispatch(
+          addFile({
+            id: qa._id,
+            chars: qa.answer.length + qa.question.length,
+          }),
+        );
+      }
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
     getChatbotSettings();
-  }, [dispatch, id, fetchedRef]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     dispatch(setUser(user_data));
@@ -83,6 +75,7 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
       label: 'Settings',
       children: (
         <Settings
+          //FIXME getChatbotSettings add
           chatbot={chatbot as Chatbot}
           setChatbot={setChatbot}
           setNewDataUpdated={setNewDataUpdated}

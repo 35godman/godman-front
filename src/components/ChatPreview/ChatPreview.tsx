@@ -3,10 +3,10 @@ import s from '@/components/Settings/Settings.module.css';
 import sPrev from './ChatPreview.module.css';
 import { Button, Image, Input } from 'antd';
 import { Suggestion } from '@/components/Suggestion/Suggestion';
-import { InitialChatMessage } from '@/components/ChatMessage/ChatMessage';
 import { UserMessage } from '@/components/UserMessage/UserMessage';
 import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import { Chatbot } from '@/types/models/globals';
+import { ChatMessage } from '@/components/ChatMessage/InitialChatMessage';
 
 type ChatPreviewProps = {
   chatbot: Chatbot;
@@ -43,7 +43,13 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
       </div>
       <div className={s.chatPreviewContent}>
         {initialMsgArr.map((message) => {
-          return <InitialChatMessage key={message} textProp={message} />;
+          return (
+            <ChatMessage
+              key={message}
+              textProp={message}
+              chat_role={'assistant'}
+            />
+          );
         })}
         <div className={s.userMessage}>
           <UserMessage

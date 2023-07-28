@@ -5,8 +5,6 @@ import { Language } from '@/types/enums/lang';
 
 const initialState: User = {
   chatbot_limit: 0,
-  message_limit: 0,
-  char_limit: 0,
   _id: '',
   email: '',
   plan: 'free',

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import s from './ChatBot.module.css';
 import { Suggestion } from '../Suggestion/Suggestion';
-import { InitialChatMessage } from '../ChatMessage/ChatMessage';
 import { UserMessage } from '../UserMessage/UserMessage';
-import { Button, Input, Typography } from 'antd';
+import { Button, Input, Spin, Typography } from 'antd';
 import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import { Chatbot, User } from '@/types/models/globals';
@@ -16,6 +15,9 @@ import crawlService from '@/service/crawlService';
 import { MessageState } from '@/types/models/chatbotCustom/messageState';
 import MessageDisplay from '@/components/ChatBot/MessageDisplay/MessageDisplay';
 import { domainConfig } from '@/config/domain.config';
+import { nanoid } from 'nanoid';
+import { RoleState } from '@/types/models/role';
+import { ChatMessage } from '@/components/ChatMessage/InitialChatMessage';
 
 type ChatBotProps = {
   chatbot: Chatbot;
@@ -28,28 +30,26 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   const [messages, setMessages] = useState<MessageState[]>([]);
   console.log('=>(ChatBot.tsx:27) messages', messages);
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
-  const [currentMessageIndex, setCurrentMessageIndex] = useState<number | null>(
-    null,
-  );
+  const [isBotAnswering, setIsBotAnswering] = useState<boolean>(false);
 
   const sendMessage = async () => {
+    setIsBotAnswering(true);
     const newMessages = [
       ...messages,
       {
+        _id: nanoid(),
         content: questionValue,
-        role: 'user',
+        role: 'user' as RoleState,
       },
-      { content: '', role: 'assistant' },
     ];
-    //setMessages(newMessages)
-
-    setCurrentMessageIndex(9);
+    setMessages(newMessages);
 
     const body = {
       question: questionValue,
       user_id: user._id,
       chatbot_id: chatbot._id,
     };
+    //FIXME add catch
     const response = await fetch(
       `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask`,
       {
@@ -61,10 +61,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       },
     );
 
-    let answer = '';
     if (response.body) {
       const reader = response.body.getReader();
-      console.log(currentMessageIndex);
       console.log(messages.length);
       // eslint-disable-next-line no-constant-condition
       while (true) {
@@ -73,20 +71,27 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
           break;
         }
         const text = new TextDecoder().decode(value);
-        answer += text;
-        // const newState = [...messages];
-        // console.log('=>(ChatBot.tsx:82) newState', newState);
-        // /**
-        //  * о
-        //  */
-        // if (newState.length > 0) {
-        //   newState[newState.length - 1].content += text;
+        setCurrentAnswer((prevState) => prevState + text);
       }
+      setIsBotAnswering(false);
     }
-    const newState = [...messages];
-    console.log('=>(ChatBot.tsx:82) newState', newState);
   };
-
+  useEffect(() => {
+    if (!isBotAnswering && currentAnswer) {
+      setMessages((prevState) => {
+        return [
+          ...prevState,
+          {
+            _id: nanoid(),
+            content: currentAnswer,
+            role: 'assistant' as RoleState,
+          },
+        ];
+      });
+      setCurrentAnswer('');
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isBotAnswering]);
   return (
     <>
       <div className="min-h-screen px-4 flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border pt-2 ">
@@ -104,7 +109,34 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             </div>
           </div>
         </div>
-        <div className="flex-grow ">Messages...</div>
+        <div className="flex-grow ">
+          {chatbot.settings.initial_messages.map((msg, index) => {
+            return (
+              <ChatMessage chat_role={'assistant'} textProp={msg} key={index} />
+            );
+          })}
+          {messages.map((msg) => {
+            return (
+              <ChatMessage
+                textProp={msg.content}
+                chat_role={msg.role}
+                key={msg._id}
+                user_color={chatbot.settings.user_message_color}
+              />
+            );
+          })}
+          {/**
+           * @COMMENT
+           * here we are creating a current answer so the render works correctly,
+           * there was a problem with updating an array of objects,
+           * so we moved it to just string state
+           */}
+          {currentAnswer ? (
+            <ChatMessage textProp={currentAnswer} chat_role={'assistant'} />
+          ) : (
+            isBotAnswering && <Spin />
+          )}
+        </div>
         <div className=" sticky bottom-0 bg-inherit">
           <div>
             <div className="py-3 flex overflow-x-auto">
@@ -118,6 +150,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             >
               <div className="flex items-center w-full ">
                 <TextArea
+                  onChange={(e) => setQuestionValue(e.target.value)}
                   aria-label="chat input"
                   className=" m-0 w-full min-h-[1.5rem] max-h-36 pr-7 resize-none border-0 bg-inherit flex-1 appearance-none rounded-md focus:ring-0 focus-visible:ring-0 focus:outline-none "
                 ></TextArea>

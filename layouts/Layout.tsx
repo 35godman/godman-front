@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import s from './GeneralLayout.module.css';
 import { Header } from '@/components/Header/Header';
 import { Footer } from '@/components/Footer/Footer';
@@ -10,6 +10,9 @@ type Props = {
 };
 export const Layout: React.FC<Props> = ({ children }) => {
   const messages = ru as typeof ru;
+  useEffect(() => {
+    console.log('layout');
+  }, []);
   return (
     <>
       <IntlProvider locale={'ru'} messages={messages}>
