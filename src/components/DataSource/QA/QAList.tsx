@@ -5,17 +5,23 @@ import fileUploadService from '@/service/pineconeService';
 import { Chatbot } from '@/types/models/globals';
 import { DeleteOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
+import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import { useAppDispatch } from '@/features/store';
+import { addFile, removeFile } from '@/features/slices/charsCountSlice';
+import { QAState } from '@/types/models/chatbotCustom/QA.type';
 
 type QAListProps = {
   chatbot: Chatbot;
 };
-
 const QAList: FC<QAListProps> = ({ chatbot }) => {
   const { TextArea } = Input;
+  const dispatch = useAppDispatch();
+
   const [isTextAreaVisible, setIsTextAreaVisible] = useState<boolean>(false);
-  const [qnaList, setQnaList] = useState<
-    Array<{ question: string; answer: string; _id: string }>
-  >(chatbot.sources.QA_list);
+  const [qnaList, setQnaList] = useState<Array<QAState>>(
+    chatbot.sources.QA_list,
+  );
+
   const [newQuestion, setNewQuestion] = useState<string>('');
   const [newAnswer, setNewAnswer] = useState<string>('');
 
@@ -27,11 +33,18 @@ const QAList: FC<QAListProps> = ({ chatbot }) => {
     setNewAnswer(e.target.value);
   };
   const handleAddQna = () => {
+    const generatedId = nanoid();
     if (isTextAreaVisible) {
       setQnaList([
         ...qnaList,
-        { question: newQuestion, answer: newAnswer, _id: nanoid() },
+        { question: newQuestion, answer: newAnswer, _id: generatedId },
       ]);
+      dispatch(
+        addFile({
+          id: generatedId,
+          chars: newQuestion.length + newAnswer.length,
+        }),
+      );
       setNewQuestion('');
       setNewAnswer('');
       setIsTextAreaVisible(false);
@@ -42,19 +55,17 @@ const QAList: FC<QAListProps> = ({ chatbot }) => {
 
   const handleRemoveQna = (id: string) => {
     setQnaList(qnaList.filter((item) => item._id !== id));
+    dispatch(removeFile(id));
   };
 
   const submitQnA = async () => {
-    await fileUploadService.post(
-      `/file-upload/add-qna?chatbot_id=${chatbot._id}`,
-      {
-        data: qnaList,
-      },
-    );
+    await globalService.post(`/chatbot/add-qna?chatbot_id=${chatbot._id}`, {
+      data: qnaList,
+    });
   };
   return (
     <>
-      <Button onClick={handleAddQna}>Add</Button>
+      <PrimaryButton onclick={handleAddQna} text={'Добавить'} />
       {isTextAreaVisible && (
         <>
           <TextArea
@@ -82,7 +93,24 @@ const QAList: FC<QAListProps> = ({ chatbot }) => {
           </div>
         ))}
 
-      <Button onClick={submitQnA}>Загрузить ответы на вопросы</Button>
+      {/*{alreadyUploadedQA &&*/}
+      {/*  alreadyUploadedQA.map((qna, index) => {*/}
+      {/*    return (*/}
+      {/*      <div key={index}>*/}
+      {/*        <TextArea rows={2} value={qna.question} disabled />*/}
+      {/*        <TextArea rows={2} value={qna.answer} disabled />*/}
+      {/*        <DeleteOutlined onClick={() => handleRemoveQna(qna._id)} />*/}
+      {/*      </div>*/}
+      {/*    );*/}
+      {/*  })}*/}
+
+      <div className={'sticky bottom-1 mt-5'}>
+        <PrimaryButton
+          onclick={submitQnA}
+          text={'Загрузить ответы на вопросы'}
+          disabled={!qnaList.length}
+        />
+      </div>
     </>
   );
 };

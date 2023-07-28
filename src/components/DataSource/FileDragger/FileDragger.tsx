@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, List, Typography, Upload } from 'antd';
 import { AxiosResponse } from 'axios/index';
 import { FileSize } from '@/components/DataSource/DataSourcePropsType';
@@ -8,6 +8,9 @@ import { Chatbot, FileUpload } from '@/types/models/globals';
 import s from '@/components/DataSource/DataSource.module.css';
 import { DeleteOutlined } from '@ant-design/icons';
 import crawlService from '@/service/crawlService';
+import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import { useAppDispatch } from '@/features/store';
+import { addFile, removeFile } from '@/features/slices/charsCountSlice';
 
 type FileDraggerProps = {
   chatbot: Chatbot;
@@ -15,30 +18,26 @@ type FileDraggerProps = {
 
 const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
   const { Dragger } = Upload;
+  const dispatch = useAppDispatch();
+
   const [files, setFiles] = useState<UploadFile<any>[]>([]);
-  const [countFiles, setCountFiles] = useState<number>(0); //Cчетчик файлов
+  console.log('=>(FileDragger.tsx:24) files', files);
   const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
+  console.log('=>(FileDragger.tsx:27) fileInfo', fileInfo);
   const [alreadyUploadedFiles, setAlreadyUploadedFiles] = useState<
     FileUpload[]
   >(() => chatbot.sources.files);
-  console.log(
-    '=>(FileDragger.tsx:24) alreadyUploadedFiles',
-    alreadyUploadedFiles,
-  );
 
   const handleUpload = async (info: UploadChangeParam<UploadFile<unknown>>) => {
     const { file, fileList } = info;
-    setFiles(fileList);
-    setCountFiles(fileList.length);
+    const uniqueFiles = fileList.filter((file, index) => {
+      return fileList.findIndex((t) => t.name === file.name) === index;
+    });
+    setFiles(uniqueFiles);
     const data = new FormData();
-    if (file.status === 'removed' && Array.isArray(fileInfo)) {
-      const filteredFileInfo = fileInfo.filter(
-        (item) => item.name !== file.name,
-      );
-      setFileInfo([...filteredFileInfo]);
-    }
+
     if (file.status === 'done') {
-      files.forEach((file) => {
+      uniqueFiles.forEach((file) => {
         if (file.originFileObj) {
           data.append(
             `files`,
@@ -53,8 +52,12 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
         data,
       );
       setFileInfo(response.data);
+      for (const file of response.data) {
+        dispatch(addFile({ id: file.name, chars: file.textSize }));
+      }
     }
   };
+
   const loadFilesOnServer = async () => {
     const data = new FormData();
 
@@ -65,12 +68,9 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
       }
     });
     data.append('chatbot_id', chatbot._id);
-
-    const response: AxiosResponse<FileSize[]> = await globalService.post(
-      '/file-upload/multi-upload',
-      data,
-    );
-    setFileInfo(response.data);
+    await globalService.post('/file-upload/multi-upload', data);
+    setFileInfo([]);
+    setFiles([]);
   };
   const deleteAlreadyUploadedFiles = async (file: FileUpload) => {
     const removedAlreadyUploadedLink = [...alreadyUploadedFiles];
@@ -83,6 +83,19 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
     setAlreadyUploadedFiles(
       removedAlreadyUploadedLink.filter((item) => item._id !== file._id),
     );
+    dispatch(removeFile(file._id));
+  };
+
+  const onRemoveFile = (file: FileSize) => {
+    if (Array.isArray(fileInfo)) {
+      const filteredFileInfo = fileInfo.filter(
+        (item) => item.name !== file.name,
+      );
+      const newFilesState = files.filter((item) => item.name !== file.name);
+      setFiles(newFilesState);
+      setFileInfo([...filteredFileInfo]);
+      dispatch(removeFile(file.name));
+    }
   };
   return (
     <>
@@ -90,20 +103,30 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
         name="file"
         multiple
         onChange={handleUpload}
+        fileList={files}
         style={{ marginBottom: '16px' }}
         accept={'.docx,.txt,.pdf'}
+        //disable default render antd
+        itemRender={() => {
+          return null;
+        }}
       >
         <p>Upload files</p>
       </Dragger>
-      <Button onClick={loadFilesOnServer} disabled={!files.length}>
-        Upload
-      </Button>
+      <PrimaryButton
+        onclick={loadFilesOnServer}
+        text={'Upload'}
+        disabled={!files.length}
+      />
       <List
         dataSource={fileInfo}
         renderItem={(item) => (
           <List.Item>
             <Typography.Text mark>{item.name}</Typography.Text>
             {item.textSize}
+            <Button onClick={() => onRemoveFile(item)}>
+              <DeleteOutlined />
+            </Button>
           </List.Item>
         )}
       ></List>

@@ -8,10 +8,12 @@ import s from './GeneralSettingsBot.module.css';
 import axios, { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
 import { Chatbot, User } from '@/types/models/globals';
-import { useAppDispatch } from '@/features/store';
+import { RootState, useAppDispatch } from '@/features/store';
 import { addChatbot } from '@/features/slices/chatbotSlice';
 import { setUser } from '@/features/slices/userSlice';
 import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
+import { addFile } from '@/features/slices/charsCountSlice';
+import { useSelector } from 'react-redux';
 type GeneralSettingsBotProps = {
   user_data: User;
 };
@@ -22,13 +24,20 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = router.query;
+  const charsInChatbot = useSelector((state: RootState) => state.chars);
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
   const fetchedRef = useRef(false);
-  /**
-   * @COMMENT
-   * here's we create a new state to check if the new_domains, new_suggested_messages, new_initial_messages are uploaded
-   */
   const [newDataUpdated, setNewDataUpdated] = useState<boolean>(false);
+
+  const [allCharsLength, setAllCharsLength] = useState<number>(0);
+  const [initialCharsFromChatbotFetched, setInitialCharsFromChatbotFetched] =
+    useState<boolean>(false);
+  useEffect(() => {
+    if (!initialCharsFromChatbotFetched && chatbot) {
+      setAllCharsLength(chatbot.settings.num_of_characters);
+    }
+  }, [chatbot]);
+
   useEffect(() => {
     const getChatbotSettings = async () => {
       if (id && !fetchedRef.current) {
@@ -38,6 +47,22 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
         );
 
         setChatbot(response.data);
+        //set initial files for charsCountSlice
+        const { files, website, QA_list } = response.data.sources;
+        for (const file of files) {
+          dispatch(addFile({ id: file._id, chars: file.char_length }));
+        }
+        for (const webFile of website) {
+          dispatch(addFile({ id: webFile._id, chars: webFile.char_length }));
+        }
+        for (const qa of QA_list) {
+          dispatch(
+            addFile({
+              id: qa._id,
+              chars: qa.answer.length + qa.question.length,
+            }),
+          );
+        }
       }
     };
     getChatbotSettings();
@@ -74,8 +99,8 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
     },
     {
       key: '4',
-      label: 'Embled on site',
-      children: <div>Здесь будет компонент Embled on site</div>,
+      label: 'Embed on site',
+      children: <div>Здесь будет компонент Embed on site</div>,
     },
     {
       key: '5',

@@ -7,12 +7,16 @@ import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLin
 import crawlService from '@/service/crawlService';
 import { Chatbot, FileUpload } from '@/types/models/globals';
 import { WebContent } from '@/types/models/chatbotCustom/web-content.type';
+import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import { useAppDispatch } from '@/features/store';
+import { addFile, removeFile } from '@/features/slices/charsCountSlice';
 
 type CrawledComponentProps = {
   chatbot: Chatbot;
 };
 
 const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
+  const dispatch = useAppDispatch();
   const [parsedContent, setParsedContent] = useState<CrawledLink[]>([]);
   const [websiteUrl, setWebsiteUrl] = useState<string>('');
   const [alreadyUploadedLinks, setAlreadyUploadedLinks] = useState<
@@ -22,22 +26,27 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
     setWebsiteUrl(e.target.value);
   };
   const handleWebsiteParse = async () => {
-    try {
-      const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
-        '/crawler/crawl',
-        {
-          weblink: websiteUrl,
-          chatbot_id: chatbot._id,
-        },
+    const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
+      '/crawler/crawl',
+      {
+        weblink: websiteUrl,
+        chatbot_id: chatbot._id,
+      },
+    );
+    setParsedContent(res.data);
+    for (const webFile of res.data) {
+      dispatch(
+        addFile({
+          id: webFile.url,
+          chars: webFile.size,
+        }),
       );
-      setParsedContent(res.data);
-    } catch (error) {
-      console.log(error);
     }
   };
   const deleteCrawledLink = async (link: CrawledLink) => {
     const removedParsedContent = [...parsedContent];
     const body = {
+      weblink_id: link._id,
       web_link: link.url,
       chatbot_id: chatbot._id,
     };
@@ -45,6 +54,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
     setParsedContent(
       removedParsedContent.filter((item) => item.url !== link.url),
     );
+    dispatch(removeFile(link.url));
   };
 
   const deleteAlreadyUploadedLink = async (link: FileUpload) => {
@@ -58,6 +68,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
     setAlreadyUploadedLinks(
       removedAlreadyUploadedLink.filter((item) => item._id !== link._id),
     );
+    dispatch(removeFile(link._id));
   };
 
   return (
@@ -72,9 +83,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
           value={websiteUrl}
           onChange={handleWebsiteUrlChange}
         />
-        <Button type="primary" onClick={handleWebsiteParse}>
-          Parse website
-        </Button>
+        <PrimaryButton onclick={handleWebsiteParse} text={'Parse website'} />
       </div>
       <List
         dataSource={parsedContent}

@@ -15,6 +15,10 @@ import CrawledComponent from '@/components/DataSource/CrawledComponent/CrawledCo
 import FileDragger from '@/components/DataSource/FileDragger/FileDragger';
 import TextSource from '@/components/DataSource/TextSource/TextSource';
 import QAList from '@/components/DataSource/QA/QAList';
+import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/features/store';
+import { selectCurrentSize } from '@/features/slices/charsCountSlice';
 
 type DataSourceProps = {
   chatbot: Chatbot;
@@ -24,17 +28,14 @@ export const DataSource: React.FC<DataSourceProps> = ({
   chatbot,
   setChatbot,
 }) => {
+  const charsInChatbot = useSelector(selectCurrentSize);
+  console.log('=>(DataSource.tsx:32) charsInChatbot', charsInChatbot);
+
   const router = useRouter();
   console.log('=>(TextSource.tsx:51) chatbot', chatbot);
   const { Paragraph } = Typography;
 
   const [, setActiveTab] = useState<string>('Files');
-
-  const [countCharsInFiles, setCountCharsInFiles] = useState<number>(0); //Счетчик символов в файлах
-  const [countCharsInText, setCountCharsInText] = useState<number>(0); //Cчетчик символов в текте (Text)
-
-  const [countCharsInWebsite, setCountCharsInWebsite] = useState<number>(0); //Cчетчик символов c сайта
-  const [countQna, setCountQna] = useState<number>(0);
 
   const handleTabClick = (key: string) => {
     setActiveTab(key);
@@ -105,13 +106,14 @@ export const DataSource: React.FC<DataSourceProps> = ({
       {/*  )}*/}
       {/*  {countQna > 0 && <p>{countQna} Q&A</p>}*/}
       {/*</div>*/}
-      <Button
-        type="primary"
-        style={{ width: '300px', height: '60px', marginTop: '15px' }}
-        onClick={handleRetrain}
-      >
-        Retrain chatbot
-      </Button>
+      <div className={'flex flex-col'}>
+        <div className={'flex flex-col'}>
+          <Paragraph>Количество символов {charsInChatbot}</Paragraph>
+          <Paragraph>Макс. количество {chatbot.settings.char_limit}</Paragraph>
+        </div>
+
+        <PrimaryButton text={'Обучить'} onclick={handleRetrain} />
+      </div>
     </div>
   );
 };

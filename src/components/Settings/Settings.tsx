@@ -35,6 +35,7 @@ import { FileSize } from '@/components/DataSource/DataSourcePropsType';
 import { removeStaticFieldsFromObject } from '@/helpers/obj/removeStaticFieldsFromObject';
 import { convertMessagesToArray } from '@/helpers/obj/convertMessagesToArray';
 import { useRouter } from 'next/router';
+import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
@@ -154,15 +155,19 @@ export const Settings: React.FC<SettingsPropsType> = ({
      */
     const data = new FormData();
     if (fileInfo && fileInfo.originFileObj) {
-      data.append('file', fileInfo.originFileObj);
+      data.append(
+        'file',
+        fileInfo.originFileObj,
+        encodeURIComponent(fileInfo.name),
+      );
       const response: AxiosResponse<FileSize[]> = await globalService.post(
-        '/file-upload/single-upload',
+        `/file-upload/profile-picture-upload?chatbot_id=${chatbot._id}`,
         data,
       );
     }
 
     message.info('Successfully uploaded');
-    await router.reload();
+    //await router.reload();
   };
 
   /**
@@ -182,7 +187,6 @@ export const Settings: React.FC<SettingsPropsType> = ({
       setChatbot(customChatbot);
     }
   }, [newDataUpdated, chatbot]);
-  console.log('=>(Settings.tsx:88) chatbot', chatbot);
   if (!chatbot) return null;
 
   return (
@@ -193,7 +197,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
       <Paragraph>{chatbot.settings.num_of_characters}</Paragraph>
       <Title level={5}>Bot name</Title>
 
-      <Form onFinish={handleSubmit}>
+      <Form>
         <Form.Item label="">
           <Input
             value={chatbot.chatbot_name}
@@ -216,9 +220,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
             }
           />
         </Form.Item>
-        <Button type="primary" onClick={resetBasePrompt}>
-          Reset
-        </Button>
+        <PrimaryButton onclick={resetBasePrompt} text={'Reset'} />
 
         <Paragraph>
           1 message using gpt-3.5-turbo costs 1 message credit.
@@ -331,12 +333,10 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 changeCustomerInfoSetting('title', e.target.value)
               }
             />
-            <Button
-              type="primary"
-              onClick={() => changeCustomerInfoSetting('title', '')}
-            >
-              Reset Title
-            </Button>
+            <PrimaryButton
+              text={' Reset Title'}
+              onclick={() => changeCustomerInfoSetting('title', '')}
+            />
           </Space>
         </Form.Item>
 
@@ -488,9 +488,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
           <ChatPreview chatbot={chatbot} />
         </Space>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
+          <PrimaryButton onclick={handleSubmit} text={'Сохранить изменения'} />
         </Form.Item>
       </Form>
     </div>

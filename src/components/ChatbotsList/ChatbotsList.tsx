@@ -8,6 +8,7 @@ import { RootState } from '@/features/store';
 import axios, { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
 import { Chatbot, User } from '@/types/models/globals';
+import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 
 type ChatbotsListProps = {
   user_data: User;
@@ -47,9 +48,7 @@ export const ChatbotsList: FC<ChatbotsListProps> = ({ user_data }) => {
             <Title level={3}>My Chatbots</Title>
           </div>
           <div>
-            <Button onClick={createChatbot} type="primary">
-              New chatbot
-            </Button>
+            <PrimaryButton onclick={createChatbot} text={'New chatbot'} />
           </div>
         </div>
       </div>

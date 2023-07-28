@@ -35,22 +35,22 @@ crawlService.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-// crawlService.interceptors.response.use(
-//   (response) => {
-//     // Any status code that lie within the range of 2xx cause this function to trigger
-//     return response;
-//   },
-//   (error) => {
-//     if (error.config.method === 'post') {
-//       Modal.error({
-//         title: 'Request Error',
-//         content: error.response.data.message,
-//       });
-//     }
-//
-//     console.error(error);
-//     return Promise.resolve({ error });
-//   },
-// );
+crawlService.interceptors.response.use(
+  (response) => {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    return response;
+  },
+  (error) => {
+    if (error.config.method === 'post') {
+      Modal.error({
+        title: 'Request Error',
+        content: error.response.data.message,
+      });
+    }
+
+    console.error(error);
+    return Promise.resolve({ error });
+  },
+);
 
 export default crawlService;

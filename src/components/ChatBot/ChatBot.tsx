@@ -3,9 +3,9 @@ import s from './ChatBot.module.css';
 import { Suggestion } from '../Suggestion/Suggestion';
 import { InitialChatMessage } from '../ChatMessage/ChatMessage';
 import { UserMessage } from '../UserMessage/UserMessage';
-import { Button, Input } from 'antd';
+import { Button, Input, Typography } from 'antd';
 import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
-import { Image } from 'antd';
+import Image from 'next/image';
 import { Chatbot, User } from '@/types/models/globals';
 import ProfilePicture from '@/components/ChatBot/ProfilePicture/ProfilePicture';
 import SendMessageButton from '@/components/ChatBot/SendMessageButton';
@@ -15,11 +15,13 @@ import globalService from '@/service/globalService';
 import crawlService from '@/service/crawlService';
 import { MessageState } from '@/types/models/chatbotCustom/messageState';
 import MessageDisplay from '@/components/ChatBot/MessageDisplay/MessageDisplay';
+import { domainConfig } from '@/config/domain.config';
 
 type ChatBotProps = {
   chatbot: Chatbot;
 };
 
+const { TextArea } = Input;
 export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   const [questionValue, setQuestionValue] = useState<string>('');
   const user = useSelector((state: RootState) => state.user);
@@ -48,15 +50,17 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       user_id: user._id,
       chatbot_id: chatbot._id,
     };
-    const response = await fetch('http://localhost:5050/v1/embedding/ask', {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask`,
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
 
-    console.log('=>(SendMessageButton.tsx:24) response', response);
     let answer = '';
     if (response.body) {
       const reader = response.body.getReader();
@@ -85,66 +89,18 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
 
   return (
     <>
-      {/*{chatbot && chatbot.settings && (*/}
-      {/*  <div className={s.chatPreview}>*/}
-      {/*    <div className={s.chatPreviewHeader}>*/}
-      {/*      <div>*/}
-      {/*        <div className={s.ChatPreviewImgWrapper}>*/}
-      {/*          <ProfilePicture*/}
-      {/*            remove_profile_picture_checked={*/}
-      {/*              chatbot.settings.remove_profile_picture_checked*/}
-      {/*            }*/}
-      {/*            profile_picture_path={chatbot.settings.profile_picture_path}*/}
-      {/*          />*/}
-      {/*          <div className={s.chatPreviewName}>*/}
-      {/*            {chatbot.settings.display_name}*/}
-      {/*          </div>*/}
-      {/*        </div>*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    <div className={s.chatPreviewContent}>*/}
-      {/*      {chatbot.settings.initial_messages.map((message) => {*/}
-      {/*        return <InitialChatMessage textProp={message} key={message} />;*/}
-      {/*      })}*/}
-      {/*      {messages.map((message, index) => {*/}
-      {/*        return (*/}
-      {/*          <MessageDisplay*/}
-      {/*            key={index}*/}
-      {/*            role={message.role}*/}
-      {/*            text={message.content}*/}
-      {/*            chatbot={chatbot}*/}
-      {/*          />*/}
-      {/*        );*/}
-      {/*      })}*/}
-      {/*    </div>*/}
-
-      {/*    <div*/}
-      {/*      className={s.chatPreviewFooter}*/}
-      {/*      style={{ backgroundColor: chatbot.settings.chat_bubble_color }}*/}
-      {/*    >*/}
-      {/*      <Suggestion textProp="What is Godman?" />*/}
-      {/*      /!*<Button*!/*/}
-      {/*      /!*  className={s.chatPreviewReloadButton}*!/*/}
-      {/*      /!*  // type="primary"*!/*/}
-      {/*      /!*  shape="circle"*!/*/}
-      {/*      /!*  size="large"*!/*/}
-      {/*      /!*  icon={<ReloadOutlined style={{ fontSize: '24px' }} />}*!/*/}
-      {/*      /!*/
-      /*/}
-
-      {/*      <Input*/}
-      {/*        onChange={(e) => setQuestionValue(e.target.value)}*/}
-      {/*        className={s.chatPreviewInput}*/}
-      {/*        suffix={<SendMessageButton onclick={sendMessage} />}*/}
-      {/*        placeholder="Enter your message"*/}
-      {/*      />*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      <div className="min-h-screen px-4 flex flex-col">
+      <div className="min-h-screen px-4 flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border pt-2 ">
         <div className=" sticky top-0 w-full">
           <div className="flex justify-between py-1 mb-4   z-10">
             <div className="flex items-center">
-              <img className="rounded-full m-1 mr-2" />
+              <Image
+                className="rounded-full m-1 mr-2 w-7 h-7"
+                src={chatbot.settings.profile_picture_path}
+                alt={'Image profile'}
+                width={100}
+                height={100}
+              />
+              <Typography>{chatbot.settings.display_name}</Typography>
             </div>
           </div>
         </div>
@@ -152,30 +108,26 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
         <div className=" sticky bottom-0 bg-inherit">
           <div>
             <div className="py-3 flex overflow-x-auto">
-              <Suggestion textProp={'Hekk'} />
+              {chatbot.settings.suggested_messages.map((msg) => {
+                return <Suggestion textProp={msg} key={msg} />;
+              })}
             </div>
             <div
               className="flex pl-3 p-1 rounded mb-8"
               style={{ background: 'white', border: '1px solid #e4e4e7' }}
             >
               <div className="flex items-center w-full ">
-                <textarea
+                <TextArea
                   aria-label="chat input"
                   className=" m-0 w-full min-h-[1.5rem] max-h-36 pr-7 resize-none border-0 bg-inherit flex-1 appearance-none rounded-md focus:ring-0 focus-visible:ring-0 focus:outline-none "
-                ></textarea>
+                ></TextArea>
               </div>
               <div className="flex items-end">
-                <Button className=" flex-none p-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    className="h-5 w-5"
-                  >
-                    <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"></path>
-                  </svg>
-                </Button>
+                <Button
+                  className=" flex-none p-2"
+                  onClick={sendMessage}
+                  icon={<SendOutlined />}
+                ></Button>
               </div>
             </div>
             <div></div>

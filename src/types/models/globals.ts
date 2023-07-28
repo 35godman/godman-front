@@ -19,10 +19,6 @@ export type User = {
 
   chatbot_limit: number;
 
-  message_limit: number;
-
-  char_limit: number;
-
   language: Language;
 
   createdAt: string;
@@ -85,6 +81,8 @@ export type ChatbotSettings = {
   language: string;
 
   num_of_characters: number;
+
+  char_limit: number;
 
   max_tokens: number;
 
