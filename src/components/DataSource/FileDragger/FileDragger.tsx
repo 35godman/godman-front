@@ -123,6 +123,7 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
         name="file"
         multiple
         onChange={handleUpload}
+        action={'/api/noop'}
         fileList={files}
         style={{ marginBottom: '16px' }}
         accept={'.docx,.txt,.pdf'}
