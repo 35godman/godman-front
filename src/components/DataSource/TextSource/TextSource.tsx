@@ -1,8 +1,7 @@
-import React, { FC, useCallback, useState } from 'react';
-import { Button, Input, message } from 'antd';
+import React, { FC, useState } from 'react';
+import { Input, message } from 'antd';
 import globalService from '@/service/globalService';
 import { Chatbot } from '@/types/models/globals';
-import { debounceUtil } from '@/helpers/funcs/debounce';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/features/store';
 import { addFile } from '@/features/slices/charsCountSlice';
@@ -50,7 +49,11 @@ const TextSource: FC<TextSourceProps> = ({ chatbot }) => {
         value={textSource}
         onChange={handleTextAreaChange}
       />
-      <PrimaryButton onclick={saveText} text={'Сохранить текст'} />
+      <PrimaryButton
+        onclick={saveText}
+        text={'Сохранить текст'}
+        loading={uploadLoading}
+      />
     </>
   );
 };

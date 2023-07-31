@@ -1,14 +1,6 @@
-import { Tabs, Upload, Typography, Button, Input, List } from 'antd';
+import { Tabs, Typography } from 'antd';
 import React, { useState } from 'react';
-import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
-import axios, { AxiosResponse } from 'axios';
 import s from './DataSource.module.css';
-import { DeleteOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/router';
-import globalService from '@/service/globalService';
-import crawlService from '@/service/crawlService';
-import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLink.type';
-import { FileSize } from '@/components/DataSource/DataSourcePropsType';
 import { Chatbot } from '@/types/models/globals';
 import fileUploadService from '@/service/pineconeService';
 import CrawledComponent from '@/components/DataSource/CrawledComponent/CrawledComponent';
@@ -17,7 +9,6 @@ import TextSource from '@/components/DataSource/TextSource/TextSource';
 import QAList from '@/components/DataSource/QA/QAList';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/features/store';
 import { selectCurrentSize } from '@/features/slices/charsCountSlice';
 
 type DataSourceProps = {

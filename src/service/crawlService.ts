@@ -48,7 +48,6 @@ crawlService.interceptors.response.use(
       });
     }
 
-    console.error(error);
     return Promise.resolve({ error });
   },
 );

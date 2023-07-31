@@ -1,6 +1,5 @@
 import { VisibilityOptions } from '@/types/models/chatbotCustom/visibility.type';
 import { EmbeddedCode } from '@/types/models/chatbotCustom/embed-code.type';
-import { WebContent } from '@/types/models/chatbotCustom/web-content.type';
 import { QAState } from '@/types/models/chatbotCustom/QA.type';
 import { MessageState } from '@/types/models/chatbotCustom/messageState';
 import { LimitState } from '@/types/models/chatbotCustom/limit.type';

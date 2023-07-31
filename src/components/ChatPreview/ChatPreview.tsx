@@ -3,7 +3,6 @@ import s from '@/components/Settings/Settings.module.css';
 import sPrev from './ChatPreview.module.css';
 import { Button, Image, Input } from 'antd';
 import { Suggestion } from '@/components/Suggestion/Suggestion';
-import { UserMessage } from '@/components/UserMessage/UserMessage';
 import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import { Chatbot } from '@/types/models/globals';
 import { ChatMessage } from '@/components/ChatMessage/ChatMessage';

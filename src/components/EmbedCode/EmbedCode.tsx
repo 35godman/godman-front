@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Chatbot } from '@/types/models/globals';
 import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
 import globalService from '@/service/globalService';
-import { message, Modal } from 'antd';
+import { message } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
 
 type EmbedCodeProps = {

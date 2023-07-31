@@ -3,6 +3,7 @@ export type CustomMongoObjectWithTimestamps = {
   _id?: string;
   __v?: number;
   updatedAt?: string;
+  //eslint-disable-next-line
   [prop: string]: any; // Add this line to accept nested objects
 };
 

@@ -1,7 +1,6 @@
 // userSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Chatbot, User } from '@/types/models/globals';
-import { Language } from '@/types/enums/lang';
+import { Chatbot } from '@/types/models/globals';
 
 const initialState: Partial<Chatbot> = {};
 

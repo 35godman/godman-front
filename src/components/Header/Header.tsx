@@ -1,13 +1,5 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import s from './Header.module.css';
-import globalService from '@/service/globalService';
-
-import { User } from '@/types/models/globals';
-import { AxiosResponse } from 'axios';
-import { setUser } from '@/features/slices/userSlice';
-import { useAppDispatch } from '@/features/store';
-import { useRouter } from 'next/router';
-import { withAuth } from '@/auth/withAuth';
 export const Header = () => {
   // const dispatch = useAppDispatch();
   // const router = useRouter();

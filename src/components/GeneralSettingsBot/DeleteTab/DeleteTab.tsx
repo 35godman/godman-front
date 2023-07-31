@@ -25,6 +25,7 @@ const DeleteTab: FC<DeleteTabProps> = ({ chatbot }) => {
     <div>
       <Button onClick={() => setShow(true)}>Удалить бота</Button>
       <ConfirmModal
+        text={'Удалить бота?'}
         show={show}
         onConfirm={confirmDelete}
         onCancel={handleCancel}

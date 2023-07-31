@@ -1,10 +1,9 @@
 import React from 'react';
 import { Button } from 'antd';
-import s from './Suggestion.module.css';
 
 type SuggestionProps = {
   textProp: string;
-  onclick: () => void;
+  onclick?: () => void;
 };
 
 export const Suggestion: React.FC<SuggestionProps> = ({

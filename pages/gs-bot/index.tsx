@@ -12,7 +12,7 @@ const GeneralSettingsBotPage: FC<GeneralSettingsBotPageProps> = ({
 }) => {
   return <GeneralSettingsBot user_data={user_data} />;
 };
-export const getServerSideProps = withAuth(async (context) => {
+export const getServerSideProps = withAuth(async () => {
   return { props: {} };
 });
 export default GeneralSettingsBotPage;

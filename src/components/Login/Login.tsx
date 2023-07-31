@@ -8,32 +8,29 @@ import {
   Modal,
   notification,
   Spin,
+  message,
 } from 'antd';
 import { LoginValues, RegisterValues } from '@/types/types';
 import s from './Login.module.css';
 import { useRouter } from 'next/router';
-import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 import { setUser } from '@/features/slices/userSlice';
 import { useAppDispatch } from '@/features/store';
 import globalService from '@/service/globalService';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { User } from '@/types/models/globals';
-
-const { TabPane } = Tabs;
+import { FormattedMessage } from 'react-intl';
 
 export const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const [reloginLoad, setReloginLoad] = useState<boolean>(false);
   const router = useRouter();
-  const [isLoggedIn, setLoggedin] = useState<boolean>(false);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
   const loginHandler = async (values: LoginValues) => {
     const response = await globalService.post('auth/login', values);
     if (response.data) {
       Cookies.set('access_token', response.data.token.access_token);
       dispatch(setUser(response.data.user));
-      setLoggedin(true);
+      setLoggedIn(true);
       notification.success({
         message: 'Excellent!',
         description: 'You have successfully logged in',
@@ -51,7 +48,7 @@ export const Login: React.FC = () => {
           await globalService.get('auth/relogin');
           await router.push('/chatbot-list');
         } catch (e) {
-          console.error(e);
+          message.info('Нужно войти в аккаунт');
         }
         setReloginLoad(false);
       };
@@ -67,10 +64,6 @@ export const Login: React.FC = () => {
         title: `User ${values.username} registered`,
       });
     }
-  };
-
-  const onFinishFailed = (errorInfo: never) => {
-    console.log('Failed:', errorInfo);
   };
 
   useEffect(() => {

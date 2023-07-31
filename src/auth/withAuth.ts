@@ -1,6 +1,5 @@
 import { GetServerSideProps } from 'next';
 import { parse } from 'cookie';
-import globalService from '@/service/globalService';
 import { authService } from '@/service/authService';
 
 export function withAuth(gssp: GetServerSideProps): GetServerSideProps {
@@ -23,8 +22,6 @@ export function withAuth(gssp: GetServerSideProps): GetServerSideProps {
         };
       }
     } else {
-      console.log('No cookies found');
-
       return {
         redirect: { statusCode: 302, destination: '/' },
       };

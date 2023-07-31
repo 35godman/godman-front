@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
-import { Button, Input } from 'antd';
+import { Input } from 'antd';
 import globalService from '@/service/globalService';
-import fileUploadService from '@/service/pineconeService';
 import { Chatbot } from '@/types/models/globals';
 import { DeleteOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';

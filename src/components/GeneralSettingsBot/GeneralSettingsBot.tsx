@@ -5,15 +5,13 @@ import { ChatBot } from '../ChatBot/ChatBot';
 import { Settings } from '../Settings/Settings';
 import { DataSource } from '../DataSource/DataSource';
 import s from './GeneralSettingsBot.module.css';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
 import { Chatbot, User } from '@/types/models/globals';
-import { RootState, useAppDispatch } from '@/features/store';
-import { addChatbot } from '@/features/slices/chatbotSlice';
+import { useAppDispatch } from '@/features/store';
 import { setUser } from '@/features/slices/userSlice';
 import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
 import { addFile } from '@/features/slices/charsCountSlice';
-import { useSelector } from 'react-redux';
 import EmbedCode from '@/components/EmbedCode/EmbedCode';
 type GeneralSettingsBotProps = {
   user_data: User;
@@ -61,6 +59,7 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
 
   useEffect(() => {
     getChatbotSettings();
+    //eslint-disable-next-line
   }, [dispatch, id]);
 
   useEffect(() => {

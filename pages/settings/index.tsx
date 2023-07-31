@@ -1,6 +1,3 @@
-import React from 'react';
-import { Settings } from '@/components/Settings/Settings';
-import { Layout } from '../../layouts/Layout';
 import { withAuth } from '@/auth/withAuth';
 
 const dataSourcePage = () => {

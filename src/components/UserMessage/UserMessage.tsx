@@ -1,5 +1,4 @@
 import React from 'react';
-import s from './UserMessage.module.css';
 
 type UserMessageProps = {
   text: string;

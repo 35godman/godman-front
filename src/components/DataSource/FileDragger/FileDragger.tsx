@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, List, message, Typography, Upload } from 'antd';
 import { AxiosResponse } from 'axios';
 import { FileSize } from '@/components/DataSource/DataSourcePropsType';
@@ -19,7 +19,7 @@ type FileDraggerProps = {
 const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
   const { Dragger } = Upload;
   const dispatch = useAppDispatch();
-  const [files, setFiles] = useState<UploadFile<any>[]>([]);
+  const [files, setFiles] = useState<UploadFile<unknown>[]>([]);
   const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
   const [alreadyUploadedFiles, setAlreadyUploadedFiles] = useState<
     FileUpload[]

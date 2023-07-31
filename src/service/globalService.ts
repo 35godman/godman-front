@@ -41,8 +41,7 @@ globalService.interceptors.response.use(
       });
     }
 
-    console.error(error);
-    //return Promise.resolve({ error });
+    return Promise.resolve({ error });
   },
 );
 

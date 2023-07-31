@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { prodApiConfig, testApiConfig } from '@/config/axios.config';
+import { message } from 'antd';
 
 export let authService: AxiosInstance;
 const nodeEnv = process.env.NODE_ENV;
@@ -22,7 +23,7 @@ authService.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error(error);
+    message.error(error.message);
     // If there's an error in the request configuration, you can handle it here
     return Promise.reject(error);
   },

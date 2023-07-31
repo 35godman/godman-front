@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import React, { useEffect } from 'react';
+import React from 'react';
 import '@/styles/global.css';
 import NextNProgress from 'nextjs-progressbar';
 import { Provider } from 'react-redux';

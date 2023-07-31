@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Input,
   InputNumber,
@@ -8,18 +8,13 @@ import {
   Slider,
   Select,
   Space,
-  Switch,
   Checkbox,
   ColorPicker,
-  Image,
   Upload,
   message,
 } from 'antd';
-import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
-import { Suggestion } from '../Suggestion/Suggestion';
-import { Color, ColorPickerProps } from 'antd/es/color-picker';
+
 import s from './Settings.module.css';
-import { UserMessage } from '../UserMessage/UserMessage';
 import { Prompts } from '@/types/enums/prompts';
 import { Chatbot, ChatbotSettings } from '@/types/models/globals';
 import { VisibilityOptions } from '@/types/models/chatbotCustom/visibility.type';
@@ -29,11 +24,8 @@ import SwitchForm from '@/components/Settings/formItems/SwitchForm/SwitchForm';
 import ChatPreview from '@/components/ChatPreview/ChatPreview';
 import globalService from '@/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
-import { AxiosResponse } from 'axios';
-import { FileSize } from '@/components/DataSource/DataSourcePropsType';
 import { removeStaticFieldsFromObject } from '@/helpers/obj/removeStaticFieldsFromObject';
 import { convertMessagesToArray } from '@/helpers/obj/convertMessagesToArray';
-import { useRouter } from 'next/router';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 
 const { Paragraph, Title } = Typography;
@@ -54,7 +46,6 @@ export const Settings: React.FC<SettingsPropsType> = ({
   getChatbot,
 }) => {
   const [fileInfo, setFileInfo] = useState<UploadFile | null>(null);
-  const router = useRouter();
   const resetBasePrompt = () => {
     setChatbot({
       ...chatbot,
@@ -192,6 +183,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
       setNewDataUpdated(true);
       setChatbot(customChatbot);
     }
+    //eslint-disable-next-line
   }, [newDataUpdated, chatbot]);
   if (!chatbot) return null;
 
