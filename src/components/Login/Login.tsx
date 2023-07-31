@@ -73,7 +73,7 @@ export const Login: React.FC = () => {
       }
     };
     successLogged();
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn]);
 
   const renderLoginForm = () => {
     return (
