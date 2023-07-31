@@ -35,6 +35,7 @@ export const Login: React.FC = () => {
         message: 'Excellent!',
         description: 'You have successfully logged in',
       });
+      await router.push('/chatbot-list');
     }
   };
 
