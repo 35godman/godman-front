@@ -15,7 +15,7 @@ const ChatbotListPage: FC<ChatbotsListProps> = ({ user_data }) => {
   );
 };
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getServerSideProps = withAuth(async (context) => {
-  return { props: {} };
-});
+// export const getServerSideProps = withAuth(async (context) => {
+//   return { props: {} };
+// });
 export default ChatbotListPage;

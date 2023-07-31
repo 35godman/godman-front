@@ -3,12 +3,13 @@ import s from './ChatbotsList.module.css';
 import { Typography } from 'antd';
 import { CardBot } from './CardBot';
 import { useRouter } from 'next/router';
-import { useAppDispatch } from '@/features/store';
+import { RootState, useAppDispatch } from '@/features/store';
 import { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
 import { Chatbot, User } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { resetChars } from '@/features/slices/charsCountSlice';
+import { useSelector } from 'react-redux';
 
 type ChatbotsListProps = {
   user_data: User;
@@ -17,20 +18,19 @@ type ChatbotsListProps = {
 export const ChatbotsList: FC<ChatbotsListProps> = ({ user_data }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const user = useSelector((state: RootState) => state.user);
   const { Title } = Typography;
   const [botsDB, setBotsDB] = useState<Chatbot[]>([]);
   const getBotsByUserId = useCallback(async () => {
-    const response = await globalService.get(
-      `/chatbot/find/user/${user_data._id}`,
-    );
+    const response = await globalService.get(`/chatbot/find/user/${user._id}`);
     setBotsDB(response.data);
-  }, [user_data]);
+  }, [user]);
 
   useEffect(() => {
-    if (user_data._id) {
+    if (user._id) {
       getBotsByUserId();
     }
-  }, [getBotsByUserId, user_data]);
+  }, [user]);
 
   const createChatbot = async () => {
     const response: AxiosResponse<Chatbot> = await globalService.post(
