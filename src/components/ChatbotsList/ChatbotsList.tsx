@@ -6,23 +6,21 @@ import { useRouter } from 'next/router';
 import { RootState, useAppDispatch } from '@/features/store';
 import { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
-import { Chatbot, User } from '@/types/models/globals';
+import { Chatbot } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { resetChars } from '@/features/slices/charsCountSlice';
 import { useSelector } from 'react-redux';
 
-type ChatbotsListProps = {
-  user_data: User;
-};
-
-export const ChatbotsList: FC<ChatbotsListProps> = ({ user_data }) => {
+export const ChatbotsList: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state.user);
   const { Title } = Typography;
   const [botsDB, setBotsDB] = useState<Chatbot[]>([]);
   const getBotsByUserId = useCallback(async () => {
-    const response = await globalService.get(`/chatbot/find/user/${user._id}`);
+    const response: AxiosResponse<Chatbot[]> = await globalService.get(
+      `/chatbot/find/user/${user._id}`,
+    );
     setBotsDB(response.data);
   }, [user]);
 
@@ -30,13 +28,14 @@ export const ChatbotsList: FC<ChatbotsListProps> = ({ user_data }) => {
     if (user._id) {
       getBotsByUserId();
     }
+    //eslint-disable-next-line
   }, [user]);
 
   const createChatbot = async () => {
     const response: AxiosResponse<Chatbot> = await globalService.post(
       '/chatbot/create-default',
       {
-        user_id: user_data._id,
+        user_id: user._id,
       },
     );
     dispatch(resetChars());

@@ -13,13 +13,8 @@ import { setUser } from '@/features/slices/userSlice';
 import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
 import { addFile } from '@/features/slices/charsCountSlice';
 import EmbedCode from '@/components/EmbedCode/EmbedCode';
-type GeneralSettingsBotProps = {
-  user_data: User;
-};
 
-export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
-  user_data,
-}) => {
+export const GeneralSettingsBot: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = router.query;
@@ -61,10 +56,6 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
     getChatbotSettings();
     //eslint-disable-next-line
   }, [dispatch, id]);
-
-  useEffect(() => {
-    dispatch(setUser(user_data));
-  }, [dispatch, user_data]);
 
   const selectCurrentTab = (activeKey: string) => {
     setCurrentTabSelected(activeKey);

@@ -14,8 +14,4 @@ const dataSourcePage: FC<DataSourceProps> = () => {
     </div>
   );
 };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getServerSideProps = withAuth(async (context) => {
-  return { props: {} };
-});
 export default dataSourcePage;
