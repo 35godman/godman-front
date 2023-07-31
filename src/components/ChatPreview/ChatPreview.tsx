@@ -6,7 +6,7 @@ import { Suggestion } from '@/components/Suggestion/Suggestion';
 import { UserMessage } from '@/components/UserMessage/UserMessage';
 import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import { Chatbot } from '@/types/models/globals';
-import { ChatMessage } from '@/components/ChatMessage/InitialChatMessage';
+import { ChatMessage } from '@/components/ChatMessage/ChatMessage';
 
 type ChatPreviewProps = {
   chatbot: Chatbot;
@@ -51,12 +51,11 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
             />
           );
         })}
-        <div className={s.userMessage}>
-          <UserMessage
-            text={'Hello'}
-            color={chatbot.settings.user_message_color}
-          />
-        </div>
+        <ChatMessage
+          textProp={'Hello'}
+          chat_role={'user'}
+          user_color={chatbot.settings.user_message_color}
+        />
       </div>
 
       <div>

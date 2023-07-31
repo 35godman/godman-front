@@ -11,7 +11,7 @@ const dataSourcePage: FC<DataSourceProps> = ({ user_data }) => {
   return (
     <div>
       <HomeBtn />
-      <DataSource user={user_data} />
+      {/*<DataSource />*/}
     </div>
   );
 };

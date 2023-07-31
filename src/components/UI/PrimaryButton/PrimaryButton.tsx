@@ -3,14 +3,22 @@ import { Button } from 'antd';
 
 type PrimaryButtonProps = {
   onclick: () => void;
-  text: string;
+  text?: string;
   disabled?: boolean;
+  loading?: boolean;
 };
 
-const PrimaryButton: FC<PrimaryButtonProps> = ({ onclick, text, disabled }) => {
+const PrimaryButton: FC<PrimaryButtonProps> = ({
+  onclick,
+  text,
+  disabled,
+  children,
+  loading,
+}) => {
   return (
     <>
       <Button
+        loading={loading}
         onClick={onclick}
         disabled={disabled}
         type="primary"
@@ -20,6 +28,7 @@ const PrimaryButton: FC<PrimaryButtonProps> = ({ onclick, text, disabled }) => {
         style={{ backgroundColor: 'rgb(111, 68, 252)' }}
       >
         {text}
+        {children}
       </Button>
     </>
   );

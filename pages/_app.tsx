@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import React from 'react';
+import React, { useEffect } from 'react';
 import '@/styles/global.css';
 import NextNProgress from 'nextjs-progressbar';
 import { Provider } from 'react-redux';
@@ -8,16 +8,18 @@ import { Layout } from '../layouts/Layout';
 function MyApp({ Component, pageProps }: AppProps) {
   const { noLayout, ...rest } = pageProps;
   return (
-    <Provider store={store}>
-      <NextNProgress />
-      {noLayout ? (
-        <Component {...rest} />
-      ) : (
-        <Layout>
+    <>
+      <Provider store={store}>
+        <NextNProgress />
+        {noLayout ? (
           <Component {...rest} />
-        </Layout>
-      )}
-    </Provider>
+        ) : (
+          <Layout>
+            <Component {...rest} />
+          </Layout>
+        )}
+      </Provider>
+    </>
   );
 }
 

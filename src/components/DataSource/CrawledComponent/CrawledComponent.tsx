@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import s from '@/components/DataSource/DataSource.module.css';
-import { Button, Input, List, Typography } from 'antd';
+import { Button, Input, List, message, Typography } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { AxiosResponse } from 'axios/index';
 import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLink.type';
@@ -22,10 +22,16 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
   const [alreadyUploadedLinks, setAlreadyUploadedLinks] = useState<
     FileUpload[]
   >(() => chatbot.sources.website);
+
+  const [crawlLoading, setCrawlLoading] = useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+
   const handleWebsiteUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWebsiteUrl(e.target.value);
   };
   const handleWebsiteParse = async () => {
+    message.loading('Ожидайте, контент с сайта загружается');
+    setCrawlLoading(true);
     const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
       '/crawler/crawl',
       {
@@ -33,15 +39,21 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
         chatbot_id: chatbot._id,
       },
     );
-    setParsedContent(res.data);
-    for (const webFile of res.data) {
-      dispatch(
-        addFile({
-          id: webFile.url,
-          chars: webFile.size,
-        }),
-      );
+    if (res.data) {
+      setParsedContent(res.data);
+
+      for (const webFile of res.data) {
+        dispatch(
+          addFile({
+            id: webFile.url,
+            chars: webFile.size,
+          }),
+        );
+      }
+    } else {
+      message.error('Ошибка');
     }
+    setCrawlLoading(false);
   };
   const deleteCrawledLink = async (link: CrawledLink) => {
     const removedParsedContent = [...parsedContent];
@@ -58,6 +70,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
   };
 
   const deleteAlreadyUploadedLink = async (link: FileUpload) => {
+    setDeleteLoading(true);
     const removedAlreadyUploadedLink = [...alreadyUploadedLinks];
     const body = {
       web_link: link.originalName,
@@ -69,6 +82,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
       removedAlreadyUploadedLink.filter((item) => item._id !== link._id),
     );
     dispatch(removeFile(link._id));
+    setDeleteLoading(false);
   };
 
   return (
@@ -83,7 +97,11 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
           value={websiteUrl}
           onChange={handleWebsiteUrlChange}
         />
-        <PrimaryButton onclick={handleWebsiteParse} text={'Parse website'} />
+        <PrimaryButton
+          onclick={handleWebsiteParse}
+          text={'Parse website'}
+          loading={crawlLoading}
+        />
       </div>
       <List
         dataSource={parsedContent}
@@ -93,7 +111,10 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
               {item.url}
             </Typography.Text>
             {item.size}
-            <Button onClick={() => deleteCrawledLink(item)}>
+            <Button
+              onClick={() => deleteCrawledLink(item)}
+              loading={deleteLoading}
+            >
               <DeleteOutlined />
             </Button>
           </List.Item>
@@ -107,7 +128,10 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
               {item.originalName.replace(/\[]/g, '/')}
             </Typography.Text>
             {item.char_length}
-            <Button onClick={() => deleteAlreadyUploadedLink(item)}>
+            <Button
+              onClick={() => deleteAlreadyUploadedLink(item)}
+              loading={deleteLoading}
+            >
               <DeleteOutlined />
             </Button>
           </List.Item>

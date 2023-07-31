@@ -8,13 +8,13 @@ const nodeEnv = process.env.NODE_ENV;
 if (nodeEnv === 'development') {
   crawlService = axios.create({
     baseURL: 'http://localhost:5050/v1',
-    timeout: 90000,
+    timeout: 600000,
     headers: { WithCredentials: true },
   });
 } else {
   crawlService = axios.create({
     baseURL: '/v1',
-    timeout: 90000,
+    timeout: 600000,
     headers: { WithCredentials: true },
   });
 }

@@ -5,13 +5,19 @@ export type ConfirmModalProps = {
   show: boolean;
   onConfirm: () => void;
   onCancel: () => void;
+  text: string;
 };
 
-const ConfirmModal: FC<ConfirmModalProps> = ({ show, onConfirm, onCancel }) => {
+const ConfirmModal: FC<ConfirmModalProps> = ({
+  show,
+  onConfirm,
+  onCancel,
+  text,
+}) => {
   return (
     <>
       <Modal closable={true} open={show} onCancel={onCancel} footer={false}>
-        <p>Вы уверены?</p>
+        <p>{text}</p>
         <Button danger={true} onClick={() => onConfirm()}>
           Да
         </Button>

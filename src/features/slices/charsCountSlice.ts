@@ -27,6 +27,9 @@ export const charsCountSlice = createSlice({
         state.splice(index, 1);
       }
     },
+    resetChars: (state) => {
+      state.splice(0, state.length);
+    },
   },
 });
 export const selectCurrentSize = createSelector(
@@ -35,7 +38,7 @@ export const selectCurrentSize = createSelector(
 );
 
 // Export actions
-export const { addFile, removeFile } = charsCountSlice.actions;
+export const { addFile, removeFile, resetChars } = charsCountSlice.actions;
 
 // Export reducer
 export const charsCountReducer = charsCountSlice.reducer;

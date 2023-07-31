@@ -14,6 +14,7 @@ import { setUser } from '@/features/slices/userSlice';
 import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
 import { addFile } from '@/features/slices/charsCountSlice';
 import { useSelector } from 'react-redux';
+import EmbedCode from '@/components/EmbedCode/EmbedCode';
 type GeneralSettingsBotProps = {
   user_data: User;
 };
@@ -27,31 +28,33 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
   const fetchedRef = useRef(false);
   const [newDataUpdated, setNewDataUpdated] = useState<boolean>(false);
+  const [currentTabSelected, setCurrentTabSelected] = useState<string>('');
 
-  //use callback
   const getChatbotSettings = useCallback(async () => {
     if (id) {
       fetchedRef.current = true;
       const response: AxiosResponse<Chatbot> = await globalService.get(
         `/chatbot/find/${id}`,
       );
-
-      setChatbot(response.data);
-      //set initial files for charsCountSlice
-      const { files, website, QA_list } = response.data.sources;
-      for (const file of files) {
-        dispatch(addFile({ id: file._id, chars: file.char_length }));
-      }
-      for (const webFile of website) {
-        dispatch(addFile({ id: webFile._id, chars: webFile.char_length }));
-      }
-      for (const qa of QA_list) {
-        dispatch(
-          addFile({
-            id: qa._id,
-            chars: qa.answer.length + qa.question.length,
-          }),
-        );
+      if (response.data) {
+        setChatbot(response.data);
+        //set initial files for charsCountSlice
+        const { files, website, QA_list } = response.data.sources;
+        for (const file of files) {
+          dispatch(addFile({ id: file._id, chars: file.char_length }));
+        }
+        for (const webFile of website) {
+          dispatch(addFile({ id: webFile._id, chars: webFile.char_length }));
+        }
+        for (const qa of QA_list) {
+          dispatch(
+            addFile({
+              id: qa._id,
+              chars: qa.answer.length + qa.question.length,
+            }),
+          );
+        }
+        return response.data;
       }
     }
   }, [dispatch, id]);
@@ -64,18 +67,22 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
     dispatch(setUser(user_data));
   }, [dispatch, user_data]);
 
+  const selectCurrentTab = (activeKey: string) => {
+    setCurrentTabSelected(activeKey);
+  };
+
   const tabs = [
     {
-      key: '1',
+      key: 'chatbot',
       label: 'Chatbot',
       children: <ChatBot chatbot={chatbot as Chatbot} />,
     },
     {
-      key: '2',
+      key: 'settings',
       label: 'Settings',
       children: (
         <Settings
-          //FIXME getChatbotSettings add
+          getChatbot={getChatbotSettings}
           chatbot={chatbot as Chatbot}
           setChatbot={setChatbot}
           setNewDataUpdated={setNewDataUpdated}
@@ -84,24 +91,36 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
       ),
     },
     {
-      key: '3',
+      key: 'sources',
       label: 'Sources',
       children: (
-        <DataSource chatbot={chatbot as Chatbot} setChatbot={setChatbot} />
+        <DataSource
+          chatbot={chatbot as Chatbot}
+          setChatbot={setChatbot}
+          getChatbot={getChatbotSettings}
+        />
       ),
     },
     {
-      key: '4',
+      key: 'embed',
       label: 'Embed on site',
-      children: <div>Здесь будет компонент Embed on site</div>,
+      children: (
+        <>
+          <EmbedCode
+            selected={currentTabSelected}
+            chatbot={chatbot as Chatbot}
+            getChatbot={getChatbotSettings}
+          />
+        </>
+      ),
     },
     {
-      key: '5',
+      key: 'share',
       label: 'Share',
       children: <div>Здесь будет компонент Share</div>,
     },
     {
-      key: '6',
+      key: 'delete',
       label: 'Delete Bot',
       children: (
         <>
@@ -118,6 +137,7 @@ export const GeneralSettingsBot: FC<GeneralSettingsBotProps> = ({
           centered
           className={s.fullWidthTabs}
           items={tabs}
+          onChange={(activeKey: string) => selectCurrentTab(activeKey)}
         />
       )}
     </>

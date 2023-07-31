@@ -12,12 +12,13 @@ import {
 import { LoginValues, RegisterValues } from '@/types/types';
 import s from './Login.module.css';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 import { setUser } from '@/features/slices/userSlice';
 import { useAppDispatch } from '@/features/store';
 import globalService from '@/service/globalService';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { User } from '@/types/models/globals';
 
 const { TabPane } = Tabs;
 
@@ -29,7 +30,7 @@ export const Login: React.FC = () => {
 
   const loginHandler = async (values: LoginValues) => {
     const response = await globalService.post('auth/login', values);
-    if (response.status === 201) {
+    if (response.data) {
       Cookies.set('access_token', response.data.token.access_token);
       dispatch(setUser(response.data.user));
       setLoggedin(true);
@@ -73,9 +74,12 @@ export const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      router.push('/general-navigation');
-    }
+    const successLogged = async () => {
+      if (isLoggedIn) {
+        await router.push('/chatbot-list');
+      }
+    };
+    successLogged();
   }, [isLoggedIn, router]);
 
   const renderLoginForm = () => {
@@ -128,7 +132,11 @@ export const Login: React.FC = () => {
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ backgroundColor: 'rgb(111, 68, 252)' }}
+            >
               <FormattedMessage id={'submit'} />
             </Button>
           </Form.Item>
@@ -191,7 +199,11 @@ export const Login: React.FC = () => {
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ backgroundColor: 'rgb(111, 68, 252)' }}
+            >
               <FormattedMessage id={'submit'} />
             </Button>
           </Form.Item>

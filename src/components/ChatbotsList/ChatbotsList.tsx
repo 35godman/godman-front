@@ -4,11 +4,12 @@ import { Button, Typography } from 'antd';
 import { CardBot } from './CardBot';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/features/store';
+import { RootState, useAppDispatch } from '@/features/store';
 import axios, { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
 import { Chatbot, User } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import { resetChars } from '@/features/slices/charsCountSlice';
 
 type ChatbotsListProps = {
   user_data: User;
@@ -16,6 +17,7 @@ type ChatbotsListProps = {
 
 export const ChatbotsList: FC<ChatbotsListProps> = ({ user_data }) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { Paragraph, Title } = Typography;
   const [botsDB, setBotsDB] = useState<Chatbot[]>([]);
   const getBotsByUserId = useCallback(async () => {
@@ -38,6 +40,7 @@ export const ChatbotsList: FC<ChatbotsListProps> = ({ user_data }) => {
         user_id: user_data._id,
       },
     );
+    dispatch(resetChars());
     await router.push(`/gs-bot?id=${response.data._id}`);
   };
   return (
@@ -48,7 +51,9 @@ export const ChatbotsList: FC<ChatbotsListProps> = ({ user_data }) => {
             <Title level={3}>My Chatbots</Title>
           </div>
           <div>
-            <PrimaryButton onclick={createChatbot} text={'New chatbot'} />
+            <PrimaryButton onclick={createChatbot}>
+              Создать чатбот
+            </PrimaryButton>
           </div>
         </div>
       </div>

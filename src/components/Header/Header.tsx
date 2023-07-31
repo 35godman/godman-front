@@ -9,8 +9,8 @@ import { useAppDispatch } from '@/features/store';
 import { useRouter } from 'next/router';
 import { withAuth } from '@/auth/withAuth';
 export const Header = () => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
+  // const dispatch = useAppDispatch();
+  // const router = useRouter();
   // const getUser = useCallback(async () => {
   //   try {
   //     const response: AxiosResponse<User> = await globalService.get(

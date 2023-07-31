@@ -1,11 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, List, Typography, Upload } from 'antd';
-import { AxiosResponse } from 'axios/index';
+import { Button, List, message, Typography, Upload } from 'antd';
+import { AxiosResponse } from 'axios';
 import { FileSize } from '@/components/DataSource/DataSourcePropsType';
 import globalService from '@/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { Chatbot, FileUpload } from '@/types/models/globals';
-import s from '@/components/DataSource/DataSource.module.css';
 import { DeleteOutlined } from '@ant-design/icons';
 import crawlService from '@/service/crawlService';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
@@ -14,19 +13,20 @@ import { addFile, removeFile } from '@/features/slices/charsCountSlice';
 
 type FileDraggerProps = {
   chatbot: Chatbot;
+  getChatbot: () => Promise<Chatbot | undefined>;
 };
 
-const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
+const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
   const { Dragger } = Upload;
   const dispatch = useAppDispatch();
-
   const [files, setFiles] = useState<UploadFile<any>[]>([]);
-  console.log('=>(FileDragger.tsx:24) files', files);
   const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
-  console.log('=>(FileDragger.tsx:27) fileInfo', fileInfo);
   const [alreadyUploadedFiles, setAlreadyUploadedFiles] = useState<
     FileUpload[]
-  >(() => chatbot.sources.files);
+  >(chatbot.sources.files);
+
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 
   const handleUpload = async (info: UploadChangeParam<UploadFile<unknown>>) => {
     const { file, fileList } = info;
@@ -51,14 +51,17 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
         '/file-upload/get-char-length',
         data,
       );
-      setFileInfo(response.data);
-      for (const file of response.data) {
-        dispatch(addFile({ id: file.name, chars: file.textSize }));
+      if (response.status === 201) {
+        setFileInfo(response.data);
+        for (const file of response.data) {
+          dispatch(addFile({ id: file.name, chars: file.textSize }));
+        }
       }
     }
   };
 
   const loadFilesOnServer = async () => {
+    setUploadLoading(true);
     const data = new FormData();
 
     // Append all files to the FormData instance
@@ -68,22 +71,39 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
       }
     });
     data.append('chatbot_id', chatbot._id);
-    await globalService.post('/file-upload/multi-upload', data);
-    setFileInfo([]);
-    setFiles([]);
+    const response = await globalService.post(
+      '/file-upload/multi-upload',
+      data,
+    );
+    if (response.status === 201) {
+      const updatedChatbot = await getChatbot();
+      if (updatedChatbot) {
+        setAlreadyUploadedFiles(updatedChatbot.sources.files);
+        setFileInfo([]);
+        setFiles([]);
+        message.info('Успешно загружено');
+        setUploadLoading(false);
+      } else {
+        message.info('Ошибка при загрузке');
+      }
+    }
   };
   const deleteAlreadyUploadedFiles = async (file: FileUpload) => {
+    setDeleteLoading(true);
     const removedAlreadyUploadedLink = [...alreadyUploadedFiles];
     const body = {
       file_id: file._id,
       chatbot_id: chatbot._id,
       original_name: encodeURIComponent(file.originalName),
     };
-    await crawlService.post('/file-upload/remove-file', body);
-    setAlreadyUploadedFiles(
-      removedAlreadyUploadedLink.filter((item) => item._id !== file._id),
-    );
-    dispatch(removeFile(file._id));
+    const response = await crawlService.post('/file-upload/remove-file', body);
+    if (response.status === 201) {
+      setAlreadyUploadedFiles(
+        removedAlreadyUploadedLink.filter((item) => item._id !== file._id),
+      );
+      dispatch(removeFile(file._id));
+      setDeleteLoading(false);
+    }
   };
 
   const onRemoveFile = (file: FileSize) => {
@@ -117,6 +137,7 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
         onclick={loadFilesOnServer}
         text={'Upload'}
         disabled={!files.length}
+        loading={uploadLoading}
       />
       <List
         dataSource={fileInfo}
@@ -130,14 +151,17 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot }) => {
           </List.Item>
         )}
       ></List>
-      <Typography>Already uploaded</Typography>
+      <Typography>Загруженные файлы</Typography>
       <List
         dataSource={alreadyUploadedFiles}
         renderItem={(item) => (
           <List.Item>
             <Typography.Text mark>{item.originalName}</Typography.Text>
             {item.char_length}
-            <Button onClick={() => deleteAlreadyUploadedFiles(item)}>
+            <Button
+              onClick={() => deleteAlreadyUploadedFiles(item)}
+              loading={deleteLoading}
+            >
               <DeleteOutlined />
             </Button>
           </List.Item>

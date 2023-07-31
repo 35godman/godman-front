@@ -20,7 +20,6 @@ import { Suggestion } from '../Suggestion/Suggestion';
 import { Color, ColorPickerProps } from 'antd/es/color-picker';
 import s from './Settings.module.css';
 import { UserMessage } from '../UserMessage/UserMessage';
-import { SettingsPropsType } from './SettingsPropsType';
 import { Prompts } from '@/types/enums/prompts';
 import { Chatbot, ChatbotSettings } from '@/types/models/globals';
 import { VisibilityOptions } from '@/types/models/chatbotCustom/visibility.type';
@@ -40,12 +39,19 @@ import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
-
+type SettingsPropsType = {
+  chatbot: Chatbot;
+  setChatbot: (chatbot: Chatbot) => void;
+  setNewDataUpdated: (y: boolean) => void;
+  newDataUpdated: boolean;
+  getChatbot: () => Promise<Chatbot | undefined>;
+};
 export const Settings: React.FC<SettingsPropsType> = ({
   chatbot,
   setChatbot,
   setNewDataUpdated,
   newDataUpdated,
+  getChatbot,
 }) => {
   const [fileInfo, setFileInfo] = useState<UploadFile | null>(null);
   const router = useRouter();
@@ -121,7 +127,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
   };
 
   const handleUpload = (info: UploadChangeParam<UploadFile<unknown>>) => {
-    const { file, fileList } = info;
+    const { file } = info;
     setFileInfo(file);
   };
 
@@ -130,6 +136,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
     /**
      * @COMMENT converting string to arr
      */
+
     updatedChatbot.settings.initial_messages = convertMessagesToArray(
       updatedChatbot.settings.new_initial_messages,
     );
@@ -144,30 +151,29 @@ export const Settings: React.FC<SettingsPropsType> = ({
       chatbot_id: updatedChatbot._id,
       chatbot: removeStaticFieldsFromObject(updatedChatbot),
     };
-    console.log('=>(Settings.tsx:108) body', body);
-
     const response = await globalService.post('/chatbot/settings-update', body);
-    console.log('=>(Settings.tsx:122) response', response);
+    if (response.status === 201) {
+      /**
+       * @COMMENT
+       * sending profile_picture_here
+       */
+      const data = new FormData();
+      if (fileInfo && fileInfo.originFileObj) {
+        data.append(
+          'file',
+          fileInfo.originFileObj,
+          encodeURIComponent(fileInfo.name),
+        );
+        await globalService.post(
+          `/file-upload/profile-picture-upload?chatbot_id=${chatbot._id}`,
+          data,
+        );
+      }
 
-    /**
-     * @COMMENT
-     * sending profile_picture_here
-     */
-    const data = new FormData();
-    if (fileInfo && fileInfo.originFileObj) {
-      data.append(
-        'file',
-        fileInfo.originFileObj,
-        encodeURIComponent(fileInfo.name),
-      );
-      const response: AxiosResponse<FileSize[]> = await globalService.post(
-        `/file-upload/profile-picture-upload?chatbot_id=${chatbot._id}`,
-        data,
-      );
+      message.info('Successfully uploaded');
+      await getChatbot();
+      setNewDataUpdated(false);
     }
-
-    message.info('Successfully uploaded');
-    //await router.reload();
   };
 
   /**

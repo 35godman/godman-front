@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import s from './ChatBot.module.css';
 import { Suggestion } from '../Suggestion/Suggestion';
 import { UserMessage } from '../UserMessage/UserMessage';
-import { Button, Input, Spin, Typography } from 'antd';
+import { Button, Input, message, Spin, Typography } from 'antd';
 import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import { Chatbot, User } from '@/types/models/globals';
@@ -17,7 +17,8 @@ import MessageDisplay from '@/components/ChatBot/MessageDisplay/MessageDisplay';
 import { domainConfig } from '@/config/domain.config';
 import { nanoid } from 'nanoid';
 import { RoleState } from '@/types/models/role';
-import { ChatMessage } from '@/components/ChatMessage/InitialChatMessage';
+import { ChatMessage } from '@/components/ChatMessage/ChatMessage';
+import { useRouter } from 'next/router';
 
 type ChatBotProps = {
   chatbot: Chatbot;
@@ -25,55 +26,61 @@ type ChatBotProps = {
 
 const { TextArea } = Input;
 export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
+  const router = useRouter();
   const [questionValue, setQuestionValue] = useState<string>('');
   const user = useSelector((state: RootState) => state.user);
   const [messages, setMessages] = useState<MessageState[]>([]);
-  console.log('=>(ChatBot.tsx:27) messages', messages);
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
   const [isBotAnswering, setIsBotAnswering] = useState<boolean>(false);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
-  const sendMessage = async () => {
+  const sendMessage = async (question: string) => {
+    setQuestionValue('');
     setIsBotAnswering(true);
+    setButtonLoading(true);
     const newMessages = [
       ...messages,
       {
         _id: nanoid(),
-        content: questionValue,
+        content: question,
         role: 'user' as RoleState,
       },
     ];
     setMessages(newMessages);
 
     const body = {
-      question: questionValue,
+      question: question,
       user_id: user._id,
       chatbot_id: chatbot._id,
     };
-    //FIXME add catch
-    const response = await fetch(
-      `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask`,
-      {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
+    try {
+      const response = await fetch(
+        `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask`,
+        {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      },
-    );
-
-    if (response.body) {
-      const reader = response.body.getReader();
-      console.log(messages.length);
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          break;
+      );
+      if (response.body) {
+        const reader = response.body.getReader();
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          const text = new TextDecoder().decode(value);
+          setCurrentAnswer((prevState) => prevState + text);
         }
-        const text = new TextDecoder().decode(value);
-        setCurrentAnswer((prevState) => prevState + text);
+        setIsBotAnswering(false);
+        setButtonLoading(false);
       }
-      setIsBotAnswering(false);
+    } catch (e) {
+      message.error('Произошла ошибка', 2000, () => router.reload());
+      setButtonLoading(false);
     }
   };
   useEffect(() => {
@@ -94,7 +101,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   }, [isBotAnswering]);
   return (
     <>
-      <div className="min-h-screen px-4 flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border pt-2 ">
+      <div className="min-h-[80%] max-w-[100%] px-4 flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border pt-2 ">
         <div className=" sticky top-0 w-full">
           <div className="flex justify-between py-1 mb-4   z-10">
             <div className="flex items-center">
@@ -109,7 +116,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             </div>
           </div>
         </div>
-        <div className="flex-grow ">
+        <div className={'flex flex-col'}>
           {chatbot.settings.initial_messages.map((msg, index) => {
             return (
               <ChatMessage chat_role={'assistant'} textProp={msg} key={index} />
@@ -141,7 +148,13 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
           <div>
             <div className="py-3 flex overflow-x-auto">
               {chatbot.settings.suggested_messages.map((msg) => {
-                return <Suggestion textProp={msg} key={msg} />;
+                return (
+                  <Suggestion
+                    textProp={msg}
+                    key={msg}
+                    onclick={() => sendMessage(msg)}
+                  />
+                );
               })}
             </div>
             <div
@@ -155,18 +168,17 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
                   className=" m-0 w-full min-h-[1.5rem] max-h-36 pr-7 resize-none border-0 bg-inherit flex-1 appearance-none rounded-md focus:ring-0 focus-visible:ring-0 focus:outline-none "
                 ></TextArea>
               </div>
-              <div className="flex items-end">
+              <div className="flex items-center">
                 <Button
-                  className=" flex-none p-2"
-                  onClick={sendMessage}
+                  loading={buttonLoading}
+                  className=" flex-none"
+                  onClick={() => sendMessage(questionValue)}
                   icon={<SendOutlined />}
                 ></Button>
               </div>
             </div>
-            <div></div>
           </div>
         </div>
-        <div></div>
       </div>
     </>
   );

@@ -23,17 +23,16 @@ import { selectCurrentSize } from '@/features/slices/charsCountSlice';
 type DataSourceProps = {
   chatbot: Chatbot;
   setChatbot: (chatbot: Chatbot) => void;
+  getChatbot: () => Promise<Chatbot | undefined>;
 };
 export const DataSource: React.FC<DataSourceProps> = ({
   chatbot,
   setChatbot,
+  getChatbot,
 }) => {
   const charsInChatbot = useSelector(selectCurrentSize);
-  console.log('=>(DataSource.tsx:32) charsInChatbot', charsInChatbot);
-
-  const router = useRouter();
-  console.log('=>(TextSource.tsx:51) chatbot', chatbot);
   const { Paragraph } = Typography;
+  const [retrainLoading, setRetrainLoading] = useState<boolean>(false);
 
   const [, setActiveTab] = useState<string>('Files');
 
@@ -42,9 +41,15 @@ export const DataSource: React.FC<DataSourceProps> = ({
   };
 
   const handleRetrain = async () => {
-    await fileUploadService.post('/embedding/setup', {
+    setRetrainLoading(true);
+    const response = await fileUploadService.post('/embedding/setup', {
       chatbot_id: chatbot._id,
     });
+
+    if (response.status === 201) {
+      await getChatbot();
+      setRetrainLoading(false);
+    }
   };
 
   const tabs = [
@@ -53,7 +58,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
       label: 'Files',
       children: (
         <>
-          <FileDragger chatbot={chatbot} />
+          <FileDragger chatbot={chatbot} getChatbot={getChatbot} />
         </>
       ),
     },
@@ -94,25 +99,17 @@ export const DataSource: React.FC<DataSourceProps> = ({
         onChange={handleTabClick}
         items={tabs}
       />
-      {/*<div className={s.createBotArea}>*/}
-      {/*  {countFiles > 0 && (*/}
-      {/*      <p>*/}
-      {/*        {countFiles} File(s) ({countCharsInFiles} chars )*/}
-      {/*      </p>*/}
-      {/*  )}*/}
-      {/*  {countCharsInText > 0 && <p>{countCharsInText} text input chars </p>}*/}
-      {/*  {countCharsInWebsite > 0 && (*/}
-      {/*      <p>{countCharsInWebsite} Chars from web </p>*/}
-      {/*  )}*/}
-      {/*  {countQna > 0 && <p>{countQna} Q&A</p>}*/}
-      {/*</div>*/}
       <div className={'flex flex-col'}>
         <div className={'flex flex-col'}>
           <Paragraph>Количество символов {charsInChatbot}</Paragraph>
           <Paragraph>Макс. количество {chatbot.settings.char_limit}</Paragraph>
         </div>
 
-        <PrimaryButton text={'Обучить'} onclick={handleRetrain} />
+        <PrimaryButton
+          text={'Обучить'}
+          onclick={handleRetrain}
+          loading={retrainLoading}
+        />
       </div>
     </div>
   );
