@@ -41,22 +41,22 @@ export const Login: React.FC = () => {
 
   const initialRender = useRef(true);
 
-  useEffect(() => {
-    if (initialRender.current) {
-      const relogin = async () => {
-        setReloginLoad(true);
-        try {
-          await globalService.get('auth/relogin');
-          await router.push('/chatbot-list');
-        } catch (e) {
-          message.info('Нужно войти в аккаунт');
-        }
-        setReloginLoad(false);
-      };
-      relogin();
-      initialRender.current = false;
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   if (initialRender.current) {
+  //     const relogin = async () => {
+  //       setReloginLoad(true);
+  //       try {
+  //         await globalService.get('auth/relogin');
+  //         await router.push('/chatbot-list');
+  //       } catch (e) {
+  //         message.info('Нужно войти в аккаунт');
+  //       }
+  //       setReloginLoad(false);
+  //     };
+  //     relogin();
+  //     initialRender.current = false;
+  //   }
+  // }, [router]);
 
   const registerHandler = async (values: RegisterValues) => {
     const response = await globalService.post('user/register', values);

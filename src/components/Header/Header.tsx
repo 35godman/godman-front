@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import s from './Header.module.css';
+import globalService from '@/service/globalService';
+import { message } from 'antd';
+import { useRouter } from 'next/router';
 export const Header = () => {
-  // const dispatch = useAppDispatch();
-  // const router = useRouter();
-  // const getUser = useCallback(async () => {
-  //   try {
-  //     const response: AxiosResponse<User> = await globalService.get(
-  //       'auth/relogin',
-  //     );
-  //     const { data } = response;
-  //     dispatch(setUser(data));
-  //   } catch (err) {
-  //     await router.push('/login');
-  //   }
-  // }, [dispatch]);
+  const initialRender = useRef(true);
+  const router = useRouter();
+  useEffect(() => {
+    if (initialRender.current) {
+      const relogin = async () => {
+        try {
+          await globalService.get('auth/relogin');
+          await router.push('/chatbot-list');
+        } catch (e) {
+          message.info('Нужно войти в аккаунт');
+        }
+      };
+      relogin();
+      initialRender.current = false;
+    }
+  }, [router]);
   return <div className={s.generalHeader}>Header</div>;
 };
