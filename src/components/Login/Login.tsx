@@ -67,14 +67,14 @@ export const Login: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const successLogged = async () => {
-      if (isLoggedIn) {
-        await router.push('/chatbot-list');
-      }
-    };
-    successLogged();
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   const successLogged = async () => {
+  //     if (isLoggedIn) {
+  //       await router.push('/chatbot-list');
+  //     }
+  //   };
+  //   successLogged();
+  // }, [isLoggedIn]);
 
   const renderLoginForm = () => {
     return (
