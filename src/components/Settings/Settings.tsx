@@ -124,6 +124,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
 
   const handleSubmit = async () => {
     const updatedChatbot = { ...chatbot };
+    console.log('=>(Settings.tsx:127) updatedChatbot', updatedChatbot);
     /**
      * @COMMENT converting string to arr
      */
@@ -139,10 +140,12 @@ export const Settings: React.FC<SettingsPropsType> = ({
     );
 
     const body = {
-      chatbot_id: updatedChatbot._id,
       chatbot: removeStaticFieldsFromObject(updatedChatbot),
     };
-    const response = await globalService.post('/chatbot/settings-update', body);
+    const response = await globalService.post(
+      `/chatbot/settings-update?chatbot_id=${chatbot._id}`,
+      body,
+    );
     if (response.status === 201) {
       /**
        * @COMMENT

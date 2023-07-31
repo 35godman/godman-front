@@ -32,10 +32,9 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
     message.loading('Ожидайте, контент с сайта загружается');
     setCrawlLoading(true);
     const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
-      '/crawler/crawl',
+      `/crawler/crawl?chatbot_id=${chatbot._id}`,
       {
         weblink: websiteUrl,
-        chatbot_id: chatbot._id,
       },
     );
     if (res.data) {
@@ -59,9 +58,11 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
     const body = {
       weblink_id: link._id,
       web_link: link.url,
-      chatbot_id: chatbot._id,
     };
-    await crawlService.post('/file-upload/remove-crawled', body);
+    await crawlService.post(
+      `/file-upload/remove-crawled?chatbot_id=${chatbot._id}`,
+      body,
+    );
     setParsedContent(
       removedParsedContent.filter((item) => item.url !== link.url),
     );

@@ -14,7 +14,7 @@ export const CardBot: React.FC<CardBotProps> = ({ nameBot, botID }) => {
   const dispatch = useAppDispatch();
   const changeChatbot = async () => {
     dispatch(resetChars());
-    await router.push(`/gs-bot?id=${botID}`);
+    await router.push(`/gs-bot?chatbot_id=${botID}`);
   };
 
   return (

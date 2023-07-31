@@ -17,17 +17,17 @@ import EmbedCode from '@/components/EmbedCode/EmbedCode';
 export const GeneralSettingsBot: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { id } = router.query;
+  const { chatbot_id } = router.query;
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
   const fetchedRef = useRef(false);
   const [newDataUpdated, setNewDataUpdated] = useState<boolean>(false);
   const [currentTabSelected, setCurrentTabSelected] = useState<string>('');
 
   const getChatbotSettings = useCallback(async () => {
-    if (id) {
+    if (chatbot_id) {
       fetchedRef.current = true;
       const response: AxiosResponse<Chatbot> = await globalService.get(
-        `/chatbot/find/${id}`,
+        `/chatbot/find?chatbot_id=${chatbot_id}`,
       );
       if (response.data) {
         setChatbot(response.data);
@@ -50,12 +50,12 @@ export const GeneralSettingsBot: FC = () => {
         return response.data;
       }
     }
-  }, [dispatch, id]);
+  }, [dispatch, chatbot_id]);
 
   useEffect(() => {
     getChatbotSettings();
     //eslint-disable-next-line
-  }, [dispatch, id]);
+  }, [dispatch, chatbot_id]);
 
   const selectCurrentTab = (activeKey: string) => {
     setCurrentTabSelected(activeKey);

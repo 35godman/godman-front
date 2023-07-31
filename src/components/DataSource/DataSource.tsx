@@ -33,9 +33,10 @@ export const DataSource: React.FC<DataSourceProps> = ({
 
   const handleRetrain = async () => {
     setRetrainLoading(true);
-    const response = await fileUploadService.post('/embedding/setup', {
-      chatbot_id: chatbot._id,
-    });
+    const response = await fileUploadService.post(
+      `/embedding/setup?chatbot_id=${chatbot._id}`,
+      {},
+    );
 
     if (response.status === 201) {
       await getChatbot();

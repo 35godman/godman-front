@@ -143,6 +143,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
               {chatbot.settings.suggested_messages.map((msg) => {
                 return (
                   <Suggestion
+                    disabled={buttonLoading}
                     textProp={msg}
                     key={msg}
                     onclick={() => sendMessage(msg)}
@@ -156,6 +157,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             >
               <div className="flex items-center w-full ">
                 <TextArea
+                  value={questionValue}
                   onChange={(e) => setQuestionValue(e.target.value)}
                   aria-label="chat input"
                   className=" m-0 w-full min-h-[1.5rem] max-h-36 pr-7 resize-none border-0 bg-inherit flex-1 appearance-none rounded-md focus:ring-0 focus-visible:ring-0 focus:outline-none "

@@ -70,9 +70,8 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
         data.append(`files`, file.originFileObj, encodeURIComponent(file.name));
       }
     });
-    data.append('chatbot_id', chatbot._id);
     const response = await globalService.post(
-      '/file-upload/multi-upload',
+      `/file-upload/multi-upload?chatbot_id=${chatbot._id}`,
       data,
     );
     if (response.status === 201) {
@@ -93,10 +92,12 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
     const removedAlreadyUploadedLink = [...alreadyUploadedFiles];
     const body = {
       file_id: file._id,
-      chatbot_id: chatbot._id,
       original_name: encodeURIComponent(file.originalName),
     };
-    const response = await crawlService.post('/file-upload/remove-file', body);
+    const response = await crawlService.post(
+      `/file-upload/remove-file?chatbot_id=${chatbot._id}`,
+      body,
+    );
     if (response.status === 201) {
       setAlreadyUploadedFiles(
         removedAlreadyUploadedLink.filter((item) => item._id !== file._id),
