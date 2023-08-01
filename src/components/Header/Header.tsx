@@ -7,6 +7,7 @@ import { useAppDispatch } from '@/features/store';
 import { setUser } from '@/features/slices/userSlice';
 import Cookies from 'js-cookie';
 import { domainConfig } from '@/config/domain.config';
+import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 export const Header = () => {
   const initialRender = useRef(true);
   const router = useRouter();
@@ -45,7 +46,18 @@ export const Header = () => {
       relogin();
       initialRender.current = false;
     }
-  }, [router, token]);
+  }, [dispatch, router, token]);
 
-  return <div className={s.generalHeader}>Header</div>;
+  const goToPage = async (route: string) => {
+    await router.push(route);
+  };
+
+  return (
+    <div className={'flex p-8 justify-center'}>
+      <PrimaryButton
+        onclick={() => goToPage('chatbot-list')}
+        text={'Список чатботов'}
+      />
+    </div>
+  );
 };

@@ -9,6 +9,8 @@ import { Chatbot, FileUpload } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/features/store';
 import { addFile, removeFile } from '@/features/slices/charsCountSlice';
+import { useRouter } from 'next/router';
+import globalService from '@/service/globalService';
 
 type CrawledComponentProps = {
   chatbot: Chatbot;
@@ -16,6 +18,7 @@ type CrawledComponentProps = {
 
 const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const [parsedContent, setParsedContent] = useState<CrawledLink[]>([]);
   const [websiteUrl, setWebsiteUrl] = useState<string>('');
   const [alreadyUploadedLinks, setAlreadyUploadedLinks] = useState<
@@ -73,6 +76,18 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
     setDeleteLoading(false);
   };
 
+  const deleteAll = async () => {
+    setDeleteLoading(true);
+    const response = await globalService.post(
+      `/chatbot/reset-websources?chatbot_id=${chatbot._id}`,
+    );
+    if (response.status === 201) {
+      message.success('Успешно удалено');
+      await router.reload();
+    }
+    setDeleteLoading(false);
+  };
+
   const deleteAlreadyUploadedLink = async (link: FileUpload) => {
     setDeleteLoading(true);
     const removedAlreadyUploadedLink = [...alreadyUploadedLinks];
@@ -81,6 +96,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
       chatbot_id: chatbot._id,
       weblink_id: link._id,
     };
+
     const response = await crawlService.post(
       `/file-upload/remove-crawled?chatbot_id=${chatbot._id}`,
       body,
@@ -110,7 +126,21 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
           onclick={handleWebsiteParse}
           text={'Parse website'}
           loading={crawlLoading}
+          disabled={!websiteUrl.length}
         />
+      </div>
+      <div className={'flex justify-end '}>
+        <div className={'flex flex-col align-middle '}>
+          <PrimaryButton
+            onclick={deleteAll}
+            loading={deleteLoading}
+            text={'Удалить все'}
+            disabled={!alreadyUploadedLinks.length}
+          />
+          <Typography>
+            Кол-во страниц {chatbot.sources.website.length}
+          </Typography>
+        </div>
       </div>
       <List
         dataSource={parsedContent}

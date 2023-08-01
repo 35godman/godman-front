@@ -62,7 +62,7 @@ export const ChatbotsList: FC = () => {
               <CardBot
                 botID={bot._id}
                 key={bot._id}
-                nameBot={bot.settings.display_name}
+                nameBot={bot.chatbot_name}
               />
             );
           })}

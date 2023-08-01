@@ -64,27 +64,21 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             break;
           }
           const text = new TextDecoder().decode(value);
-          setCurrentAnswer((prevState) => prevState + text);
+          console.log('=>(ChatBot.tsx:68) parsedRes', text);
+          //setCurrentAnswer((prevState) => prevState + text);
         }
       }
-      // const response = await fetch(
-      //   `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask`,
-      //   {
-      //     method: 'POST',
-      //     body: JSON.stringify(body),
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   },
-      // );
 
       setIsBotAnswering(false);
       setButtonLoading(false);
     } catch (e) {
-      message.error('Произошла ошибка', 2000, () => router.reload());
+      console.log('=>(ChatBot.tsx:80) e', e);
+
+      //message.error('Произошла ошибка', 2000, () => router.reload());
       setButtonLoading(false);
     }
   };
+
   useEffect(() => {
     if (!isBotAnswering && currentAnswer) {
       setMessages((prevState) => {
@@ -103,7 +97,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   }, [isBotAnswering]);
   return (
     <>
-      <div className="min-h-[80%] max-w-[100%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border pt-2 ">
+      <div className="min-h-[80%] max-w-[100%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border ">
         <div className=" sticky top-0 w-full bg-white">
           <div className="flex justify-between mb-4   z-10">
             <div className="flex items-center">
@@ -160,17 +154,19 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
                 );
               })}
             </div>
-            <div
-              className="flex pl-3 p-1 rounded mb-8"
-              style={{ background: 'white', border: '1px solid #e4e4e7' }}
-            >
+            <div className="flex pl-3 p-1 rounded bg-white border-b-blue-300 border-2">
               <div className="flex items-center w-full ">
-                <TextArea
+                <Input
                   value={questionValue}
                   onChange={(e) => setQuestionValue(e.target.value)}
+                  onKeyDown={async (e) => {
+                    if (e.key === 'Enter' && questionValue.length > 0) {
+                      await sendMessage(questionValue);
+                    }
+                  }}
                   aria-label="chat input"
                   className=" m-0 w-full min-h-[1.5rem] max-h-36 pr-7 resize-none border-0 bg-inherit flex-1 appearance-none rounded-md focus:ring-0 focus-visible:ring-0 focus:outline-none "
-                ></TextArea>
+                ></Input>
               </div>
               <div className="flex items-center">
                 <Button
@@ -178,6 +174,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
                   className=" flex-none"
                   onClick={() => sendMessage(questionValue)}
                   icon={<SendOutlined />}
+                  disabled={!questionValue.length}
                 ></Button>
               </div>
             </div>
