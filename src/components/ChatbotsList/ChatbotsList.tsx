@@ -39,7 +39,7 @@ export const ChatbotsList: FC = () => {
       },
     );
     dispatch(resetChars());
-    await router.push(`/gs-bot?id=${response.data._id}`);
+    await router.push(`/gs-bot?chatbot_id=${response.data._id}`);
   };
   return (
     <div className={s.botsListWrapper}>
