@@ -103,9 +103,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   }, [isBotAnswering]);
   return (
     <>
-      <div className="min-h-[80%] max-w-[100%] px-4 flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border pt-2 ">
-        <div className=" sticky top-0 w-full">
-          <div className="flex justify-between py-1 mb-4   z-10">
+      <div className="min-h-[80%] max-w-[100%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border pt-2 ">
+        <div className=" sticky top-0 w-full bg-white">
+          <div className="flex justify-between mb-4   z-10">
             <div className="flex items-center">
               <Image
                 className="rounded-full m-1 mr-2 w-7 h-7"

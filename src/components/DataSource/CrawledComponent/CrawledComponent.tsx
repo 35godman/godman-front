@@ -54,19 +54,23 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
     setCrawlLoading(false);
   };
   const deleteCrawledLink = async (link: CrawledLink) => {
+    setDeleteLoading(true);
     const removedParsedContent = [...parsedContent];
     const body = {
       weblink_id: link._id,
       web_link: link.url,
     };
-    await crawlService.post(
+    const response = await crawlService.post(
       `/file-upload/remove-crawled?chatbot_id=${chatbot._id}`,
       body,
     );
-    setParsedContent(
-      removedParsedContent.filter((item) => item.url !== link.url),
-    );
-    dispatch(removeFile(link.url));
+    if (response.status === 201) {
+      setParsedContent(
+        removedParsedContent.filter((item) => item.url !== link.url),
+      );
+      dispatch(removeFile(link.url));
+    }
+    setDeleteLoading(false);
   };
 
   const deleteAlreadyUploadedLink = async (link: FileUpload) => {
@@ -77,12 +81,17 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
       chatbot_id: chatbot._id,
       weblink_id: link._id,
     };
-    await crawlService.post('/file-upload/remove-crawled', body);
-    setAlreadyUploadedLinks(
-      removedAlreadyUploadedLink.filter((item) => item._id !== link._id),
+    const response = await crawlService.post(
+      `/file-upload/remove-crawled?chatbot_id=${chatbot._id}`,
+      body,
     );
-    dispatch(removeFile(link._id));
-    setDeleteLoading(false);
+    if (response.status === 201) {
+      setAlreadyUploadedLinks(
+        removedAlreadyUploadedLink.filter((item) => item._id !== link._id),
+      );
+      dispatch(removeFile(link._id));
+      setDeleteLoading(false);
+    }
   };
 
   return (
