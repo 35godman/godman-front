@@ -12,6 +12,7 @@ import { nanoid } from 'nanoid';
 import { RoleState } from '@/types/models/role';
 import { ChatMessage } from '@/components/ChatMessage/ChatMessage';
 import { useRouter } from 'next/router';
+import { headers } from 'next/headers';
 
 type ChatBotProps = {
   chatbot: Chatbot;
@@ -47,16 +48,13 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       chatbot_id: chatbot._id,
     };
     try {
-      const response = await fetch(
-        `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask`,
-        {
-          method: 'POST',
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await fetch('/api/chat-stream', {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
       if (response.body) {
         const reader = response.body.getReader();
         // eslint-disable-next-line no-constant-condition
@@ -68,9 +66,20 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
           const text = new TextDecoder().decode(value);
           setCurrentAnswer((prevState) => prevState + text);
         }
-        setIsBotAnswering(false);
-        setButtonLoading(false);
       }
+      // const response = await fetch(
+      //   `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask`,
+      //   {
+      //     method: 'POST',
+      //     body: JSON.stringify(body),
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   },
+      // );
+
+      setIsBotAnswering(false);
+      setButtonLoading(false);
     } catch (e) {
       message.error('Произошла ошибка', 2000, () => router.reload());
       setButtonLoading(false);
