@@ -11,12 +11,12 @@ const ChatbotIframe = () => {
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
   const fetchedRef = useRef(false);
   useEffect(() => {
-    const id = router.query.chatbot_id;
+    const { chatbot_id } = router.query;
     const getChatbotSettings = async () => {
-      if (id && !fetchedRef.current) {
+      if (chatbot_id && !fetchedRef.current) {
         fetchedRef.current = true;
         const response: AxiosResponse<Chatbot> = await globalService.get(
-          `/chatbot/find/${id}`,
+          `/chatbot/find?chatbot_id=${chatbot_id}`,
         );
 
         setChatbot(response.data);

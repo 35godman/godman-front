@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Suggestion } from '../Suggestion/Suggestion';
 import { Button, Input, message, Spin, Typography } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
@@ -28,6 +28,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   const [isBotAnswering, setIsBotAnswering] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
+  const endOfBlock = useRef<HTMLDivElement | null>(null);
   const sendMessage = async (question: string) => {
     setQuestionValue('');
     setIsBotAnswering(true);
@@ -67,10 +68,13 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
           setCurrentAnswer((prevState) => prevState + text);
         }
       }
-
+      if (endOfBlock.current) {
+        endOfBlock.current.scrollIntoView({ behavior: 'smooth' });
+      }
       setIsBotAnswering(false);
       setButtonLoading(false);
     } catch (e) {
+      setIsBotAnswering(false);
       //message.error('Произошла ошибка', 2000, () => router.reload());
       setButtonLoading(false);
     }
@@ -132,7 +136,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
            * so we moved it to just string state
            */}
           {currentAnswer ? (
-            <ChatMessage textProp={currentAnswer} chat_role={'assistant'} />
+            <div ref={endOfBlock}>
+              <ChatMessage textProp={currentAnswer} chat_role={'assistant'} />
+            </div>
           ) : (
             isBotAnswering && <Spin />
           )}
