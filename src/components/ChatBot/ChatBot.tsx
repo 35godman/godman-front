@@ -56,7 +56,6 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
         },
       });
       if (response.body) {
-        let answer = '';
         const reader = response.body.getReader();
         // eslint-disable-next-line no-constant-condition
         while (true) {
@@ -65,18 +64,13 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             break;
           }
           const text = new TextDecoder().decode(value);
-          answer += text;
-          console.log('=>(ChatBot.tsx:68) parsedRes', text);
-          //setCurrentAnswer((prevState) => prevState + text);
+          setCurrentAnswer((prevState) => prevState + text);
         }
-        setCurrentAnswer(answer);
       }
 
       setIsBotAnswering(false);
       setButtonLoading(false);
     } catch (e) {
-      console.log('=>(ChatBot.tsx:80) e', e);
-
       //message.error('Произошла ошибка', 2000, () => router.reload());
       setButtonLoading(false);
     }

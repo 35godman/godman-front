@@ -34,27 +34,31 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
   const handleWebsiteParse = async () => {
     message.loading('Ожидайте, контент с сайта загружается');
     setCrawlLoading(true);
-    const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
-      `/crawler/crawl?chatbot_id=${chatbot._id}`,
-      {
-        weblink: websiteUrl,
-      },
-    );
-    if (res.data) {
-      setParsedContent(res.data);
+    try {
+      const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
+        `/crawler/crawl?chatbot_id=${chatbot._id}`,
+        {
+          weblink: websiteUrl,
+        },
+      );
+      if (res.data) {
+        setParsedContent(res.data);
 
-      for (const webFile of res.data) {
-        dispatch(
-          addFile({
-            id: webFile.url,
-            chars: webFile.size,
-          }),
-        );
+        for (const webFile of res.data) {
+          dispatch(
+            addFile({
+              id: webFile.url,
+              chars: webFile.size,
+            }),
+          );
+        }
+      } else {
+        message.error('Ошибка');
       }
-    } else {
-      message.error('Ошибка');
+      setCrawlLoading(false);
+    } catch (e) {
+      setCrawlLoading(false);
     }
-    setCrawlLoading(false);
   };
   const deleteCrawledLink = async (link: CrawledLink) => {
     setDeleteLoading(true);
