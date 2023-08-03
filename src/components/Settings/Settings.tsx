@@ -208,7 +208,15 @@ export const Settings: React.FC<SettingsPropsType> = ({
         </Form.Item>
         <Title level={5}>Model:</Title>
         <Form.Item label="">
-          <Input value={chatbot.settings.model} disabled />
+          <Select
+            value={chatbot.settings.model}
+            onChange={(model) => changeChatbotSetting('model', model)}
+          >
+            <Option value="gpt-3.5-turbo">GPT 3.5 TURBO 4K CONTEXT</Option>
+            <Option value="gpt-3.5-turbo-16k-0613">
+              GPT 3.5 TURBO 16K CONTEXT
+            </Option>
+          </Select>
         </Form.Item>
         <Title level={5}>Base Prompt (system message):</Title>
         <Form.Item label="">
