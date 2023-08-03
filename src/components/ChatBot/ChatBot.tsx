@@ -13,6 +13,8 @@ import { RoleState } from '@/types/models/role';
 import { ChatMessage } from '@/components/ChatMessage/ChatMessage';
 import { useRouter } from 'next/router';
 import { headers } from 'next/headers';
+import globalService from '@/service/globalService';
+import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 
 type ChatBotProps = {
   chatbot: Chatbot;
@@ -27,6 +29,14 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
   const [isBotAnswering, setIsBotAnswering] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const conversationId = localStorage.getItem('conversationId');
+      if (!conversationId) {
+        localStorage.setItem('conversationId', nanoid());
+      }
+    }
+  }, []);
 
   const endOfBlock = useRef<HTMLDivElement | null>(null);
   const sendMessage = async (question: string) => {
@@ -42,11 +52,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       },
     ];
     setMessages(newMessages);
-
+    const conversationId = localStorage.getItem('conversationId');
     const body = {
       question: question,
-      user_id: user._id,
       chatbot_id: chatbot._id,
+      conversation_id: conversationId,
     };
     try {
       const response = await fetch('/api/chat-stream', {
@@ -58,7 +68,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       });
       if (response.body) {
         const reader = response.body.getReader();
-
+        let answer = '';
         // eslint-disable-next-line no-constant-condition
         while (true) {
           const { done, value } = await reader.read();
@@ -66,6 +76,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             break;
           }
           const text = new TextDecoder().decode(value);
+          answer += text;
           setCurrentAnswer((prevState) => prevState + text);
           if (endOfBlock.current) {
             endOfBlock.current.scrollIntoView({ behavior: 'smooth' });
@@ -80,6 +91,15 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       //message.error('Произошла ошибка', 2000, () => router.reload());
       setButtonLoading(false);
     }
+  };
+
+  const showMessageSource = async () => {
+    const conversationId = localStorage.getItem('conversationId');
+    const conversationSource = await globalService.get(
+      `/conversation/show-latest-source?chatbot_id=${chatbot._id}&conversation_id=${conversationId}`,
+    );
+    // eslint-disable-next-line no-console
+    console.log(conversationSource.data.source);
   };
 
   useEffect(() => {
@@ -158,6 +178,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
                   />
                 );
               })}
+              <PrimaryButton onclick={showMessageSource}>
+                Показать источник
+              </PrimaryButton>
             </div>
             <div className="flex pl-3 p-1 rounded bg-white border-b-blue-300 border-2">
               <div className="flex items-center w-full ">
