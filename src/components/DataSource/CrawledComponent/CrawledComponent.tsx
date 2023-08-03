@@ -14,9 +14,13 @@ import globalService from '@/service/globalService';
 
 type CrawledComponentProps = {
   chatbot: Chatbot;
+  getChatbot: () => Promise<Chatbot | undefined>;
 };
 
-const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
+const CrawledComponent: FC<CrawledComponentProps> = ({
+  chatbot,
+  getChatbot,
+}) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [parsedContent, setParsedContent] = useState<CrawledLink[]>([]);
@@ -33,6 +37,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
   };
   const handleWebsiteParse = async () => {
     message.loading('Ожидайте, контент с сайта загружается');
+
     setCrawlLoading(true);
     try {
       const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
@@ -43,15 +48,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
       );
       if (res.data) {
         setParsedContent(res.data);
-
-        for (const webFile of res.data) {
-          dispatch(
-            addFile({
-              id: webFile.url,
-              chars: webFile.size,
-            }),
-          );
-        }
+        await getChatbot();
       } else {
         message.error('Ошибка');
       }
@@ -111,6 +108,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
       );
       dispatch(removeFile(link._id));
       setDeleteLoading(false);
+      await getChatbot();
     }
   };
 
@@ -139,46 +137,50 @@ const CrawledComponent: FC<CrawledComponentProps> = ({ chatbot }) => {
             onclick={deleteAll}
             loading={deleteLoading}
             text={'Удалить все'}
-            disabled={!alreadyUploadedLinks.length}
+            disabled={!chatbot.sources.website.length}
           />
           <Typography>
             Кол-во страниц {chatbot.sources.website.length}
           </Typography>
         </div>
       </div>
+      {/*<List*/}
+      {/*  dataSource={parsedContent}*/}
+      {/*  renderItem={(item) => (*/}
+      {/*    <List.Item>*/}
+      {/*      <Typography.Text mark className={s.crawledLinkHeading}>*/}
+      {/*        {item.url}*/}
+      {/*      </Typography.Text>*/}
+      {/*      {item.size}*/}
+      {/*      <Button*/}
+      {/*        onClick={() => deleteCrawledLink(item)}*/}
+      {/*        loading={deleteLoading}*/}
+      {/*      >*/}
+      {/*        <DeleteOutlined />*/}
+      {/*      </Button>*/}
+      {/*    </List.Item>*/}
+      {/*  )}*/}
+      {/*></List>*/}
       <List
-        dataSource={parsedContent}
-        renderItem={(item) => (
-          <List.Item>
-            <Typography.Text mark className={s.crawledLinkHeading}>
-              {item.url}
-            </Typography.Text>
-            {item.size}
-            <Button
-              onClick={() => deleteCrawledLink(item)}
-              loading={deleteLoading}
-            >
-              <DeleteOutlined />
-            </Button>
-          </List.Item>
-        )}
-      ></List>
-      <List
-        dataSource={alreadyUploadedLinks}
-        renderItem={(item) => (
-          <List.Item>
-            <Typography.Text mark className={s.crawledLinkHeading}>
-              {item.originalName.replace(/\[]/g, '/')}
-            </Typography.Text>
-            {item.char_length}
-            <Button
-              onClick={() => deleteAlreadyUploadedLink(item)}
-              loading={deleteLoading}
-            >
-              <DeleteOutlined />
-            </Button>
-          </List.Item>
-        )}
+        dataSource={chatbot.sources.website}
+        renderItem={(item) => {
+          const linkName = item.originalName.replace(/\[]/g, '/').slice(0, -4);
+
+          return (
+            <List.Item>
+              <Typography.Text mark className={s.crawledLinkHeading}>
+                {linkName}
+              </Typography.Text>
+              {item.char_length}
+              <Button
+                onClick={() => deleteAlreadyUploadedLink(item)}
+                loading={deleteLoading}
+              >
+                <DeleteOutlined />
+              </Button>
+            </List.Item>
+          );
+        }}
       ></List>
     </>
   );

@@ -124,7 +124,6 @@ export const Settings: React.FC<SettingsPropsType> = ({
 
   const handleSubmit = async () => {
     const updatedChatbot = { ...chatbot };
-    console.log('=>(Settings.tsx:127) updatedChatbot', updatedChatbot);
     /**
      * @COMMENT converting string to arr
      */

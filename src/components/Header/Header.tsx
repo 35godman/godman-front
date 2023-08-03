@@ -28,15 +28,13 @@ export const Header = () => {
             },
           );
 
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-
           const data = await response.json();
 
           if (data) {
             dispatch(setUser(data));
-            await router.push('/chatbot-list');
+            if (router.pathname === '/') {
+              await router.push('/chatbot-list');
+            }
           }
         } catch (e) {
           message.info('Нужно войти в аккаунт');

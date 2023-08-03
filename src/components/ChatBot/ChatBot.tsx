@@ -57,6 +57,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       question: question,
       chatbot_id: chatbot._id,
       conversation_id: conversationId,
+      user_messages: messages.filter((item) => item.role === 'user').slice(-5),
     };
     try {
       const response = await fetch('/api/chat-stream', {

@@ -68,7 +68,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
       label: 'Website',
       children: (
         <>
-          <CrawledComponent chatbot={chatbot} />
+          <CrawledComponent chatbot={chatbot} getChatbot={getChatbot} />
         </>
       ),
     },

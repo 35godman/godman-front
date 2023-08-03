@@ -33,6 +33,7 @@ export const GeneralSettingsBot: FC = () => {
         setChatbot(response.data);
         //set initial files for charsCountSlice
         const { files, website, QA_list } = response.data.sources;
+
         for (const file of files) {
           dispatch(addFile({ id: file._id, chars: file.char_length }));
         }
