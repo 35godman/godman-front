@@ -1,6 +1,14 @@
 import React, { FC, useState } from 'react';
 import s from '@/components/DataSource/DataSource.module.css';
-import { Button, Input, List, message, Typography } from 'antd';
+import {
+  Button,
+  Input,
+  List,
+  message,
+  Progress,
+  Space,
+  Typography,
+} from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { AxiosResponse } from 'axios';
 import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLink.type';
@@ -57,25 +65,6 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
       setCrawlLoading(false);
     }
   };
-  const deleteCrawledLink = async (link: CrawledLink) => {
-    setDeleteLoading(true);
-    const removedParsedContent = [...parsedContent];
-    const body = {
-      weblink_id: link._id,
-      web_link: link.url,
-    };
-    const response = await crawlService.post(
-      `/file-upload/remove-crawled?chatbot_id=${chatbot._id}`,
-      body,
-    );
-    if (response.status === 201) {
-      setParsedContent(
-        removedParsedContent.filter((item) => item.url !== link.url),
-      );
-      dispatch(removeFile(link.url));
-    }
-    setDeleteLoading(false);
-  };
 
   const deleteAll = async () => {
     setDeleteLoading(true);
@@ -84,7 +73,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
     );
     if (response.status === 201) {
       message.success('Успешно удалено');
-      await router.reload();
+      await getChatbot();
     }
     setDeleteLoading(false);
   };
@@ -144,23 +133,23 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
           </Typography>
         </div>
       </div>
-      {/*<List*/}
-      {/*  dataSource={parsedContent}*/}
-      {/*  renderItem={(item) => (*/}
-      {/*    <List.Item>*/}
-      {/*      <Typography.Text mark className={s.crawledLinkHeading}>*/}
-      {/*        {item.url}*/}
-      {/*      </Typography.Text>*/}
-      {/*      {item.size}*/}
-      {/*      <Button*/}
-      {/*        onClick={() => deleteCrawledLink(item)}*/}
-      {/*        loading={deleteLoading}*/}
-      {/*      >*/}
-      {/*        <DeleteOutlined />*/}
-      {/*      </Button>*/}
-      {/*    </List.Item>*/}
-      {/*  )}*/}
-      {/*></List>*/}
+      {
+        <>
+          `status`{' '}
+          <Space wrap>
+            <Progress
+              type="circle"
+              percent={90}
+              strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+            />
+            <Progress
+              type="circle"
+              percent={100}
+              strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+            />
+          </Space>
+        </>
+      }
       <List
         dataSource={chatbot.sources.website}
         renderItem={(item) => {
