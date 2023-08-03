@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
 import globalService from '@/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -16,6 +16,7 @@ const QAList: FC<QAListProps> = ({ chatbot }) => {
   const { TextArea } = Input;
   const dispatch = useAppDispatch();
 
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [isTextAreaVisible, setIsTextAreaVisible] = useState<boolean>(false);
   const [qnaList, setQnaList] = useState<Array<QAState>>(
     chatbot.sources.QA_list,
@@ -58,9 +59,15 @@ const QAList: FC<QAListProps> = ({ chatbot }) => {
   };
 
   const submitQnA = async () => {
-    await globalService.post(`/chatbot/add-qna?chatbot_id=${chatbot._id}`, {
-      data: qnaList,
-    });
+    setSubmitLoading(true);
+    try {
+      await globalService.post(`/chatbot/add-qna?chatbot_id=${chatbot._id}`, {
+        data: qnaList,
+      });
+    } catch (e) {
+      message.error(e.message);
+      setSubmitLoading(false);
+    }
   };
   return (
     <>
@@ -108,6 +115,7 @@ const QAList: FC<QAListProps> = ({ chatbot }) => {
           onclick={submitQnA}
           text={'Загрузить ответы на вопросы'}
           disabled={!qnaList.length}
+          loading={submitLoading}
         />
       </div>
     </>
