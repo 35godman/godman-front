@@ -62,6 +62,7 @@ export type Chatbot = {
 
   share_link: string;
 };
+export type CrawlingStatus = null | 'FAILED' | 'PENDING' | 'COMPLETED';
 export type ChatbotSources = {
   id: string;
 
@@ -70,6 +71,8 @@ export type ChatbotSources = {
   text: string;
 
   website: FileUpload[];
+
+  crawling_status: CrawlingStatus;
 
   QA_list: QAState[];
 };

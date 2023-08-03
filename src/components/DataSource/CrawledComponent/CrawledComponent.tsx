@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import s from '@/components/DataSource/DataSource.module.css';
 import {
   Button,
@@ -13,7 +13,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { AxiosResponse } from 'axios';
 import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLink.type';
 import crawlService from '@/service/crawlService';
-import { Chatbot, FileUpload } from '@/types/models/globals';
+import { Chatbot, CrawlingStatus, FileUpload } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/features/store';
 import { addFile, removeFile } from '@/features/slices/charsCountSlice';
@@ -30,22 +30,49 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
   getChatbot,
 }) => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
-  const [parsedContent, setParsedContent] = useState<CrawledLink[]>([]);
   const [websiteUrl, setWebsiteUrl] = useState<string>('');
   const [alreadyUploadedLinks, setAlreadyUploadedLinks] = useState<
     FileUpload[]
   >(() => chatbot.sources.website);
 
+  const [crawlStatus, setCrawlStatus] = useState<CrawlingStatus>(
+    chatbot.sources.crawling_status,
+  );
+  useEffect(() => {
+    setCrawlStatus(chatbot.sources.crawling_status);
+  }, [chatbot]);
+
   const [crawlLoading, setCrawlLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const [crawlLoadingPercent, setCrawlLoadingPercent] = useState<number>(0);
+  console.log(
+    '=>(CrawledComponent.tsx:48) crawlLoadingPercent',
+    crawlLoadingPercent,
+  );
+
+  useEffect(() => {
+    let timer: unknown;
+    if (crawlLoading) {
+      timer = setInterval(() => {
+        if (crawlLoadingPercent < 99 && crawlStatus === 'PENDING') {
+          setCrawlLoadingPercent((prevState) => prevState + 1);
+        } else if (timer) {
+          setCrawlLoadingPercent(0);
+          clearInterval(timer as NodeJS.Timer);
+        }
+      }, 1200);
+    }
+    return () => {
+      clearInterval(timer as NodeJS.Timer);
+    }; // Clear interval on component unmount
+  }, [crawlLoading, crawlLoadingPercent, crawlStatus]);
 
   const handleWebsiteUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWebsiteUrl(e.target.value);
   };
   const handleWebsiteParse = async () => {
     message.loading('Ожидайте, контент с сайта загружается');
-
+    setCrawlStatus('PENDING');
     setCrawlLoading(true);
     try {
       const res: AxiosResponse<CrawledLink[]> = await crawlService.post(
@@ -55,14 +82,15 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
         },
       );
       if (res.data) {
-        setParsedContent(res.data);
         await getChatbot();
       } else {
         message.error('Ошибка');
       }
       setCrawlLoading(false);
+      setCrawlLoadingPercent(0);
     } catch (e) {
       setCrawlLoading(false);
+      setCrawlLoadingPercent(0);
     }
   };
 
@@ -135,18 +163,30 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
       </div>
       {
         <>
-          `status`{' '}
           <Space wrap>
-            <Progress
-              type="circle"
-              percent={90}
-              strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
-            />
-            <Progress
-              type="circle"
-              percent={100}
-              strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
-            />
+            {crawlStatus === 'PENDING' && (
+              <Progress
+                type="circle"
+                percent={crawlLoadingPercent}
+                strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+                status={'active'}
+              />
+            )}
+            {crawlStatus === 'COMPLETED' && (
+              <Progress
+                type="circle"
+                percent={100}
+                strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+                status={'success'}
+              />
+            )}
+            {crawlStatus === 'FAILED' && (
+              <Progress
+                type="circle"
+                strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
+                status={'exception'}
+              />
+            )}
           </Space>
         </>
       }
