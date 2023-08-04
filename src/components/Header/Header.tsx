@@ -30,11 +30,13 @@ export const Header = () => {
 
           const data = await response.json();
 
-          if (data) {
+          if (response.status === 200) {
             dispatch(setUser(data));
             if (router.pathname === '/') {
               await router.push('/chatbot-list');
             }
+          } else {
+            await router.push('/');
           }
         } catch (e) {
           message.info('Нужно войти в аккаунт');

@@ -167,6 +167,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
             {crawlStatus === 'PENDING' && (
               <Progress
                 type="circle"
+                size={'small'}
                 percent={crawlLoadingPercent}
                 strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
                 status={'active'}
@@ -174,6 +175,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
             )}
             {crawlStatus === 'COMPLETED' && (
               <Progress
+                size={'small'}
                 type="circle"
                 percent={100}
                 strokeColor={{ '0%': '#108ee9', '100%': '#87d068' }}
