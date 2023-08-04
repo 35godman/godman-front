@@ -45,10 +45,6 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
   const [crawlLoading, setCrawlLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [crawlLoadingPercent, setCrawlLoadingPercent] = useState<number>(0);
-  console.log(
-    '=>(CrawledComponent.tsx:48) crawlLoadingPercent',
-    crawlLoadingPercent,
-  );
 
   useEffect(() => {
     let timer: unknown;

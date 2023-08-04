@@ -26,6 +26,6 @@ export default async function handler(req: NextRequest, _context: unknown) {
       },
     });
   } catch (e) {
-    console.error(e);
+    /* empty */
   }
 }
