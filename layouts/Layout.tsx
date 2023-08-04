@@ -21,9 +21,12 @@ export const Layout: React.FC<Props> = ({ children }) => {
             content="initial-scale=1.0, width=device-width"
           />
         </Head>
-        <div className={s.layoutFlex}>
+        <div
+          className={'h-screen justify-between flex flex-col '}
+          style={{ height: '100vh' }}
+        >
           <Header />
-          <main className={s.generalWrapper}>{children}</main>
+          <main>{children}</main>
 
           <Footer />
         </div>

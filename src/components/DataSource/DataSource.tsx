@@ -84,7 +84,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
   ];
 
   return (
-    <div className={s.dataSourceWrapper}>
+    <div className={'flex flex-col items-center'}>
       <Tabs
         className={s.tab}
         defaultActiveKey="Files"

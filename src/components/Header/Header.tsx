@@ -3,13 +3,15 @@ import s from './Header.module.css';
 import globalService from '@/service/globalService';
 import { message } from 'antd';
 import { useRouter } from 'next/router';
-import { useAppDispatch } from '@/features/store';
+import { RootState, useAppDispatch } from '@/features/store';
 import { setUser } from '@/features/slices/userSlice';
 import Cookies from 'js-cookie';
 import { domainConfig } from '@/config/domain.config';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import { useSelector } from 'react-redux';
 export const Header = () => {
   const initialRender = useRef(true);
+  const user = useSelector((state: RootState) => state.user);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const token = Cookies.get('access_token');
@@ -53,11 +55,19 @@ export const Header = () => {
   };
 
   return (
-    <div className={'flex p-8 justify-center'}>
-      <PrimaryButton
-        onclick={() => goToPage('chatbot-list')}
-        text={'Список чатботов'}
-      />
+    <div className={'flex p-8 justify-evenly bg-blue-400'}>
+      {user._id && (
+        <>
+          <PrimaryButton
+            onclick={() => goToPage('chatbot-list')}
+            text={'Список чатботов'}
+          />
+          <PrimaryButton
+            onclick={() => goToPage('account')}
+            text={'Мой аккаунт'}
+          />
+        </>
+      )}
     </div>
   );
 };

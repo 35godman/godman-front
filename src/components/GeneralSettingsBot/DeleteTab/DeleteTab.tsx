@@ -11,11 +11,17 @@ export type DeleteTabProps = {
 
 const DeleteTab: FC<DeleteTabProps> = ({ chatbot }) => {
   const [show, setShow] = useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const confirmDelete = async () => {
-    await globalService.delete(`/chatbot/delete?chatbot_id=${chatbot._id}`);
-    await router.push('/chatbot-list');
+    setDeleteLoading(true);
+    try {
+      await globalService.delete(`/chatbot/delete?chatbot_id=${chatbot._id}`);
+      await router.push('/chatbot-list');
+    } catch (e) {
+      setDeleteLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -27,6 +33,7 @@ const DeleteTab: FC<DeleteTabProps> = ({ chatbot }) => {
       <ConfirmModal
         text={'Удалить бота?'}
         show={show}
+        loading={deleteLoading}
         onConfirm={confirmDelete}
         onCancel={handleCancel}
       />

@@ -163,7 +163,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
       </div>
       {
         <>
-          <Space wrap>
+          <Space wrap className={'flex justify-center'}>
             {crawlStatus === 'PENDING' && (
               <Progress
                 type="circle"

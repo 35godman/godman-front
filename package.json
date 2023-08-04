@@ -25,7 +25,8 @@
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
-    "react-intl": "^6.4.4"
+    "react-intl": "^6.4.4",
+    "sharp": "^0.32.4"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",

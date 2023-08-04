@@ -126,7 +126,7 @@ export const GeneralSettingsBot: FC = () => {
         <Tabs
           defaultActiveKey="1"
           centered
-          className={s.fullWidthTabs}
+          className={'max-w-[80%] m-auto min-h-[80vh] mb-10'}
           items={tabs}
           onChange={(activeKey: string) => selectCurrentTab(activeKey)}
         />

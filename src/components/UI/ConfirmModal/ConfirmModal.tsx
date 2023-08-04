@@ -6,6 +6,7 @@ export type ConfirmModalProps = {
   onConfirm: () => void;
   onCancel: () => void;
   text: string;
+  loading?: boolean;
 };
 
 const ConfirmModal: FC<ConfirmModalProps> = ({
@@ -13,12 +14,13 @@ const ConfirmModal: FC<ConfirmModalProps> = ({
   onConfirm,
   onCancel,
   text,
+  loading,
 }) => {
   return (
     <>
       <Modal closable={true} open={show} onCancel={onCancel} footer={false}>
         <p>{text}</p>
-        <Button danger={true} onClick={() => onConfirm()}>
+        <Button danger={true} onClick={() => onConfirm()} loading={loading}>
           Да
         </Button>
         <Button onClick={() => onCancel()}>Нет</Button>
