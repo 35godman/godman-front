@@ -458,6 +458,14 @@ export const Settings: React.FC<SettingsPropsType> = ({
               }}
               defaultValue={chatbot.settings.user_message_color}
             />
+            <Title level={5}>User Message Color</Title>
+            {/*<ColorPicker*/}
+            {/*  format={'hex'}*/}
+            {/*  onChange={(color) => {*/}
+            {/*    changeChatbotSetting('chat_message_color', color.toHexString());*/}
+            {/*  }}*/}
+            {/*  defaultValue={chatbot.settings.user_message_color}*/}
+            {/*/>*/}
             {/* <Title level={5}>Update chat icon</Title>
           <Input
             style={{
@@ -474,7 +482,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
             )}
           </div> */}
 
-            <Title level={5}>Chat Bubble Color</Title>
+            <Title level={5}>Chat Footer Color</Title>
             <ColorPicker
               format={'hex'}
               defaultValue={chatbot.settings.chat_bubble_color}

@@ -200,9 +200,6 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
                   />
                 );
               })}
-              <PrimaryButton onclick={showMessageSource}>
-                Показать источник
-              </PrimaryButton>
             </div>
             <div className="flex pl-3 p-1 rounded bg-white">
               <div className="flex items-center w-full ">
