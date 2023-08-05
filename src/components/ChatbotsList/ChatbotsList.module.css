@@ -1,15 +1,18 @@
 .botsListWrapper {
-  max-width: 1440px;
+  /* max-width: 1440px; */
   display: flex;
   flex-direction: column;
+  height: 83vh;
 }
 
 .botsListHeader {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
   width: 100vw;
   max-width: 1440px;
+  margin: 0 auto;
 }
 
 .botListAll {

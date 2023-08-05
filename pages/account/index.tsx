@@ -15,17 +15,25 @@ const AccountPage = () => {
     await router.push('/');
   };
   return (
-    <div className={'flex flex-col w-[50%] m-auto justify-between h-[30rem]'}>
-      <Typography className={'font-bold size text-3xl'}>Account</Typography>
+    <div
+      className={
+        'flex flex-col w-[50%] m-auto justify-start sm:h-[65rem] h-[30rem]'
+      }
+    >
+      <Typography className={'mt-4 font-bold size text-3xl text-center '}>
+        Account
+      </Typography>
       <div
         className={
-          'rounded-2xl bg-blue-200 h-20 flex items-center justify-center'
+          'rounded-2xl bg-blue-200 h-20 flex flex-col items-center justify-center mt-3'
         }
       >
-        <Typography className={'font-bold'}>Your email {user.email}</Typography>
+        <Typography className={'font-bold'}>Your email</Typography>
+        <Typography className={'font-bold'}>{user.email}</Typography>
       </div>
-
-      <PrimaryButton onclick={signOut}>Sign Out</PrimaryButton>
+      <div className="mx-auto my-0">
+        <PrimaryButton onclick={signOut}>Sign Out</PrimaryButton>
+      </div>
     </div>
   );
 };

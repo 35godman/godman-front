@@ -46,26 +46,28 @@ export const ChatbotsList: FC = () => {
       <div>
         <div className={s.botsListHeader}>
           <div>
-            <Title level={3}>My Chatbots</Title>
-          </div>
-          <div>
             <PrimaryButton onclick={createChatbot}>
               Создать чатбот
             </PrimaryButton>
           </div>
+          <div>
+            <Title className="mt-8" level={3}>
+              My Chatbots
+            </Title>
+          </div>
+          <div className={s.botListAll}>
+            {botsDB.length > 0 &&
+              botsDB.map(bot => {
+                return (
+                  <CardBot
+                    botID={bot._id}
+                    key={bot._id}
+                    nameBot={bot.chatbot_name}
+                  />
+                );
+              })}
+          </div>
         </div>
-      </div>
-      <div className={s.botListAll}>
-        {botsDB.length > 0 &&
-          botsDB.map((bot) => {
-            return (
-              <CardBot
-                botID={bot._id}
-                key={bot._id}
-                nameBot={bot.chatbot_name}
-              />
-            );
-          })}
       </div>
     </div>
   );

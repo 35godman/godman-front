@@ -23,7 +23,7 @@ const PrimaryButton: FC<PrimaryButtonProps> = ({
         disabled={disabled}
         type="primary"
         className={
-          'rounded-md px-4 text-base font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600'
+          ' mt-3 rounded-md px-4 text-base font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600'
         }
         style={{ backgroundColor: 'rgb(111, 68, 252)' }}
       >

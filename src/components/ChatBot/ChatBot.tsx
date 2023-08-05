@@ -66,7 +66,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       question: question,
       chatbot_id: chatbot._id,
       conversation_id: conversationId,
-      user_messages: messages.filter((item) => item.role === 'user').slice(-5),
+      user_messages: messages.filter(item => item.role === 'user').slice(-5),
     };
     try {
       const response = await fetch('/api/chat-stream', {
@@ -85,7 +85,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             break;
           }
           const text = new TextDecoder().decode(value);
-          setCurrentAnswer((prevState) => prevState + text);
+          setCurrentAnswer(prevState => prevState + text);
           if (endOfBlock.current) {
             endOfBlock.current.scrollIntoView({ behavior: 'smooth' });
           }
@@ -103,7 +103,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
 
   useEffect(() => {
     if (!isBotAnswering && currentAnswer) {
-      setMessages((prevState) => {
+      setMessages(prevState => {
         return [
           ...prevState,
           {
@@ -120,11 +120,14 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
 
   return (
     <>
-      <div className=" sticky top-0 w-full bg-white">
-        <div className="flex justify-between mb-4   z-10">
+      <div
+        className=" sticky top-0 w-full bg-white"
+        style={{ backgroundColor: 'rgb(243, 243, 241)' }}
+      >
+        <div className="flex justify-between mb-0 pt-[2em]  z-10">
           <div className="flex items-center">
             <Image
-              className="rounded-full m-1 mr-2 w-7 h-7"
+              className="rounded-full m-1 mr-2 w-10 h-10"
               src={chatbot.settings.profile_picture_path}
               alt={'Image profile'}
               width={100}
@@ -133,14 +136,29 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             <Typography>{chatbot.settings.display_name}</Typography>
           </div>
         </div>
+        <div className="py-3 flex flex-col overflow-x-auto border-b border-black">
+          {chatbot.settings.suggested_messages.map(msg => {
+            return (
+              <Suggestion
+                disabled={buttonLoading}
+                textProp={msg}
+                key={msg}
+                onclick={() => sendMessage(msg)}
+              />
+            );
+          })}
+        </div>
       </div>
-      <div className={'flex flex-col'}>
+      <div
+        className={'flex flex-col'}
+        style={{ backgroundColor: 'rgb(243, 243, 241)' }}
+      >
         {chatbot.settings.initial_messages.map((msg, index) => {
           return (
             <ChatMessage chat_role={'assistant'} textProp={msg} key={index} />
           );
         })}
-        {messages.map((msg) => {
+        {messages.map(msg => {
           return (
             <ChatMessage
               textProp={msg.content}
@@ -165,43 +183,51 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
         )}
         {/* <Loader /> */}
       </div>
-      <div className=" sticky bottom-0 bg-inherit">
+      <div
+        className=" sticky bottom-0 bg-inherit"
+        style={{ backgroundColor: 'rgb(243, 243, 241)' }}
+      >
         <div>
-          <div className="py-3 flex overflow-x-auto">
-            {chatbot.settings.suggested_messages.map((msg) => {
-              return (
-                <Suggestion
-                  disabled={buttonLoading}
-                  textProp={msg}
-                  key={msg}
-                  onclick={() => sendMessage(msg)}
-                />
-              );
-            })}
-          </div>
-          <div className="flex pl-3 p-1 rounded bg-white">
-            <div className="flex items-center w-full ">
+          <div className="flex pl-3 p-1 rounded mb-10">
+            <div className="flex items-center w-full relative">
               <Input
                 value={questionValue}
-                onChange={(e) => setQuestionValue(e.target.value)}
-                onKeyDown={async (e) => {
+                onChange={e => setQuestionValue(e.target.value)}
+                placeholder="Ask me anything..."
+                style={{ fontSize: '1rem' }}
+                onKeyDown={async e => {
                   if (e.key === 'Enter' && questionValue.length > 0) {
                     await sendMessage(questionValue);
                   }
                 }}
                 aria-label="chat input"
-                className=" m-0 w-full min-h-[1.5rem] max-h-36 pr-7 "
-              ></Input>
+                className="m-0 w-full min-h-[3.5rem] max-h-36 pr-7 rounded-lg "
+              />
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                <Button
+                  loading={buttonLoading}
+                  className={`flex-none border-0 ${
+                    !questionValue.length
+                      ? 'bg-opacity-50 bg-transparent'
+                      : 'bg-transparent'
+                  }`}
+                  onClick={() => sendMessage(questionValue)}
+                  icon={<SendOutlined style={{ fontSize: '26px' }} />}
+                  disabled={!questionValue.length}
+                ></Button>
+              </div>
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <Button
                 loading={buttonLoading}
-                className=" flex-none"
+                className={`flex-none border-none ${
+                  !questionValue.length ? 'bg-opacity-50' : 'bg-transparent'
+                }`}
                 onClick={() => sendMessage(questionValue)}
                 icon={<SendOutlined />}
                 disabled={!questionValue.length}
               ></Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
