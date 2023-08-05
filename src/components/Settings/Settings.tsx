@@ -46,6 +46,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
   getChatbot,
 }) => {
   const [fileInfo, setFileInfo] = useState<UploadFile | null>(null);
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const resetBasePrompt = () => {
     setChatbot({
       ...chatbot,
@@ -123,6 +124,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
   };
 
   const handleSubmit = async () => {
+    setSaveLoading(true);
     const updatedChatbot = { ...chatbot };
     /**
      * @COMMENT converting string to arr
@@ -139,7 +141,9 @@ export const Settings: React.FC<SettingsPropsType> = ({
     );
 
     const body = {
-      chatbot: removeStaticFieldsFromObject(updatedChatbot),
+      chatbot_settings: removeStaticFieldsFromObject(updatedChatbot).settings,
+      chatbot_name: updatedChatbot.chatbot_name,
+      chatbot_id: chatbot._id,
     };
     const response = await globalService.post(
       `/chatbot/settings-update?chatbot_id=${chatbot._id}`,
@@ -167,6 +171,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
       await getChatbot();
       setNewDataUpdated(false);
     }
+    setSaveLoading(false);
   };
 
   /**
@@ -504,7 +509,11 @@ export const Settings: React.FC<SettingsPropsType> = ({
           <ChatPreview chatbot={chatbot} />
         </Space>
         <Form.Item>
-          <PrimaryButton onclick={handleSubmit} text={'Сохранить изменения'} />
+          <PrimaryButton
+            onclick={handleSubmit}
+            text={'Сохранить изменения'}
+            loading={saveLoading}
+          />
         </Form.Item>
       </Form>
     </div>

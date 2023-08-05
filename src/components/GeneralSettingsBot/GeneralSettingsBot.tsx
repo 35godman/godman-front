@@ -13,6 +13,7 @@ import { setUser } from '@/features/slices/userSlice';
 import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
 import { addFile } from '@/features/slices/charsCountSlice';
 import EmbedCode from '@/components/EmbedCode/EmbedCode';
+import ChatbotContainer from '@/components/ChatBot/ChatbotContainer';
 
 export const GeneralSettingsBot: FC = () => {
   const router = useRouter();
@@ -66,7 +67,7 @@ export const GeneralSettingsBot: FC = () => {
     {
       key: 'chatbot',
       label: 'Chatbot',
-      children: <ChatBot chatbot={chatbot as Chatbot} />,
+      children: <ChatbotContainer chatbot={chatbot as Chatbot} />,
     },
     {
       key: 'settings',
