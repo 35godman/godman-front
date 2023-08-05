@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { Chatbot } from '@/types/models/globals';
 import { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
+import ChatbotContainer from '@/components/ChatBot/ChatbotContainer';
 
 const ChatbotIframe = () => {
   const router = useRouter();
@@ -25,7 +26,9 @@ const ChatbotIframe = () => {
     getChatbotSettings();
   }, [router, fetchedRef]);
 
-  return <>{chatbot && <ChatBot chatbot={chatbot} />}</>;
+  return (
+    <>{chatbot && <ChatbotContainer chatbot={chatbot} isIframe={true} />}</>
+  );
 };
 
 ChatbotIframe.getInitialProps = async () => {
