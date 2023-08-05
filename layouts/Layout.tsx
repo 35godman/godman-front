@@ -27,9 +27,8 @@ export const Layout: React.FC<Props> = ({ children }) => {
         >
           <Header />
           <main>{children}</main>
-
-          <Footer />
         </div>
+        <Footer />
       </IntlProvider>
     </>
   );
