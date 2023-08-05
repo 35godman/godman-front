@@ -23,6 +23,7 @@ import { useRouter } from 'next/router';
 import { headers } from 'next/headers';
 import globalService from '@/service/globalService';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import { Loader } from './Loader/Loader';
 
 type ChatBotProps = {
   chatbot: Chatbot;
@@ -67,7 +68,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       question: question,
       chatbot_id: chatbot._id,
       conversation_id: conversationId,
-      user_messages: messages.filter((item) => item.role === 'user').slice(-5),
+      user_messages: messages.filter(item => item.role === 'user').slice(-5),
     };
     try {
       const response = await fetch('/api/chat-stream', {
@@ -86,7 +87,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             break;
           }
           const text = new TextDecoder().decode(value);
-          setCurrentAnswer((prevState) => prevState + text);
+          setCurrentAnswer(prevState => prevState + text);
           if (endOfBlock.current) {
             endOfBlock.current.scrollIntoView({ behavior: 'smooth' });
           }
@@ -111,12 +112,12 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       );
       setVectorsUsed(conversationSource.data.source);
     }
-    setIsCollapseOpen((prevState) => !prevState);
+    setIsCollapseOpen(prevState => !prevState);
   };
 
   useEffect(() => {
     if (!isBotAnswering && currentAnswer) {
-      setMessages((prevState) => {
+      setMessages(prevState => {
         return [
           ...prevState,
           {
@@ -163,7 +164,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
               <ChatMessage chat_role={'assistant'} textProp={msg} key={index} />
             );
           })}
-          {messages.map((msg) => {
+          {messages.map(msg => {
             return (
               <ChatMessage
                 textProp={msg.content}
@@ -184,13 +185,14 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
               <ChatMessage textProp={currentAnswer} chat_role={'assistant'} />
             </div>
           ) : (
-            isBotAnswering && <Spin />
+            isBotAnswering && <Loader />
           )}
+          {/* <Loader /> */}
         </div>
         <div className=" sticky bottom-0 bg-inherit">
           <div>
             <div className="py-3 flex overflow-x-auto">
-              {chatbot.settings.suggested_messages.map((msg) => {
+              {chatbot.settings.suggested_messages.map(msg => {
                 return (
                   <Suggestion
                     disabled={buttonLoading}
@@ -205,8 +207,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
               <div className="flex items-center w-full ">
                 <Input
                   value={questionValue}
-                  onChange={(e) => setQuestionValue(e.target.value)}
-                  onKeyDown={async (e) => {
+                  onChange={e => setQuestionValue(e.target.value)}
+                  onKeyDown={async e => {
                     if (e.key === 'Enter' && questionValue.length > 0) {
                       await sendMessage(questionValue);
                     }

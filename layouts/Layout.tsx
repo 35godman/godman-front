@@ -16,6 +16,17 @@ export const Layout: React.FC<Props> = ({ children }) => {
       <IntlProvider locale={'ru'} messages={messages}>
         <Head>
           <title>{}</title>
+          <iframe
+            src="http://localhost:3000/chatbot-iframe/64ce0e09b8796e0baa72eebb"
+            width="100%"
+            style={{ height: '100%', minHeight: '700px' }}
+            id="godman-chatbot"
+            title="hi"
+          ></iframe>
+          <script
+            src="http://localhost:5050/static/scripts/embed-script.js"
+            defer
+          ></script>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"

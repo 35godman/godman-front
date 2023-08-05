@@ -1,0 +1,35 @@
+@keyframes bounce {
+  100% {
+    opacity: 0.3;
+    transform: translate3d(0px, -1.5rem, 0px);
+  }
+}
+
+.dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  margin: 0px 0.1rem;
+  background: rgb(0, 0, 0);
+  border-radius: 50%;
+  animation: bounce 1s ease infinite alternate;
+}
+
+.dotWrapper {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.outerWrapper {
+  /* position: absolute;
+  bottom: 0px; */
+  /* left: 50%; */
+  border-radius: 10px 10px 10px 0px;
+  margin-top: 15px;
+  width: 120px;
+  height: 65px;
+  transform: translateX(0%);
+}
