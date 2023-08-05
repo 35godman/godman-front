@@ -29,6 +29,8 @@ type ChatBotProps = {
   chatbot: Chatbot;
 };
 
+const { Paragraph, Title } = Typography;
+
 const { TextArea } = Input;
 export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   const router = useRouter();
@@ -181,6 +183,18 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
         ) : (
           isBotAnswering && <Loader />
         )}
+        <div className="mt-5 flex flex-col items-center">
+          <Image
+            className="mb-2"
+            src={'/flash.png'}
+            alt=""
+            width={40}
+            height={40}
+          />
+          <Title level={5}>
+            Povered by: <a href="https://godman.tech/">Godman</a>
+          </Title>
+        </div>
         {/* <Loader /> */}
       </div>
       <div
