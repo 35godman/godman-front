@@ -24,5 +24,8 @@
 	overflow-y: auto;
 }
 .crawledLinkHeading {
-	width: 300px;
+	white-space: nowrap;
+	width: 350px;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }

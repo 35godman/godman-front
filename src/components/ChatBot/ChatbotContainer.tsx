@@ -38,12 +38,18 @@ const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
   return (
     <>
       {isIframe ? (
-        <div className="m-auto min-h-screen  flex flex-col  rounded h-[80vh] bg-white overflow-auto justify-between border-zinc-200 border font-[Montserrat] ">
+        <div
+          className="m-auto min-h-screen  flex flex-col  rounded h-[80vh] overflow-auto justify-between border-zinc-200 border font-[Montserrat] "
+          style={{ backgroundColor: '#fadada' }}
+        >
           <ChatBot chatbot={chatbot} />
         </div>
       ) : (
         <>
-          <div className="m-auto min-h-[100%] max-w-[60%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border font-[Montserrat] ">
+          <div
+            style={{ backgroundColor: '#fadada' }}
+            className="m-auto min-h-[100%] max-w-[60%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border font-[Montserrat] "
+          >
             <ChatBot
               chatbot={chatbot}
               setCollapseOpen={setIsViewSourceAvailable}

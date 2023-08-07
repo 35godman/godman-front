@@ -151,7 +151,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
     <>
       <div
         className="sticky top-0 w-full border-b border-black"
-        style={{ backgroundColor: chatbot.settings.footer_color }}
+        style={{ backgroundColor: '#fadada' }}
       >
         <div className="flex justify-between mb-0 pt-[2em]  z-10 m-auto w-[80%]">
           <div className="flex items-center">
@@ -219,10 +219,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
           )
         )}
       </div>
-      <div
-        className=" sticky bottom-0"
-        style={{ backgroundColor: chatbot.settings.footer_color }}
-      >
+      <div className=" sticky bottom-0" style={{ backgroundColor: '#fadada' }}>
         <div>
           <div className="flex pl-3 p-1 rounded">
             <div className="flex items-center w-full relative">

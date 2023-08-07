@@ -184,27 +184,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
           </Space>
         </>
       }
-      {/*<List*/}
-      {/*  dataSource={chatbot.sources.website}*/}
-      {/*  renderItem={(item) => {*/}
-      {/*    const linkName = item.originalName.replace(/\[]/g, '/').slice(0, -4);*/}
-      {/*    return (*/}
-      {/*      <List.Item>*/}
-      {/*        <Typography.Text mark className={s.crawledLinkHeading}>*/}
-      {/*          {linkName}*/}
-      {/*        </Typography.Text>*/}
-      {/*        {item.char_length}*/}
-      {/*        <Button*/}
-      {/*          onClick={() => deleteAlreadyUploadedLink(item)}*/}
-      {/*          loading={deleteLoading}*/}
-      {/*        >*/}
-      {/*          <DeleteOutlined />*/}
-      {/*        </Button>*/}
-      {/*      </List.Item>*/}
-      {/*    );*/}
-      {/*  }}*/}
-      {/*></List>*/}
-      <AutoSizer style={{ height: '300p x' }}>
+      <AutoSizer style={{ height: '300px' }}>
         {({ height, width }: { height: number; width: number }) => {
           return (
             <List
