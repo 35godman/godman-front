@@ -17,7 +17,7 @@ const ChatbotIframe = () => {
       if (chatbot_id && !fetchedRef.current) {
         fetchedRef.current = true;
         const response: AxiosResponse<Chatbot> = await globalService.get(
-          `/chatbot/find?chatbot_id=${chatbot_id}`,
+          `/chatbot/iframe?chatbot_id=${chatbot_id}`,
         );
 
         setChatbot(response.data);

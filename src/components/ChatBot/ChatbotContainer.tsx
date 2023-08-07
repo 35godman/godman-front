@@ -31,13 +31,13 @@ const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
       );
       setVectorsUsed(conversationSource.data.source);
     }
-    setIsCollapseOpen(prevState => !prevState);
+    setIsCollapseOpen((prevState) => !prevState);
   };
   return (
     <>
       {isIframe ? (
         <div
-          style={{ backgroundColor: 'rgb(243, 243, 241)' }}
+          style={{ backgroundColor: chatbot.settings.footer_color }}
           className="m-auto min-h-[100%] px-5  flex flex-col  rounded h-[52rem] bg-white overflow-auto justify-between border-zinc-200 border "
         >
           <ChatBot chatbot={chatbot} />
@@ -45,7 +45,7 @@ const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
       ) : (
         <>
           <div
-            style={{ backgroundColor: 'rgb(243, 243, 241)' }}
+            style={{ backgroundColor: chatbot.settings.footer_color }}
             className="m-auto min-h-[80%] max-w-[60%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border "
           >
             <ChatBot chatbot={chatbot} />

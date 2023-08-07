@@ -14,6 +14,7 @@ import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
 import { addFile } from '@/features/slices/charsCountSlice';
 import EmbedCode from '@/components/EmbedCode/EmbedCode';
 import ChatbotContainer from '@/components/ChatBot/ChatbotContainer';
+import { nanoid } from 'nanoid';
 
 export const GeneralSettingsBot: FC = () => {
   const router = useRouter();
@@ -30,7 +31,7 @@ export const GeneralSettingsBot: FC = () => {
       const response: AxiosResponse<Chatbot> = await globalService.get(
         `/chatbot/find?chatbot_id=${chatbot_id}`,
       );
-      if (response.data) {
+      if (response.status === 200) {
         setChatbot(response.data);
         //set initial files for charsCountSlice
         const { files, website, QA_list } = response.data.sources;

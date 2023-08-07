@@ -29,27 +29,24 @@ type ChatBotProps = {
   chatbot: Chatbot;
 };
 
-const { Paragraph, Title } = Typography;
+const { Title } = Typography;
 
-const { TextArea } = Input;
 export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
-  const router = useRouter();
   const [questionValue, setQuestionValue] = useState<string>('');
-  const user = useSelector((state: RootState) => state.user);
   const [messages, setMessages] = useState<MessageState[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
   const [isBotAnswering, setIsBotAnswering] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+
+  const endOfBlock = useRef<HTMLDivElement | null>(null);
+  const endOfChat = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const conversationId = localStorage.getItem('conversationId');
-      if (!conversationId) {
-        localStorage.setItem('conversationId', nanoid());
-      }
+      localStorage.setItem('conversationId', nanoid());
     }
   }, []);
 
-  const endOfBlock = useRef<HTMLDivElement | null>(null);
   const sendMessage = async (question: string) => {
     setQuestionValue('');
     setIsBotAnswering(true);
@@ -60,6 +57,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
         _id: nanoid(),
         content: question,
         role: 'user' as RoleState,
+        msgColor: chatbot.settings.user_message_color,
       },
     ];
     setMessages(newMessages);
@@ -68,8 +66,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       question: question,
       chatbot_id: chatbot._id,
       conversation_id: conversationId,
-      user_messages: messages.filter(item => item.role === 'user').slice(-5),
+      messages: messages.slice(-2),
     };
+
     try {
       const response = await fetch('/api/chat-stream', {
         method: 'POST',
@@ -87,9 +86,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             break;
           }
           const text = new TextDecoder().decode(value);
-          setCurrentAnswer(prevState => prevState + text);
+          setCurrentAnswer((prevState) => prevState + text);
           if (endOfBlock.current) {
-            endOfBlock.current.scrollIntoView({ behavior: 'smooth' });
+            endOfBlock.current.scrollIntoView({
+              behavior: 'smooth',
+            });
           }
         }
       }
@@ -105,13 +106,14 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
 
   useEffect(() => {
     if (!isBotAnswering && currentAnswer) {
-      setMessages(prevState => {
+      setMessages((prevState) => {
         return [
           ...prevState,
           {
             _id: nanoid(),
             content: currentAnswer,
             role: 'assistant' as RoleState,
+            msgColor: chatbot.settings.bot_message_color,
           },
         ];
       });
@@ -124,7 +126,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
     <>
       <div
         className=" sticky top-0 w-full bg-white"
-        style={{ backgroundColor: 'rgb(243, 243, 241)' }}
+        style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div className="flex justify-between mb-0 pt-[2em]  z-10">
           <div className="flex items-center">
@@ -135,11 +137,13 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
               width={100}
               height={100}
             />
-            <Typography>{chatbot.settings.display_name}</Typography>
+            <Typography className={'text-xl font-bold'}>
+              {chatbot.settings.display_name}
+            </Typography>
           </div>
         </div>
         <div className="py-3 flex flex-col overflow-x-auto border-b border-black">
-          {chatbot.settings.suggested_messages.map(msg => {
+          {chatbot.settings.suggested_messages.map((msg) => {
             return (
               <Suggestion
                 disabled={buttonLoading}
@@ -153,20 +157,21 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
       </div>
       <div
         className={'flex flex-col'}
-        style={{ backgroundColor: 'rgb(243, 243, 241)' }}
+        ref={endOfChat}
+        style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         {chatbot.settings.initial_messages.map((msg, index) => {
           return (
             <ChatMessage chat_role={'assistant'} textProp={msg} key={index} />
           );
         })}
-        {messages.map(msg => {
+        {messages.map((msg) => {
           return (
             <ChatMessage
               textProp={msg.content}
               chat_role={msg.role}
               key={msg._id}
-              user_color={chatbot.settings.user_message_color}
+              msg_color={msg.msgColor}
             />
           );
         })}
@@ -178,38 +183,39 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
          */}
         {currentAnswer ? (
           <div ref={endOfBlock}>
-            <ChatMessage textProp={currentAnswer} chat_role={'assistant'} />
+            <ChatMessage
+              textProp={currentAnswer}
+              chat_role={'assistant'}
+              msg_color={chatbot.settings.bot_message_color}
+            />
           </div>
         ) : (
-          isBotAnswering && <Loader />
+          isBotAnswering && (
+            <Loader
+              color_bubble={'#fff'}
+              color_container={chatbot.settings.bot_message_color}
+            />
+          )
         )}
         <div className="mt-5 flex flex-col items-center">
-          <Image
-            className="mb-2"
-            src={'/flash.png'}
-            alt=""
-            width={40}
-            height={40}
-          />
           <Title level={5}>
-            Povered by: <a href="https://godman.tech/">Godman</a>
+            Powered by: <a href="https://godman.tech/">Godman</a>
           </Title>
         </div>
-        {/* <Loader /> */}
       </div>
       <div
         className=" sticky bottom-0 bg-inherit"
-        style={{ backgroundColor: 'rgb(243, 243, 241)' }}
+        style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div>
           <div className="flex pl-3 p-1 rounded mb-10">
             <div className="flex items-center w-full relative">
               <Input
                 value={questionValue}
-                onChange={e => setQuestionValue(e.target.value)}
+                onChange={(e) => setQuestionValue(e.target.value)}
                 placeholder="Ask me anything..."
                 style={{ fontSize: '1rem' }}
-                onKeyDown={async e => {
+                onKeyDown={async (e) => {
                   if (e.key === 'Enter' && questionValue.length > 0) {
                     await sendMessage(questionValue);
                   }
@@ -231,17 +237,6 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
                 ></Button>
               </div>
             </div>
-            {/* <div className="flex items-center">
-              <Button
-                loading={buttonLoading}
-                className={`flex-none border-none ${
-                  !questionValue.length ? 'bg-opacity-50' : 'bg-transparent'
-                }`}
-                onClick={() => sendMessage(questionValue)}
-                icon={<SendOutlined />}
-                disabled={!questionValue.length}
-              ></Button>
-            </div> */}
           </div>
         </div>
       </div>

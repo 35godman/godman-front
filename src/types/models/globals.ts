@@ -124,7 +124,7 @@ export type ChatbotSettings = {
 
   chat_icon_path: string;
 
-  chat_bubble_color: string;
+  footer_color: string;
 
   show_initial_messages_timeout: number;
 };

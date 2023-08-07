@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import s from './Loader.module.css';
 
 type LoaderProps = {
@@ -6,12 +6,12 @@ type LoaderProps = {
   color_container?: string;
 };
 
-export const Loader: React.FC<LoaderProps> = ({
-  color_bubble = '#fff',
-  color_container = 'rgb(30, 35, 48)',
-}) => {
+const Loader = forwardRef<HTMLDivElement, LoaderProps>((props, ref) => {
+  const { color_bubble, color_container } = props; // Destructuring props
+
   return (
     <div
+      ref={ref}
       className={s.outerWrapper}
       style={{ backgroundColor: color_container }}
     >
@@ -37,4 +37,7 @@ export const Loader: React.FC<LoaderProps> = ({
       </div>
     </div>
   );
-};
+});
+Loader.displayName = 'Loader'; // Set the display name for the component
+
+export { Loader };

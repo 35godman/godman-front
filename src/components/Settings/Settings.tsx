@@ -383,7 +383,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
           />
         </div>
 
-        <Space direction="horizontal" align="start" size={50}>
+        <div className={'flex justify-between'}>
           <div>
             <Title level={3}>Chat Interface</Title>
             <Title level={5}>applies when embedded on a website</Title>
@@ -447,7 +447,8 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 </>
               )}
             </Space>
-            <Form.Item label="">
+            <Form.Item>
+              <Title level={5}>Display name</Title>
               <Input
                 value={chatbot.settings.display_name}
                 onChange={(e) =>
@@ -463,36 +464,21 @@ export const Settings: React.FC<SettingsPropsType> = ({
               }}
               defaultValue={chatbot.settings.user_message_color}
             />
-            <Title level={5}>User Message Color</Title>
-            {/*<ColorPicker*/}
-            {/*  format={'hex'}*/}
-            {/*  onChange={(color) => {*/}
-            {/*    changeChatbotSetting('chat_message_color', color.toHexString());*/}
-            {/*  }}*/}
-            {/*  defaultValue={chatbot.settings.user_message_color}*/}
-            {/*/>*/}
-            {/* <Title level={5}>Update chat icon</Title>
-          <Input
-            style={{
-              width: '430px',
-              marginTop: '5px',
-            }}
-            type="file"
-            accept="image/*"
-            onChange={handleChatIconChange}
-          />
-          <div>
-            {chatIcon && (
-              <Image src={chatIcon} alt="Preview" width={100} height={100} />
-            )}
-          </div> */}
+            <Title level={5}>Chatbot Message Color</Title>
+            <ColorPicker
+              format={'hex'}
+              onChange={(color) => {
+                changeChatbotSetting('bot_message_color', color.toHexString());
+              }}
+              defaultValue={chatbot.settings.bot_message_color}
+            />
 
             <Title level={5}>Chat Footer Color</Title>
             <ColorPicker
               format={'hex'}
-              defaultValue={chatbot.settings.chat_bubble_color}
+              defaultValue={chatbot.settings.footer_color}
               onChange={(color) => {
-                changeChatbotSetting('chat_bubble_color', color.toHexString());
+                changeChatbotSetting('footer_color', color.toHexString());
               }}
             />
 
@@ -505,9 +491,10 @@ export const Settings: React.FC<SettingsPropsType> = ({
               <Option value="RU">Russian</Option>
             </Select>
           </div>
-          {/* Prev Chat_________________________ */}
-          <ChatPreview chatbot={chatbot} />
-        </Space>
+          <div className={'flex flex-col w-[50%] '}>
+            <ChatPreview chatbot={chatbot} />
+          </div>
+        </div>
         <Form.Item>
           <PrimaryButton
             onclick={handleSubmit}

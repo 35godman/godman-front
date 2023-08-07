@@ -77,7 +77,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
           weblink: websiteUrl,
         },
       );
-      if (res.data) {
+      if (res.status === 201) {
         await getChatbot();
       } else {
         message.error('Ошибка');

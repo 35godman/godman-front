@@ -4,4 +4,5 @@ export type MessageState = {
   _id: string;
   content: string;
   role: RoleState;
+  msgColor: string;
 };
