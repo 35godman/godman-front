@@ -30,11 +30,11 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
   return (
     <>
       <div
-        className=" sticky top-0 w-full bg-white rounded-tr-2xl rounded-tl-2xl"
+        className="sticky top-0 w-full border-b border-black rounded-tr-2xl rounded-tl-2xl"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between mb-0 pt-[2em]  z-10">
-          <div className="flex items-center w-[50%] justify-between">
+        <div className="flex justify-between mb-0 pt-[2em]  z-10 m-auto w-[80%]">
+          <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
               src={chatbot.settings.profile_picture_path}
@@ -47,16 +47,13 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
             </Typography>
           </div>
         </div>
-        <div className="py-3 flex flex-col overflow-x-auto border-b border-black">
+        <div className="py-3 flex flex-col overflow-x-auto m-auto w-[80%] ">
           {suggestMsgArr.map((msg) => {
             return <Suggestion textProp={msg} key={msg} />;
           })}
         </div>
       </div>
-      <div
-        className={'flex flex-col min-h-[400px]'}
-        style={{ backgroundColor: chatbot.settings.footer_color }}
-      >
+      <div className={'flex flex-col min-h-[400px]  w-[90%] m-auto'}>
         {initialMsgArr.map((msg, index) => {
           return (
             <ChatMessage
@@ -79,22 +76,19 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
           key={'assistant_msg'}
           msg_color={chatbot.settings.bot_message_color}
         />
-
-        <div className="mt-5 flex flex-col items-center">
-          <Title level={5}>
-            Powered by: <a href="https://godman.tech/">Godman</a>
-          </Title>
-        </div>
       </div>
       <div
-        className=" sticky bottom-0 bg-inherit"
+        className=" sticky bottom-0"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div>
-          <div className="flex pl-3 p-1 rounded mb-10">
+          <div className="flex pl-3 p-1 rounded">
             <div className="flex items-center w-full relative">
+              <Button
+                className={`flex-none border-0 bg-transparent`}
+                icon={<ReloadOutlined style={{ fontSize: '26px' }} />}
+              ></Button>
               <Input
-                value={'User question...'}
                 placeholder="Ask me anything..."
                 style={{ fontSize: '1rem' }}
                 aria-label="chat input"
@@ -107,6 +101,11 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
                 ></Button>
               </div>
             </div>
+          </div>
+          <div className="mt-5 flex flex-col items-center">
+            <Title level={5} className={'font-[Montserrat]'}>
+              Powered by: <a href="https://godman.tech/">Godman</a>
+            </Title>
           </div>
         </div>
       </div>

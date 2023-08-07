@@ -491,7 +491,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
               <Option value="RU">Russian</Option>
             </Select>
           </div>
-          <div className={'flex flex-col w-[50%] '}>
+          <div className={'flex flex-col w-[50%] border-x-blue-100 border-x-2'}>
             <ChatPreview chatbot={chatbot} />
           </div>
         </div>

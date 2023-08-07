@@ -9,7 +9,7 @@ import {
   Spin,
   Typography,
 } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
+import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import { Chatbot } from '@/types/models/globals';
 import { useSelector } from 'react-redux';
@@ -27,11 +27,15 @@ import { Loader } from './Loader/Loader';
 
 type ChatBotProps = {
   chatbot: Chatbot;
+  setCollapseOpen?: (isOpen: boolean) => void;
 };
 
 const { Title } = Typography;
 
-export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
+export const ChatBot: React.FC<ChatBotProps> = ({
+  chatbot,
+  setCollapseOpen,
+}) => {
   const [questionValue, setQuestionValue] = useState<string>('');
   const [messages, setMessages] = useState<MessageState[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
@@ -77,7 +81,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
           'Content-Type': 'application/json',
         },
       });
-      if (response.body) {
+      if (response.status === 201 && response.body) {
         const reader = response.body.getReader();
         // eslint-disable-next-line no-constant-condition
         while (true) {
@@ -93,15 +97,36 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             });
           }
         }
+      } else if (response.status !== 201 && response.body) {
+        const reader = response.body.getReader();
+        let errorMessage = '';
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          const text = new TextDecoder().decode(value);
+          errorMessage += text;
+        }
+        setCurrentAnswer(JSON.parse(errorMessage).message);
       }
 
       setIsBotAnswering(false);
       setButtonLoading(false);
+      if (setCollapseOpen) {
+        setCollapseOpen(true);
+      }
     } catch (e) {
       setIsBotAnswering(false);
       //message.error('Произошла ошибка', 2000, () => router.reload());
       setButtonLoading(false);
     }
+  };
+
+  const reloadConversation = () => {
+    setMessages([]);
+    localStorage.setItem('conversationId', nanoid());
   };
 
   useEffect(() => {
@@ -125,10 +150,10 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
   return (
     <>
       <div
-        className=" sticky top-0 w-full bg-white"
+        className="sticky top-0 w-full border-b border-black"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between mb-0 pt-[2em]  z-10">
+        <div className="flex justify-between mb-0 pt-[2em]  z-10 m-auto w-[80%]">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -137,12 +162,12 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
               width={100}
               height={100}
             />
-            <Typography className={'text-xl font-bold'}>
+            <Typography className={'text-xl font-bold font-[Montserrat]'}>
               {chatbot.settings.display_name}
             </Typography>
           </div>
         </div>
-        <div className="py-3 flex flex-col overflow-x-auto border-b border-black">
+        <div className="py-3 flex flex-col overflow-x-auto m-auto w-[80%] ">
           {chatbot.settings.suggested_messages.map((msg) => {
             return (
               <Suggestion
@@ -155,11 +180,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
           })}
         </div>
       </div>
-      <div
-        className={'flex flex-col'}
-        ref={endOfChat}
-        style={{ backgroundColor: chatbot.settings.footer_color }}
-      >
+      <div className={'flex flex-col w-[90%] m-auto '} ref={endOfChat}>
         {chatbot.settings.initial_messages.map((msg, index) => {
           return (
             <ChatMessage chat_role={'assistant'} textProp={msg} key={index} />
@@ -197,19 +218,25 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
             />
           )
         )}
-        <div className="mt-5 flex flex-col items-center">
-          <Title level={5}>
-            Powered by: <a href="https://godman.tech/">Godman</a>
-          </Title>
-        </div>
       </div>
       <div
-        className=" sticky bottom-0 bg-inherit"
+        className=" sticky bottom-0"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div>
-          <div className="flex pl-3 p-1 rounded mb-10">
+          <div className="flex pl-3 p-1 rounded">
             <div className="flex items-center w-full relative">
+              <Button
+                loading={buttonLoading}
+                className={`flex-none border-0 ${
+                  !questionValue.length
+                    ? 'bg-opacity-50 bg-transparent'
+                    : 'bg-transparent'
+                }`}
+                onClick={() => reloadConversation()}
+                icon={<ReloadOutlined style={{ fontSize: '26px' }} />}
+                disabled={!messages.length}
+              ></Button>
               <Input
                 value={questionValue}
                 onChange={(e) => setQuestionValue(e.target.value)}
@@ -237,6 +264,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({ chatbot }) => {
                 ></Button>
               </div>
             </div>
+          </div>
+          <div className="mt-5 flex flex-col items-center">
+            <Title level={5} className={'font-[Montserrat]'}>
+              Powered by: <a href="https://godman.tech/">Godman</a>
+            </Title>
           </div>
         </div>
       </div>

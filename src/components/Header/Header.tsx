@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { domainConfig } from '@/config/domain.config';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
+import Image from 'next/image';
 export const Header = () => {
   const initialRender = useRef(true);
   const user = useSelector((state: RootState) => state.user);
@@ -55,9 +56,12 @@ export const Header = () => {
   };
 
   return (
-    <div className={'flex p-8 justify-evenly bg-blue-400'}>
+    <div className={'flex p-8 justify-evenly bg-blue-400 items-center'}>
       {user._id && (
         <>
+          <div className={'w-[35%]'}>
+            <Image src={'/logo.PNG'} alt={'Logo'} width={100} height={100} />
+          </div>
           <PrimaryButton
             onclick={() => goToPage('chatbot-list')}
             text={'Список чатботов'}

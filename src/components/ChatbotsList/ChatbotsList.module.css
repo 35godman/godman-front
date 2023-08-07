@@ -10,8 +10,6 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 100vw;
-  max-width: 1440px;
   margin: 0 auto;
 }
 
@@ -19,4 +17,6 @@
   display: flex;
   justify-content: space-evenly;
   margin-top: 1vh;
+  width: 80%;
+  flex-wrap: wrap;
 }

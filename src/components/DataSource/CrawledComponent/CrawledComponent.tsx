@@ -1,14 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import s from '@/components/DataSource/DataSource.module.css';
-import {
-  Button,
-  Input,
-  List,
-  message,
-  Progress,
-  Space,
-  Typography,
-} from 'antd';
+import { Button, Input, message, Progress, Space, Typography } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { AxiosResponse } from 'axios';
 import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLink.type';
@@ -19,6 +11,10 @@ import { useAppDispatch } from '@/features/store';
 import { addFile, removeFile } from '@/features/slices/charsCountSlice';
 import { useRouter } from 'next/router';
 import globalService from '@/service/globalService';
+import { FixedSizeList as List } from 'react-window';
+import CrawledListItem from '@/components/DataSource/CrawledComponent/CrawledListItem';
+import { WrappedCrawledListItem } from '@/components/DataSource/CrawledComponent/WrapperCrawledListItem';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 type CrawledComponentProps = {
   chatbot: Chatbot;
@@ -188,27 +184,45 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
           </Space>
         </>
       }
-      <List
-        dataSource={chatbot.sources.website}
-        renderItem={(item) => {
-          const linkName = item.originalName.replace(/\[]/g, '/').slice(0, -4);
-
+      {/*<List*/}
+      {/*  dataSource={chatbot.sources.website}*/}
+      {/*  renderItem={(item) => {*/}
+      {/*    const linkName = item.originalName.replace(/\[]/g, '/').slice(0, -4);*/}
+      {/*    return (*/}
+      {/*      <List.Item>*/}
+      {/*        <Typography.Text mark className={s.crawledLinkHeading}>*/}
+      {/*          {linkName}*/}
+      {/*        </Typography.Text>*/}
+      {/*        {item.char_length}*/}
+      {/*        <Button*/}
+      {/*          onClick={() => deleteAlreadyUploadedLink(item)}*/}
+      {/*          loading={deleteLoading}*/}
+      {/*        >*/}
+      {/*          <DeleteOutlined />*/}
+      {/*        </Button>*/}
+      {/*      </List.Item>*/}
+      {/*    );*/}
+      {/*  }}*/}
+      {/*></List>*/}
+      <AutoSizer style={{ height: '300p x' }}>
+        {({ height, width }: { height: number; width: number }) => {
           return (
-            <List.Item>
-              <Typography.Text mark className={s.crawledLinkHeading}>
-                {linkName}
-              </Typography.Text>
-              {item.char_length}
-              <Button
-                onClick={() => deleteAlreadyUploadedLink(item)}
-                loading={deleteLoading}
-              >
-                <DeleteOutlined />
-              </Button>
-            </List.Item>
+            <List
+              itemCount={chatbot.sources.website.length}
+              itemSize={35}
+              itemData={chatbot.sources.website}
+              height={height}
+              width={width}
+            >
+              {WrappedCrawledListItem({
+                data: chatbot.sources.website,
+                deleteAlreadyUploadedLink: deleteAlreadyUploadedLink,
+                deleteLoading: deleteLoading,
+              })}
+            </List>
           );
         }}
-      ></List>
+      </AutoSizer>
     </>
   );
 };

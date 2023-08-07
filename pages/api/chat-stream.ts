@@ -10,7 +10,7 @@ export default async function handler(req: NextRequest, _context: unknown) {
   const postData = await req.json();
   try {
     const response = await fetch(
-      `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask`,
+      `${domainConfig.BACKEND_DOMAIN_NAME}/v1/embedding/ask?chatbot_id=${postData.chatbot_id}`,
       {
         method: 'POST',
         body: JSON.stringify(postData),
@@ -19,12 +19,14 @@ export default async function handler(req: NextRequest, _context: unknown) {
         },
       },
     );
-    return new Response(response.body, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-    });
+    if (response.body) {
+      return new Response(response.body, {
+        status: response.status,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      });
+    }
   } catch (e) {
     /* empty */
   }

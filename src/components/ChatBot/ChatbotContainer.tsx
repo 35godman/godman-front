@@ -12,6 +12,8 @@ type ChatbotContainerProps = {
 const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
   const [isCollapseOpen, setIsCollapseOpen] = useState<boolean>(false);
   const [vectorsUsed, setVectorsUsed] = useState<string>('');
+  const [isViewSourceAvailable, setIsViewSourceAvailable] =
+    useState<boolean>(false);
 
   const collapseItems: CollapseProps['items'] = [
     {
@@ -36,22 +38,21 @@ const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
   return (
     <>
       {isIframe ? (
-        <div
-          style={{ backgroundColor: chatbot.settings.footer_color }}
-          className="m-auto min-h-[100%] px-5  flex flex-col  rounded h-[52rem] bg-white overflow-auto justify-between border-zinc-200 border "
-        >
+        <div className="m-auto min-h-screen  flex flex-col  rounded h-[80vh] bg-white overflow-auto justify-between border-zinc-200 border font-[Montserrat] ">
           <ChatBot chatbot={chatbot} />
         </div>
       ) : (
         <>
-          <div
-            style={{ backgroundColor: chatbot.settings.footer_color }}
-            className="m-auto min-h-[80%] max-w-[60%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border "
-          >
-            <ChatBot chatbot={chatbot} />
+          <div className="m-auto min-h-[100%] max-w-[60%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border font-[Montserrat] ">
+            <ChatBot
+              chatbot={chatbot}
+              setCollapseOpen={setIsViewSourceAvailable}
+            />
           </div>
           <div>
-            <Collapse items={collapseItems} onChange={showMessageSource} />
+            {isViewSourceAvailable && (
+              <Collapse items={collapseItems} onChange={showMessageSource} />
+            )}
           </div>
         </>
       )}
