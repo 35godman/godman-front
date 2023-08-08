@@ -150,10 +150,10 @@ export const ChatBot: React.FC<ChatBotProps> = ({
   return (
     <>
       <div
-        className="sticky top-0 w-full "
-        // style={{ backgroundColor: chatbot.settings.footer_color }}
+        className="sticky top-0 w-full z-10"
+        style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between mb-0 m-auto w-full items-center pt-2">
+        <div className="flex justify-between mb-0 m-auto w-full items-center pt-2 z-10">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -162,7 +162,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
               width={100}
               height={100}
             />
-            <Typography className={'text-xl font-bold '}>
+            <Typography className={'text-lg font-semibold '}>
               {chatbot.settings.display_name}
             </Typography>
           </div>
@@ -220,8 +220,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({
         )}
       </div>
       <div
-        className=" sticky bottom-0"
-        // style={{ backgroundColor: chatbot.settings.footer_color }}
+        className=" sticky bottom-0 z-10"
+        style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div>
           <div className="flex pl-3 p-1 rounded">

@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/features/store';
+import { FormattedMessage } from 'react-intl';
 const AccountPage = () => {
   const router = useRouter();
 
@@ -21,18 +22,22 @@ const AccountPage = () => {
       }
     >
       <Typography className={'mt-4 font-bold size text-3xl text-center '}>
-        Account
+        <FormattedMessage id={'account'} />
       </Typography>
       <div
         className={
           'rounded-2xl bg-blue-200 h-20 flex flex-col items-center justify-center mt-3'
         }
       >
-        <Typography className={'font-bold'}>Your email</Typography>
+        <Typography className={'font-bold'}>
+          <FormattedMessage id={'account-email'} />
+        </Typography>
         <Typography className={'font-bold'}>{user.email}</Typography>
       </div>
       <div className="mx-auto my-0">
-        <PrimaryButton onclick={signOut}>Sign Out</PrimaryButton>
+        <PrimaryButton onclick={signOut}>
+          <FormattedMessage id={'account-sign-out'} />
+        </PrimaryButton>
       </div>
     </div>
   );

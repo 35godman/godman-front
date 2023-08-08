@@ -3,6 +3,7 @@ import { Collapse, CollapseProps, Spin } from 'antd';
 import globalService from '@/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import { ChatBot } from '@/components/ChatBot/ChatBot';
+import { FormattedMessage } from 'react-intl';
 
 type ChatbotContainerProps = {
   chatbot: Chatbot;
@@ -18,7 +19,7 @@ const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
   const collapseItems: CollapseProps['items'] = [
     {
       key: '1',
-      label: 'Показать источник',
+      label: <FormattedMessage id={'chatbot.show-source'} />,
       children: (
         <>{vectorsUsed ? <p>{vectorsUsed}</p> : <Spin size={'small'} />}</>
       ),

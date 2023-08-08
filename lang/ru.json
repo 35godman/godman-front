@@ -1,5 +1,13 @@
 {
-    "remember_me": "Запомнить меня",
-    "submit": "Отправить",
-    "enter_pass": "Пожалуйста введите пароль"
+  "remember_me": "Запомнить меня",
+  "submit": "Отправить",
+  "enter_pass": "Пожалуйста введите пароль",
+  "username": "Логин",
+  "login-rule": "Введите логин",
+  "pass-rule": "Введите пароль",
+  "account": "Аккаунт",
+  "account.email": "Ваша почта",
+  "account.sign-out": "Выйти из аккаунта",
+  "chatbotContainer.show-source": "Показать источник",
+  "chatbot.askMe": "Спроси меня о чем угодно..."
 }

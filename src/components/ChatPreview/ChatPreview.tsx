@@ -30,10 +30,10 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
   return (
     <>
       <div
-        className="sticky top-0 w-full "
-        // style={{ backgroundColor: chatbot.settings.footer_color }}
+        className="sticky top-0 w-full z-10"
+        style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between mb-0 m-auto w-full items-center pt-2">
+        <div className="flex justify-between mb-0 m-auto w-full items-center pt-2 z-10">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -42,7 +42,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
               width={100}
               height={100}
             />
-            <Typography className={'text-xl font-bold '}>
+            <Typography className={'text-lg font-semibold '}>
               {chatbot.settings.display_name}
             </Typography>
           </div>

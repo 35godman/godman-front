@@ -48,15 +48,6 @@ export const Login: React.FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const successLogged = async () => {
-  //     if (isLoggedIn) {
-  //       await router.push('/chatbot-list');
-  //     }
-  //   };
-  //   successLogged();
-  // }, [isLoggedIn]);
-
   const renderLoginForm = () => {
     return (
       <div className={'m-auto flex justify-center'}>
@@ -198,9 +189,6 @@ export const Login: React.FC = () => {
 
   return (
     <div className={s.loginWrapper}>
-      <Modal open={reloginLoad} closable={false} footer={false}>
-        <Spin size={'large'} />
-      </Modal>
       <Tabs defaultActiveKey="login" centered items={tabs} />
     </div>
   );
