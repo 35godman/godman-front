@@ -19,9 +19,9 @@ export const Suggestion: React.FC<SuggestionProps> = ({
       style={{
         backgroundColor: 'rgb(30, 35, 48)',
         color: '#fff',
-        height: '35px',
+        borderColor: 'rgb(30, 35, 48)',
       }}
-      className="rounded-xl whitespace-nowrap  mr-1 mt-1  text-xl font-[Montserrat] "
+      className="rounded-lg whitespace-nowrap  mr-1 mt-1  text-xl flex justify-center items-center"
     >
       {textProp}
     </Button>

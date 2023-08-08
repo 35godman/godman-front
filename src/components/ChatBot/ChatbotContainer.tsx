@@ -39,7 +39,7 @@ const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
     <>
       {isIframe ? (
         <div
-          className="m-auto min-h-screen  flex flex-col  rounded h-[80vh] overflow-auto justify-between border-zinc-200 border font-[Montserrat] "
+          className="m-auto min-h-screen  flex flex-col  rounded h-[80vh] overflow-auto justify-between border-zinc-200 border "
           style={{ backgroundColor: '#fadada' }}
         >
           <ChatBot chatbot={chatbot} />
@@ -48,7 +48,7 @@ const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
         <>
           <div
             style={{ backgroundColor: '#fadada' }}
-            className="m-auto min-h-[100%] max-w-[60%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border font-[Montserrat] "
+            className="m-auto min-h-[100%] max-w-[60%] flex flex-col  rounded h-[42rem] bg-white overflow-auto justify-between border-zinc-200 border  "
           >
             <ChatBot
               chatbot={chatbot}

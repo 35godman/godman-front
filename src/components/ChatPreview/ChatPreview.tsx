@@ -103,7 +103,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
             </div>
           </div>
           <div className="mt-5 flex flex-col items-center">
-            <Title level={5} className={'font-[Montserrat]'}>
+            <Title level={5} className={''}>
               Powered by: <a href="https://godman.tech/">Godman</a>
             </Title>
           </div>

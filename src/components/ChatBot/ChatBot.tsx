@@ -70,7 +70,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
       question: question,
       chatbot_id: chatbot._id,
       conversation_id: conversationId,
-      messages: messages.slice(-2),
+      messages: messages.slice(-5),
     };
 
     try {
@@ -153,7 +153,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
         className="sticky top-0 w-full border-b border-black"
         style={{ backgroundColor: '#fadada' }}
       >
-        <div className="flex justify-between mb-0 pt-[2em]  z-10 m-auto w-[80%]">
+        <div className="flex justify-between mb-0 pt-[2em]  z-10 m-auto w-full">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -162,23 +162,23 @@ export const ChatBot: React.FC<ChatBotProps> = ({
               width={100}
               height={100}
             />
-            <Typography className={'text-xl font-bold font-[Montserrat]'}>
+            <Typography className={'text-xl font-bold '}>
               {chatbot.settings.display_name}
             </Typography>
           </div>
         </div>
-        <div className="py-3 flex flex-col overflow-x-auto m-auto w-[80%] ">
-          {chatbot.settings.suggested_messages.map((msg) => {
-            return (
-              <Suggestion
-                disabled={buttonLoading}
-                textProp={msg}
-                key={msg}
-                onclick={() => sendMessage(msg)}
-              />
-            );
-          })}
-        </div>
+      </div>
+      <div className="py-3 flex flex-col m-auto w-[88%] ">
+        {chatbot.settings.suggested_messages.map((msg) => {
+          return (
+            <Suggestion
+              disabled={buttonLoading}
+              textProp={msg}
+              key={msg}
+              onclick={() => sendMessage(msg)}
+            />
+          );
+        })}
       </div>
       <div className={'flex flex-col w-[90%] m-auto '} ref={endOfChat}>
         {chatbot.settings.initial_messages.map((msg, index) => {
@@ -263,7 +263,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
             </div>
           </div>
           <div className="mt-5 flex flex-col items-center">
-            <Title level={5} className={'font-[Montserrat]'}>
+            <Title level={5} className={''}>
               Powered by: <a href="https://godman.tech/">Godman</a>
             </Title>
           </div>
