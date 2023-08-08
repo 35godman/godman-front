@@ -30,10 +30,10 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
   return (
     <>
       <div
-        className="sticky top-0 w-full border-b border-black rounded-tr-2xl rounded-tl-2xl"
-        style={{ backgroundColor: chatbot.settings.footer_color }}
+        className="sticky top-0 w-full "
+        // style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between mb-0 pt-[2em]  z-10 m-auto w-[80%]">
+        <div className="flex justify-between mb-0 m-auto w-full items-center pt-2">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -42,70 +42,57 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
               width={100}
               height={100}
             />
-            <Typography className={'text-xl font-bold'}>
+            <Typography className={'text-xl font-bold '}>
               {chatbot.settings.display_name}
             </Typography>
           </div>
         </div>
-        <div className="py-3 flex flex-col overflow-x-auto m-auto w-[80%] ">
-          {suggestMsgArr.map((msg) => {
-            return <Suggestion textProp={msg} key={msg} />;
-          })}
-        </div>
       </div>
-      <div className={'flex flex-col min-h-[400px]  w-[90%] m-auto'}>
+      <div className="flex flex-col m-auto w-[88%] mt-2 border-b border-black pb-2">
+        {suggestMsgArr.map((msg) => {
+          return <Suggestion textProp={msg} key={msg} />;
+        })}
+      </div>
+      <div className={'flex flex-col w-[90%] m-auto '}>
         {initialMsgArr.map((msg, index) => {
           return (
-            <ChatMessage
-              chat_role={'assistant'}
-              textProp={msg}
-              key={index}
-              msg_color={chatbot.settings.bot_message_color}
-            />
+            <ChatMessage chat_role={'assistant'} textProp={msg} key={index} />
           );
         })}
-        <ChatMessage
-          textProp={'What can your chatbot do?'}
-          chat_role={'user'}
-          key={'user_msg'}
-          msg_color={chatbot.settings.user_message_color}
-        />
-        <ChatMessage
-          textProp={"I'm an AI Assistant"}
-          chat_role={'assistant'}
-          key={'assistant_msg'}
-          msg_color={chatbot.settings.bot_message_color}
-        />
       </div>
       <div
         className=" sticky bottom-0"
-        style={{ backgroundColor: chatbot.settings.footer_color }}
+        // style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div>
           <div className="flex pl-3 p-1 rounded">
             <div className="flex items-center w-full relative">
-              <Button
-                className={`flex-none border-0 bg-transparent`}
-                icon={<ReloadOutlined style={{ fontSize: '26px' }} />}
-              ></Button>
               <Input
+                value={''}
                 placeholder="Ask me anything..."
                 style={{ fontSize: '1rem' }}
-                aria-label="chat input"
-                className="m-0 w-full min-h-[3.5rem] max-h-36 pr-7 rounded-lg "
+                className="m-0 w-full min-h-[3.5rem] max-h-36 pr-7 rounded-lg big-placeholder"
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                 <Button
-                  className={`flex-none border-0 bg-opacity-50 bg-transparent`}
-                  icon={<SendOutlined style={{ fontSize: '26px' }} />}
+                  className={`flex-none border-0 bg-white disabled:bg-white`}
+                  icon={
+                    <SendOutlined
+                      style={{ fontSize: '26px', background: 'transparent' }}
+                    />
+                  }
                 ></Button>
               </div>
             </div>
           </div>
-          <div className="mt-5 flex flex-col items-center">
-            <Title level={5} className={''}>
-              Powered by: <a href="https://godman.tech/">Godman</a>
-            </Title>
+          <div className="mt-5 flex justify-center items-center space-x-1">
+            <p>Powered by</p>
+            <a
+              href="https://godman.tech/"
+              className={' hover:text-black active:text-black underline'}
+            >
+              Godman
+            </a>
           </div>
         </div>
       </div>

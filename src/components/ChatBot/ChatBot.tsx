@@ -151,9 +151,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({
     <>
       <div
         className="sticky top-0 w-full "
-        style={{ backgroundColor: '#fadada' }}
+        // style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between mb-0 m-auto w-full">
+        <div className="flex justify-between mb-0 m-auto w-full items-center pt-2">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -219,21 +219,24 @@ export const ChatBot: React.FC<ChatBotProps> = ({
           )
         )}
       </div>
-      <div className=" sticky bottom-0" style={{ backgroundColor: '#fadada' }}>
+      <div
+        className=" sticky bottom-0"
+        // style={{ backgroundColor: chatbot.settings.footer_color }}
+      >
         <div>
           <div className="flex pl-3 p-1 rounded">
             <div className="flex items-center w-full relative">
-              <Button
-                loading={buttonLoading}
-                className={`flex-none border-0 ${
-                  !questionValue.length
-                    ? 'bg-opacity-50 bg-transparent'
-                    : 'bg-transparent'
-                }`}
-                onClick={() => reloadConversation()}
-                icon={<ReloadOutlined style={{ fontSize: '26px' }} />}
-                disabled={!messages.length}
-              ></Button>
+              {/*<Button*/}
+              {/*  loading={buttonLoading}*/}
+              {/*  className={`flex-none border-0 ${*/}
+              {/*    !questionValue.length*/}
+              {/*      ? 'bg-opacity-50 bg-transparent'*/}
+              {/*      : 'bg-transparent'*/}
+              {/*  }`}*/}
+              {/*  onClick={() => reloadConversation()}*/}
+              {/*  icon={<ReloadOutlined style={{ fontSize: '26px' }} />}*/}
+              {/*  disabled={!messages.length}*/}
+              {/*></Button>*/}
               <Input
                 value={questionValue}
                 onChange={(e) => setQuestionValue(e.target.value)}
@@ -245,27 +248,31 @@ export const ChatBot: React.FC<ChatBotProps> = ({
                   }
                 }}
                 aria-label="chat input"
-                className="m-0 w-full min-h-[3.5rem] max-h-36 pr-7 rounded-lg "
+                className="m-0 w-full min-h-[3.5rem] max-h-36 pr-7 rounded-lg big-placeholder"
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                 <Button
                   loading={buttonLoading}
-                  className={`flex-none border-0 ${
-                    !questionValue.length
-                      ? 'bg-opacity-50 bg-transparent'
-                      : 'bg-transparent'
-                  }`}
+                  className={`flex-none border-0 bg-white disabled:bg-white`}
                   onClick={() => sendMessage(questionValue)}
-                  icon={<SendOutlined style={{ fontSize: '26px' }} />}
+                  icon={
+                    <SendOutlined
+                      style={{ fontSize: '26px', background: 'transparent' }}
+                    />
+                  }
                   disabled={!questionValue.length}
                 ></Button>
               </div>
             </div>
           </div>
-          <div className="mt-5 flex flex-col items-center">
-            <Title level={5} className={''}>
-              Powered by: <a href="https://godman.tech/">Godman</a>
-            </Title>
+          <div className="mt-5 flex justify-center items-center space-x-1">
+            <p>Powered by</p>
+            <a
+              href="https://godman.tech/"
+              className={' hover:text-black active:text-black underline'}
+            >
+              Godman
+            </a>
           </div>
         </div>
       </div>

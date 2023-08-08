@@ -3,5 +3,10 @@
 @tailwind utilities;
 * {
     font-family: 'League Spartan', sans-serif;
-    font-weight: 400;
+    font-weight: 300;
+}
+
+
+.big-placeholder::placeholder {
+    font-size: 1.25rem;
 }

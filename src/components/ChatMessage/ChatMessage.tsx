@@ -18,7 +18,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             style={{ backgroundColor: msg_color }}
             className=" prose text-inherit text-right break-words dark:prose-invert transition duration-300 ease-in-out rounded-lg rounded-r-sm bg-gray-800 text-white p-4 max-w-4/5 rounded-tl-[15px] rounded-tr-[15px] rounded-bl-[15px] rounded-br-none"
           >
-            <p className={'text-lg'}>{textProp}</p>
+            <p className={'text-sm'}>{textProp}</p>
           </div>
         </div>
       )}
@@ -28,7 +28,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             className="whitespace-pre-wrap prose text-inherit text-left break-words dark:prose-invert transition duration-300 ease-in-out rounded-lg rounded-r-sm bg-gray-800 text-white p-4 max-w-4/5 rounded-tl-[15px] rounded-tr-[15px] rounded-bl-none rounded-br-[15px]"
             style={{ backgroundColor: msg_color }}
           >
-            <p className={'text-lg'}>{textProp}</p>
+            <p className={'text-sm'}>{textProp}</p>
           </div>
         </div>
       )}

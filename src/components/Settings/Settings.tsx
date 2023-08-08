@@ -473,7 +473,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
               defaultValue={chatbot.settings.bot_message_color}
             />
 
-            <Title level={5}>Chat Footer Color</Title>
+            <Title level={5}>Chat theme color</Title>
             <ColorPicker
               format={'hex'}
               defaultValue={chatbot.settings.footer_color}
@@ -491,7 +491,10 @@ export const Settings: React.FC<SettingsPropsType> = ({
               <Option value="RU">Russian</Option>
             </Select>
           </div>
-          <div className={'flex flex-col w-[50%] border-x-blue-100 border-x-2'}>
+          <div
+            className={'flex flex-col w-[50%] border-x-blue-100 border-x-2'}
+            style={{ backgroundColor: chatbot.settings.footer_color }}
+          >
             <ChatPreview chatbot={chatbot} />
           </div>
         </div>
