@@ -16,11 +16,9 @@ const CrawledListItem: FC<CrawledListItem> = ({
   deleteAlreadyUploadedLink,
   deleteLoading,
   style,
-  index,
 }) => {
   const linkName = item.originalName.replace(/\[]/g, '/').slice(0, -4);
   const PADDING_SIZE = 100;
-  const ITEM_SIZE = 5000;
   return (
     <>
       <List.Item

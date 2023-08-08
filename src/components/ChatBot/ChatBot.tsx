@@ -150,10 +150,10 @@ export const ChatBot: React.FC<ChatBotProps> = ({
   return (
     <>
       <div
-        className="sticky top-0 w-full border-b border-black"
+        className="sticky top-0 w-full "
         style={{ backgroundColor: '#fadada' }}
       >
-        <div className="flex justify-between mb-0 pt-[2em]  z-10 m-auto w-full">
+        <div className="flex justify-between mb-0 m-auto w-full">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -168,7 +168,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
           </div>
         </div>
       </div>
-      <div className="py-3 flex flex-col m-auto w-[88%] ">
+      <div className="flex flex-col m-auto w-[88%] mt-2 border-b border-black pb-2">
         {chatbot.settings.suggested_messages.map((msg) => {
           return (
             <Suggestion
