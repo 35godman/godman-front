@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.big-placeholder::placeholder {
+    font-size: 1.25rem;
+}
+@font-face {
+    font-family: 'haborosansnormregular';
+    src: url('../public/fonts/haborosansnormregular-webfont.woff2') format('woff2'),
+    url('../public/fonts/haborosansnormregular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+* {
+    /*font-family: 'League Spartan', sans-serif;*/
+    font-family: "haborosansnormregular", sans-serif; /* Fallback to sans-serif */
+    font-weight: 300;
+}

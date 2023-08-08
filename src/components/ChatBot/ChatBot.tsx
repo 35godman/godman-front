@@ -224,7 +224,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div>
-          <div className="flex pl-3 p-1 rounded">
+          <div className="flex pl-3 pr-3 rounded">
             <div className="flex items-center w-full relative">
               {/*<Button*/}
               {/*  loading={buttonLoading}*/}
