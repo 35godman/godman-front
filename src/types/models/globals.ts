@@ -120,6 +120,8 @@ export type ChatbotSettings = {
 
   user_message_color: string;
 
+  font_color: string;
+
   bot_message_color: string;
 
   chat_icon_path: string;

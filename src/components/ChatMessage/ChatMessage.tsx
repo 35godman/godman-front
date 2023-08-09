@@ -2,20 +2,22 @@ import React from 'react';
 type ChatMessageProps = {
   textProp: string;
   chat_role: 'user' | 'assistant' | 'system';
-  msg_color?: string;
+  msg_color: string;
+  font_color: string;
 };
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({
   textProp,
   chat_role,
   msg_color,
+  font_color,
 }) => {
   return (
     <>
       {chat_role === 'user' && (
         <div className="flex justify-end max-w-full my-5">
           <div
-            style={{ backgroundColor: msg_color }}
+            style={{ backgroundColor: msg_color, color: font_color }}
             className=" prose text-inherit text-right break-words dark:prose-invert transition duration-300 ease-in-out rounded-lg rounded-r-sm bg-gray-800 text-white p-4 max-w-4/5 rounded-tl-[15px] rounded-tr-[15px] rounded-bl-[15px] rounded-br-none"
           >
             <p className={'text-sm'}>{textProp}</p>
@@ -26,7 +28,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <div className="flex justify-start max-w-[80%] mb-4">
           <div
             className="whitespace-pre-wrap prose text-inherit text-left break-words dark:prose-invert transition duration-300 ease-in-out rounded-lg rounded-r-sm bg-gray-800 text-white p-4 max-w-4/5 rounded-tl-[15px] rounded-tr-[15px] rounded-bl-none rounded-br-[15px]"
-            style={{ backgroundColor: msg_color }}
+            style={{ backgroundColor: msg_color, color: font_color }}
           >
             <p className={'text-sm'}>{textProp}</p>
           </div>

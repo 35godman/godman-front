@@ -43,6 +43,10 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
   const [crawlLoadingPercent, setCrawlLoadingPercent] = useState<number>(0);
 
   useEffect(() => {
+    setAlreadyUploadedLinks(chatbot.sources.website);
+  }, [chatbot]);
+
+  useEffect(() => {
     let timer: unknown;
     if (crawlLoading) {
       timer = setInterval(() => {
@@ -99,25 +103,25 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
   };
 
   const deleteAlreadyUploadedLink = async (link: FileUpload) => {
-    setDeleteLoading(true);
+    //setDeleteLoading(true);
+
     const removedAlreadyUploadedLink = [...alreadyUploadedLinks];
     const body = {
       web_link: link.originalName,
       chatbot_id: chatbot._id,
       weblink_id: link._id,
     };
+    setAlreadyUploadedLinks(
+      removedAlreadyUploadedLink.filter((item) => item._id !== link._id),
+    );
+    dispatch(removeFile(link._id));
 
     const response = await crawlService.post(
       `/file-upload/remove-crawled?chatbot_id=${chatbot._id}`,
       body,
     );
     if (response.status === 201) {
-      setAlreadyUploadedLinks(
-        removedAlreadyUploadedLink.filter((item) => item._id !== link._id),
-      );
-      dispatch(removeFile(link._id));
-      setDeleteLoading(false);
-      await getChatbot();
+      message.success('успешно удалено');
     }
   };
 
@@ -148,9 +152,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
             text={'Удалить все'}
             disabled={!chatbot.sources.website.length}
           />
-          <Typography>
-            Кол-во страниц {chatbot.sources.website.length}
-          </Typography>
+          <Typography>Кол-во страниц {alreadyUploadedLinks.length}</Typography>
         </div>
       </div>
       {
@@ -188,14 +190,14 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
         {({ height, width }: { height: number; width: number }) => {
           return (
             <List
-              itemCount={chatbot.sources.website.length}
+              itemCount={alreadyUploadedLinks.length}
               itemSize={35}
-              itemData={chatbot.sources.website}
+              itemData={alreadyUploadedLinks}
               height={height}
               width={width}
             >
               {WrappedCrawledListItem({
-                data: chatbot.sources.website,
+                data: alreadyUploadedLinks,
                 deleteAlreadyUploadedLink: deleteAlreadyUploadedLink,
                 deleteLoading: deleteLoading,
               })}

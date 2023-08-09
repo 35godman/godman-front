@@ -21,7 +21,7 @@ export const Suggestion: React.FC<SuggestionProps> = ({
         color: '#fff',
         borderColor: 'rgb(30, 35, 48)',
       }}
-      className="rounded-lg whitespace-nowrap  mr-1 mt-1  text-sm flex justify-center items-center"
+      className="rounded-lg whitespace-nowrap  mr-1 mt-1  text-sm flex justify-center items-center hover:scale-105"
     >
       {textProp}
     </Button>

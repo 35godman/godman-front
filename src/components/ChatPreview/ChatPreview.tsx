@@ -33,7 +33,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
         className="sticky top-0 w-full z-10"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between mb-0 m-auto w-full items-center pt-2 z-10">
+        <div className="flex justify-between  m-auto mb-0 w-full items-center pt-2 z-10 ">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -48,15 +48,21 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col m-auto w-[88%] mt-2 border-b border-black pb-2">
+      <div className="flex flex-col m-auto w-[88%] mt-2 border-b border-black pb-2 mb-0">
         {suggestMsgArr.map((msg) => {
           return <Suggestion textProp={msg} key={msg} />;
         })}
       </div>
-      <div className={'flex flex-col w-[90%] m-auto '}>
+      <div className={'flex flex-col w-[90%] m-auto mt-5'}>
         {initialMsgArr.map((msg, index) => {
           return (
-            <ChatMessage chat_role={'assistant'} textProp={msg} key={index} />
+            <ChatMessage
+              font_color={chatbot.settings.font_color}
+              chat_role={'assistant'}
+              textProp={msg}
+              key={index}
+              msg_color={chatbot.settings.bot_message_color}
+            />
           );
         })}
       </div>
@@ -86,8 +92,9 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
             </div>
           </div>
           <div className="mt-5 flex justify-center items-center space-x-1">
-            <p>Powered by</p>
+            <p style={{ color: chatbot.settings.font_color }}>Powered by</p>
             <a
+              style={{ color: chatbot.settings.font_color }}
               href="https://godman.tech/"
               className={' hover:text-black active:text-black underline'}
             >

@@ -332,56 +332,56 @@ export const Settings: React.FC<SettingsPropsType> = ({
             changeRateLimitSetting('limit_end_message', e.target.value)
           }
         />
-        <Title level={3}>Collect Customer Info</Title>
-        <Title level={5}>Title</Title>
-        <Form.Item label="">
-          <Space direction="vertical">
-            <Input
-              style={{
-                width: '430px',
-                marginTop: '5px',
-              }}
-              value={chatbot.settings.customer_info.title}
-              onChange={(e) =>
-                changeCustomerInfoSetting('title', e.target.value)
-              }
-            />
-            <PrimaryButton
-              text={' Reset Title'}
-              onclick={() => changeCustomerInfoSetting('title', '')}
-            />
-          </Space>
-        </Form.Item>
+        {/*<Title level={3}>Collect Customer Info</Title>*/}
+        {/*<Title level={5}>Title</Title>*/}
+        {/*<Form.Item label="">*/}
+        {/*  <Space direction="vertical">*/}
+        {/*    <Input*/}
+        {/*      style={{*/}
+        {/*        width: '430px',*/}
+        {/*        marginTop: '5px',*/}
+        {/*      }}*/}
+        {/*      value={chatbot.settings.customer_info.title}*/}
+        {/*      onChange={(e) =>*/}
+        {/*        changeCustomerInfoSetting('title', e.target.value)*/}
+        {/*      }*/}
+        {/*    />*/}
+        {/*    <PrimaryButton*/}
+        {/*      text={' Reset Title'}*/}
+        {/*      onclick={() => changeCustomerInfoSetting('title', '')}*/}
+        {/*    />*/}
+        {/*  </Space>*/}
+        {/*</Form.Item>*/}
 
-        <div className={s.switchContainer}>
-          <Title level={5}>Name</Title>
-          <SwitchForm
-            checkedValue={chatbot.settings.customer_info.name_checked}
-            switchKeyName={'name_checked'}
-            inputKeyName={'name'}
-            inputValue={chatbot.settings.customer_info.name}
-            onChange={changeCustomerInfoSetting}
-          />
+        {/*<div className={s.switchContainer}>*/}
+        {/*  <Title level={5}>Name</Title>*/}
+        {/*  <SwitchForm*/}
+        {/*    checkedValue={chatbot.settings.customer_info.name_checked}*/}
+        {/*    switchKeyName={'name_checked'}*/}
+        {/*    inputKeyName={'name'}*/}
+        {/*    inputValue={chatbot.settings.customer_info.name}*/}
+        {/*    onChange={changeCustomerInfoSetting}*/}
+        {/*  />*/}
 
-          <Title level={5}>Email</Title>
+        {/*  <Title level={5}>Email</Title>*/}
 
-          <SwitchForm
-            checkedValue={chatbot.settings.customer_info.email_checked}
-            switchKeyName={'email_checked'}
-            inputKeyName={'email'}
-            inputValue={chatbot.settings.customer_info.email}
-            onChange={changeCustomerInfoSetting}
-          />
+        {/*  <SwitchForm*/}
+        {/*    checkedValue={chatbot.settings.customer_info.email_checked}*/}
+        {/*    switchKeyName={'email_checked'}*/}
+        {/*    inputKeyName={'email'}*/}
+        {/*    inputValue={chatbot.settings.customer_info.email}*/}
+        {/*    onChange={changeCustomerInfoSetting}*/}
+        {/*  />*/}
 
-          <Title level={5}>Phone Number</Title>
-          <SwitchForm
-            onChange={changeCustomerInfoSetting}
-            inputValue={chatbot.settings.customer_info.phone}
-            switchKeyName={'phone_checked'}
-            inputKeyName={'phone'}
-            checkedValue={chatbot.settings.customer_info.phone_checked}
-          />
-        </div>
+        {/*  <Title level={5}>Phone Number</Title>*/}
+        {/*  <SwitchForm*/}
+        {/*    onChange={changeCustomerInfoSetting}*/}
+        {/*    inputValue={chatbot.settings.customer_info.phone}*/}
+        {/*    switchKeyName={'phone_checked'}*/}
+        {/*    inputKeyName={'phone'}*/}
+        {/*    checkedValue={chatbot.settings.customer_info.phone_checked}*/}
+        {/*  />*/}
+        {/*</div>*/}
 
         <div className={'flex justify-between'}>
           <div>
@@ -401,7 +401,6 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 }
               />
             </Space>
-
             <Title level={5}>Suggested Messages</Title>
             <Space direction="vertical">
               <TextArea
@@ -416,15 +415,14 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 }
               />
             </Space>
-            <Title level={5}>Theme</Title>
-            <Select
-              value={chatbot.settings.theme}
-              onChange={(theme) => changeChatbotSetting('theme', theme)}
-            >
-              <Option value="light">Light</Option>
-              <Option value="dark">Dark</Option>
-            </Select>
-
+            {/*<Title level={5}>Theme</Title>*/}
+            {/*<Select*/}
+            {/*  value={chatbot.settings.theme}*/}
+            {/*  onChange={(theme) => changeChatbotSetting('theme', theme)}*/}
+            {/*>*/}
+            {/*  <Option value="light">Light</Option>*/}
+            {/*  <Option value="dark">Dark</Option>*/}
+            {/*</Select>*/}
             <Title level={5}>Update chatbot profile picture</Title>
             <Space direction="vertical">
               <Checkbox
@@ -472,7 +470,6 @@ export const Settings: React.FC<SettingsPropsType> = ({
               }}
               defaultValue={chatbot.settings.bot_message_color}
             />
-
             <Title level={5}>Chat theme color</Title>
             <ColorPicker
               format={'hex'}
@@ -481,7 +478,14 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 changeChatbotSetting('footer_color', color.toHexString());
               }}
             />
-
+            <Title level={5}>Font color</Title>
+            <ColorPicker
+              format={'hex'}
+              defaultValue={chatbot.settings.font_color}
+              onChange={(color) => {
+                changeChatbotSetting('font_color', color.toHexString());
+              }}
+            />
             <Title level={5}>Bot language</Title>
             <Select
               value={chatbot.settings.language}
