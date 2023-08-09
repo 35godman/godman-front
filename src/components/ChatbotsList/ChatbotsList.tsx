@@ -43,22 +43,6 @@ export const ChatbotsList: FC = () => {
   };
   return (
     <div className={s.botsListWrapper}>
-      {/*<iframe*/}
-      {/*  src="https://www.chatbase.co/chatbot-iframe/JSExoOXrXM29lx9YK8J4T"*/}
-      {/*  width="100%"*/}
-      {/*  style={{ style: '100%', minHeight: '700px' }}*/}
-      {/*></iframe>*/}
-
-      {/*<script>*/}
-      {/*  window.chatbaseConfig = {*/}
-      {/*  chatbotId: "JSExoOXrXM29lx9YK8J4T",*/}
-      {/*}*/}
-      {/*</script>*/}
-      {/*<script*/}
-      {/*  src="https://www.chatbase.co/embed.min.js"*/}
-      {/*  id="JSExoOXrXM29lx9YK8J4T"*/}
-      {/*  defer*/}
-      {/*></script>*/}
       <div>
         <div className={s.botsListHeader}>
           <div>

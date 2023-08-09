@@ -51,10 +51,23 @@ export const ChatBot: React.FC<ChatBotProps> = ({
     }
   }, []);
 
+  const scrollToBottom = () => {
+    endOfChat?.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'nearest',
+    });
+    endOfChat?.current?.scrollBy(0, 1000);
+  };
+
   const sendMessage = async (question: string) => {
     setQuestionValue('');
     setIsBotAnswering(true);
     setButtonLoading(true);
+    setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+
     const newMessages = [
       ...messages,
       {
@@ -254,7 +267,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
                   }
                 }}
                 aria-label="chat input"
-                className="m-0 w-full min-h-[3.5rem] max-h-36 pr-7 rounded-lg big-placeholder hover:border-white"
+                className="m-0 w-full min-h-[4.5rem] max-h-36 pr-7 rounded-lg big-placeholder hover:border-white"
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                 <Button

@@ -130,7 +130,7 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
         accept={'.docx,.txt,.pdf'}
         //disable default render antd
         itemRender={() => {
-          return null;
+          return <></>;
         }}
       >
         <p>Upload files</p>

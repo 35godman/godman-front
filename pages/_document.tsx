@@ -23,7 +23,7 @@ class MyDocument extends Document {
           />
 
           <script
-            src="https://godman.tech/static/scripts/embed-script.js"
+            src="http://localhost:5050/static/scripts/embed-script.js"
             defer
           ></script>
         </Head>

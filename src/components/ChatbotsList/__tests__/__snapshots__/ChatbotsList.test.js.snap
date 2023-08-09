@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatbotsList renders correctly 1`] = `
+<div
+  className="botsListWrapper"
+>
+  <div>
+    <div
+      className="botsListHeader"
+    >
+      <div>
+        <button
+          className="ant-btn css-dev-only-do-not-override-12upa3x ant-btn-primary  mt-3 rounded-md px-4 text-base font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
+          disabled={false}
+          onClick={[Function]}
+          style={
+            {
+              "backgroundColor": "rgb(111, 68, 252)",
+            }
+          }
+          type="button"
+        >
+          <span>
+            Создать чатбот
+          </span>
+        </button>
+      </div>
+      <div>
+        <h3
+          className="ant-typography mt-8 css-dev-only-do-not-override-12upa3x"
+          style={
+            {
+              "WebkitLineClamp": undefined,
+            }
+          }
+        >
+          My Chatbots
+        </h3>
+      </div>
+      <div
+        className="botListAll"
+      />
+    </div>
+  </div>
+</div>
+`;

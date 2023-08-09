@@ -7,15 +7,25 @@ import store from '@/features/store';
 import { Layout } from '../layouts/Layout';
 function MyApp({ Component, pageProps }: AppProps) {
   const { noLayout, ...rest } = pageProps;
+
+  /**
+   * @COMMENT had a strange error here, don't know what has cause it
+   */
+  //eslint-disable-next-line
+  const AnyComponent = Component as any;
   return (
     <>
       <Provider store={store}>
         <NextNProgress />
         {noLayout ? (
-          <Component {...rest} />
+          <>
+            <AnyComponent {...rest} />
+          </>
         ) : (
           <Layout>
-            <Component {...rest} />
+            <>
+              <AnyComponent {...rest} />
+            </>
           </Layout>
         )}
       </Provider>

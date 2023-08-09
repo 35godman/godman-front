@@ -78,7 +78,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
                 value={''}
                 placeholder="Ask me anything..."
                 style={{ fontSize: '1rem' }}
-                className="m-0 w-full min-h-[3.5rem] max-h-36 pr-7 rounded-lg big-placeholder"
+                className="m-0 w-full min-h-[4.5rem] max-h-36 pr-7 rounded-lg big-placeholder"
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                 <Button

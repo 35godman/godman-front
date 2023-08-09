@@ -29,13 +29,13 @@ export const Layout: React.FC<Props> = ({ children }) => {
         >
           <main>{children}</main>
         </div>
-        <iframe
-          src="https://godman.tech/chatbot-iframe/64cd0ca018e6d0abf364f209"
-          width="100%"
-          style={{ height: '100%', minHeight: '700px' }}
-          id="godman-chatbot"
-          title={'godman.chatbot'}
-        ></iframe>
+        {/*<iframe*/}
+        {/*  src="http://localhost:3000/chatbot-iframe/64cd0ca018e6d0abf364f209"*/}
+        {/*  width="100%"*/}
+        {/*  style={{ height: '100%', minHeight: '700px' }}*/}
+        {/*  id="godman-chatbot"*/}
+        {/*  title={'godman.chatbot'}*/}
+        {/*></iframe>*/}
       </IntlProvider>
     </>
   );
