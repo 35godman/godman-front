@@ -85,7 +85,12 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
                   className={`flex-none border-0 bg-white disabled:bg-white`}
                   icon={
                     <SendOutlined
-                      style={{ fontSize: '26px', background: 'transparent' }}
+                      style={{
+                        width: '50px',
+                        fontSize: '50px',
+                        height: '50px',
+                        background: 'transparent',
+                      }}
                     />
                   }
                 ></Button>

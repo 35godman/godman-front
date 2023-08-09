@@ -22,7 +22,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             }}
             className=" prose text-inherit text-right break-words dark:prose-invert transition duration-300 ease-in-out rounded-lg rounded-r-sm bg-gray-800 text-white p-4 max-w-4/5 rounded-tl-[15px] rounded-tr-[15px] rounded-bl-[15px] rounded-br-none"
           >
-            <p className={'text-sm'}>{textProp}</p>
+            <p className={'text-[0.93rem]'}>{textProp}</p>
           </div>
         </div>
       )}
@@ -35,7 +35,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
               color: settings.bot_font_color,
             }}
           >
-            <p className={'text-sm'}>{textProp}</p>
+            <p className={'text-[0.93rem]'}>{textProp}</p>
           </div>
         </div>
       )}

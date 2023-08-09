@@ -272,11 +272,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                 <Button
                   loading={buttonLoading}
-                  className={`flex-none border-0 bg-white disabled:bg-white`}
+                  className={`w-auto border-0 bg-white disabled:bg-white`}
                   onClick={() => sendMessage(questionValue)}
                   icon={
                     <SendOutlined
-                      style={{ fontSize: '26px', background: 'transparent' }}
+                      style={{ fontSize: '50px', background: 'transparent' }}
                     />
                   }
                   disabled={!questionValue.length}
