@@ -478,12 +478,20 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 changeChatbotSetting('footer_color', color.toHexString());
               }}
             />
-            <Title level={5}>Font color</Title>
+            <Title level={5}>User font color</Title>
             <ColorPicker
               format={'hex'}
-              defaultValue={chatbot.settings.font_color}
+              defaultValue={chatbot.settings.user_font_color}
               onChange={(color) => {
-                changeChatbotSetting('font_color', color.toHexString());
+                changeChatbotSetting('user_font_color', color.toHexString());
+              }}
+            />
+            <Title level={5}>Bot Font Color</Title>
+            <ColorPicker
+              format={'hex'}
+              defaultValue={chatbot.settings.bot_font_color}
+              onChange={(color) => {
+                changeChatbotSetting('bot_font_color', color.toHexString());
               }}
             />
             <Title level={5}>Bot language</Title>

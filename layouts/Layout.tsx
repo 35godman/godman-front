@@ -16,17 +16,6 @@ export const Layout: React.FC<Props> = ({ children }) => {
       <IntlProvider locale={'ru'} messages={messages}>
         <Head>
           <title>{}</title>
-          {/*<iframe*/}
-          {/*  src="http://localhost:3000/chatbot-iframe/64d0d27d147e3c224f1a9528"*/}
-          {/*  width="100%"*/}
-          {/*  style={{ height: '100%', minHeight: '700px' }}*/}
-          {/*  id="godman-chatbot"*/}
-          {/*></iframe>*/}
-
-          {/*<script*/}
-          {/*  src="http://localhost:5050/static/scripts/embed-script.js"*/}
-          {/*  defer*/}
-          {/*></script>*/}
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
@@ -40,7 +29,13 @@ export const Layout: React.FC<Props> = ({ children }) => {
         >
           <main>{children}</main>
         </div>
-        {/*<Footer />*/}
+        <iframe
+          src="https://godman.tech/chatbot-iframe/64cd0ca018e6d0abf364f209"
+          width="100%"
+          style={{ height: '100%', minHeight: '700px' }}
+          id="godman-chatbot"
+          title={'godman.chatbot'}
+        ></iframe>
       </IntlProvider>
     </>
   );

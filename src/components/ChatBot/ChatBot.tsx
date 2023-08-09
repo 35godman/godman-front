@@ -70,7 +70,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
       question: question,
       chatbot_id: chatbot._id,
       conversation_id: conversationId,
-      messages: messages.slice(-5),
+      messages: messages.slice(-2),
     };
 
     try {
@@ -162,7 +162,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
               width={100}
               height={100}
             />
-            <Typography className={'text-lg font-semibold '}>
+            <Typography className={'text-[17.3px] font-extrabold'}>
               {chatbot.settings.display_name}
             </Typography>
           </div>
@@ -176,6 +176,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
               textProp={msg}
               key={msg}
               onclick={() => sendMessage(msg)}
+              settings={chatbot.settings}
             />
           );
         })}
@@ -184,22 +185,20 @@ export const ChatBot: React.FC<ChatBotProps> = ({
         {chatbot.settings.initial_messages.map((msg, index) => {
           return (
             <ChatMessage
-              font_color={chatbot.settings.font_color}
+              settings={chatbot.settings}
               chat_role={'assistant'}
               textProp={msg}
               key={index}
-              msg_color={chatbot.settings.bot_message_color}
             />
           );
         })}
         {messages.map((msg) => {
           return (
             <ChatMessage
-              font_color={chatbot.settings.font_color}
               textProp={msg.content}
               chat_role={msg.role}
               key={msg._id}
-              msg_color={msg.msgColor}
+              settings={chatbot.settings}
             />
           );
         })}
@@ -212,10 +211,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({
         {currentAnswer ? (
           <div ref={endOfBlock}>
             <ChatMessage
-              font_color={chatbot.settings.font_color}
               textProp={currentAnswer}
               chat_role={'assistant'}
-              msg_color={chatbot.settings.bot_message_color}
+              settings={chatbot.settings}
             />
           </div>
         ) : (

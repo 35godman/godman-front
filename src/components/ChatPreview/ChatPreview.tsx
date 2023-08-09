@@ -42,7 +42,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
               width={100}
               height={100}
             />
-            <Typography className={'text-lg font-semibold '}>
+            <Typography className={' font-semibold text-[17.3px]'}>
               {chatbot.settings.display_name}
             </Typography>
           </div>
@@ -50,18 +50,19 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
       </div>
       <div className="flex flex-col m-auto w-[88%] mt-2 border-b border-black pb-2 mb-0">
         {suggestMsgArr.map((msg) => {
-          return <Suggestion textProp={msg} key={msg} />;
+          return (
+            <Suggestion textProp={msg} key={msg} settings={chatbot.settings} />
+          );
         })}
       </div>
       <div className={'flex flex-col w-[90%] m-auto mt-5'}>
         {initialMsgArr.map((msg, index) => {
           return (
             <ChatMessage
-              font_color={chatbot.settings.font_color}
               chat_role={'assistant'}
               textProp={msg}
+              settings={chatbot.settings}
               key={index}
-              msg_color={chatbot.settings.bot_message_color}
             />
           );
         })}
@@ -92,9 +93,9 @@ const ChatPreview: FC<ChatPreviewProps> = ({ chatbot }) => {
             </div>
           </div>
           <div className="mt-5 flex justify-center items-center space-x-1">
-            <p style={{ color: chatbot.settings.font_color }}>Powered by</p>
+            <p style={{ color: chatbot.settings.bot_font_color }}>Powered by</p>
             <a
-              style={{ color: chatbot.settings.font_color }}
+              style={{ color: chatbot.settings.bot_font_color }}
               href="https://godman.tech/"
               className={' hover:text-black active:text-black underline'}
             >

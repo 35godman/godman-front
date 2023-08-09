@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import React from 'react';
 
 class MyDocument extends Document {
   render() {
@@ -20,6 +21,11 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;900&display=swap"
             rel="stylesheet"
           />
+
+          <script
+            src="https://godman.tech/static/scripts/embed-script.js"
+            defer
+          ></script>
         </Head>
         <body>
           <Main />
