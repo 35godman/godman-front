@@ -1,6 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
-console.log('remove script');
 class MyDocument extends Document {
   render() {
     return (
