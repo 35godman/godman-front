@@ -1,6 +1,12 @@
-.SuggestionBtn {
-  text-align: left;
-  margin-bottom: 10px;
-  border: none;
-  background-color: rgb(227, 229, 232);
+@media (min-width: 768px) {
+  .scaleButton:hover{
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
+}
+@media (max-width: 768px) {
+  .scaleButton:active {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
 }

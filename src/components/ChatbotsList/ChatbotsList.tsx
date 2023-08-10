@@ -43,6 +43,13 @@ export const ChatbotsList: FC = () => {
   };
   return (
     <div className={s.botsListWrapper}>
+      <iframe
+        src="http://localhost:3000/chatbot-iframe/64d26bc3e5387df06821bdcb"
+        width="100%"
+        style={{ height: '100%', minHeight: '700px' }}
+        id="godman-chatbot"
+      ></iframe>
+
       <div>
         <div className={s.botsListHeader}>
           <div>

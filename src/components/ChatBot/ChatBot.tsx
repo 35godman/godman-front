@@ -163,10 +163,10 @@ export const ChatBot: React.FC<ChatBotProps> = ({
   return (
     <>
       <div
-        className="sticky top-0 w-full z-10"
+        className="sticky top-0 w-full z-10 p-[5%]"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between  m-auto mb-0 w-full items-center pt-2 z-10">
+        <div className="flex justify-between  m-auto mb-0 w-full items-center z-10">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -181,7 +181,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-col m-auto w-[88%] mt-2 border-b border-black pb-2 mb-0">
+      <div className="flex flex-col m-auto w-[88%] border-b border-black pb-2 mb-0 mt-0">
         {chatbot.settings.suggested_messages.map((msg) => {
           return (
             <Suggestion
@@ -239,7 +239,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
         )}
       </div>
       <div
-        className=" sticky bottom-0 z-10 mb-5"
+        className=" sticky bottom-0 z-10 pt-[38px] pb-[14px]"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div>
@@ -269,22 +269,21 @@ export const ChatBot: React.FC<ChatBotProps> = ({
                 aria-label="chat input"
                 className="m-0 w-full min-h-[4.5rem] max-h-36 pr-7 rounded-lg big-placeholder hover:border-white"
               />
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 ">
                 <Button
                   loading={buttonLoading}
                   className={`w-auto border-0 bg-white disabled:bg-white`}
                   onClick={() => sendMessage(questionValue)}
-                  icon={
-                    <SendOutlined
-                      style={{ fontSize: '50px', background: 'transparent' }}
-                    />
-                  }
                   disabled={!questionValue.length}
-                ></Button>
+                >
+                  <SendOutlined
+                    style={{ fontSize: '25px', background: 'transparent' }}
+                  />
+                </Button>
               </div>
             </div>
           </div>
-          <div className="mt-5 flex justify-center items-center space-x-1">
+          <div className=" flex justify-center items-center space-x-1">
             <p>Powered by</p>
             <a
               href="https://godman.tech/"
