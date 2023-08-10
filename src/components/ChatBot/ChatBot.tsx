@@ -44,6 +44,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
 
   const endOfBlock = useRef<HTMLDivElement | null>(null);
   const endOfChat = useRef<HTMLDivElement | null>(null);
+  const messagesBlock = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -52,12 +53,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({
   }, []);
 
   const scrollToBottom = () => {
-    endOfChat?.current?.scrollIntoView({
+    messagesBlock?.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'end',
       inline: 'nearest',
     });
-    endOfChat?.current?.scrollBy(0, 1000);
   };
 
   const sendMessage = async (question: string) => {
@@ -78,6 +78,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
       },
     ];
     setMessages(newMessages);
+
     const conversationId = localStorage.getItem('conversationId');
     const body = {
       question: question,
@@ -96,6 +97,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({
       });
       if (response.status === 201 && response.body) {
         const reader = response.body.getReader();
+        let userScrolled = false;
+        const handleScroll = () => {
+          userScrolled = true;
+        };
+        endOfChat.current?.addEventListener('wheel', handleScroll);
         // eslint-disable-next-line no-constant-condition
         while (true) {
           const { done, value } = await reader.read();
@@ -103,12 +109,12 @@ export const ChatBot: React.FC<ChatBotProps> = ({
             break;
           }
           const text = new TextDecoder().decode(value);
-          setCurrentAnswer((prevState) => prevState + text);
-          if (endOfBlock.current) {
+          if (endOfBlock.current && !userScrolled) {
             endOfBlock.current.scrollIntoView({
               behavior: 'smooth',
             });
           }
+          setCurrentAnswer((prevState) => prevState + text);
         }
       } else if (response.status !== 201 && response.body) {
         const reader = response.body.getReader();
@@ -132,14 +138,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({
       }
     } catch (e) {
       setIsBotAnswering(false);
-      //message.error('Произошла ошибка', 2000, () => router.reload());
       setButtonLoading(false);
     }
-  };
-
-  const reloadConversation = () => {
-    setMessages([]);
-    localStorage.setItem('conversationId', nanoid());
   };
 
   useEffect(() => {
@@ -181,65 +181,70 @@ export const ChatBot: React.FC<ChatBotProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-col m-auto w-[88%] border-b border-black pb-2 mb-0 mt-0">
-        {chatbot.settings.suggested_messages.map((msg) => {
-          return (
-            <Suggestion
-              disabled={buttonLoading}
-              textProp={msg}
-              key={msg}
-              onclick={() => sendMessage(msg)}
-              settings={chatbot.settings}
-            />
-          );
-        })}
-      </div>
-      <div className={'flex flex-col w-[90%] m-auto mt-5'} ref={endOfChat}>
-        {chatbot.settings.initial_messages.map((msg, index) => {
-          return (
-            <ChatMessage
-              settings={chatbot.settings}
-              chat_role={'assistant'}
-              textProp={msg}
-              key={index}
-            />
-          );
-        })}
-        {messages.map((msg) => {
-          return (
-            <ChatMessage
-              textProp={msg.content}
-              chat_role={msg.role}
-              key={msg._id}
-              settings={chatbot.settings}
-            />
-          );
-        })}
-        {/**
-         * @COMMENT
-         * here we are creating a current answer so the render works correctly,
-         * there was a problem with updating an array of objects,
-         * so we moved it to just string state
-         */}
-        {currentAnswer ? (
-          <div ref={endOfBlock}>
-            <ChatMessage
-              textProp={currentAnswer}
-              chat_role={'assistant'}
-              settings={chatbot.settings}
-            />
-          </div>
-        ) : (
-          isBotAnswering && (
-            <Loader
-              color_bubble={'#fff'}
-              color_container={chatbot.settings.bot_message_color}
-            />
-          )
-        )}
+      <div ref={endOfChat} className={'overflow-scroll h-[80%]'}>
+        <div className="flex flex-col m-auto w-[88%] border-b border-black pb-2 mb-0 mt-0">
+          {chatbot.settings.suggested_messages.map((msg) => {
+            return (
+              <Suggestion
+                disabled={buttonLoading}
+                textProp={msg}
+                key={msg}
+                onclick={() => sendMessage(msg)}
+                settings={chatbot.settings}
+              />
+            );
+          })}
+        </div>
+        <div
+          className={'flex flex-col w-[90%] m-auto mt-5'}
+          ref={messagesBlock}
+        >
+          {chatbot.settings.initial_messages.map((msg, index) => {
+            return (
+              <ChatMessage
+                settings={chatbot.settings}
+                chat_role={'assistant'}
+                textProp={msg}
+                key={index}
+              />
+            );
+          })}
+          {messages.map((msg) => {
+            return (
+              <ChatMessage
+                textProp={msg.content}
+                chat_role={msg.role}
+                key={msg._id}
+                settings={chatbot.settings}
+              />
+            );
+          })}
+          {/**
+           * @COMMENT
+           * here we are creating a current answer so the render works correctly,
+           * there was a problem with updating an array of objects,
+           * so we moved it to just string state
+           */}
+          {currentAnswer ? (
+            <div ref={endOfBlock}>
+              <ChatMessage
+                textProp={currentAnswer}
+                chat_role={'assistant'}
+                settings={chatbot.settings}
+              />
+            </div>
+          ) : (
+            isBotAnswering && (
+              <Loader
+                color_bubble={'#fff'}
+                color_container={chatbot.settings.bot_message_color}
+              />
+            )
+          )}
+        </div>
       </div>
       <div
-        className=" sticky bottom-0 z-10 pt-[38px] pb-[14px]"
+        className=" sticky bottom-0 z-10 pt-[38px] pb-[6px]"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div>
@@ -267,7 +272,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
                   }
                 }}
                 aria-label="chat input"
-                className="m-0 w-full min-h-[4.5rem] max-h-36 pr-7 rounded-lg big-placeholder hover:border-white"
+                className="m-0 w-full min-h-[4.5rem] max-h-36 pr-7 rounded-lg big-placeholder hover:border-white focus:border-0 focus:border-white"
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 ">
                 <Button
@@ -283,7 +288,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
               </div>
             </div>
           </div>
-          <div className=" flex justify-center items-center space-x-1">
+          <div className=" flex justify-center items-center space-x-1 mt-2">
             <p>Powered by</p>
             <a
               href="https://godman.tech/"

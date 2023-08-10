@@ -5,8 +5,11 @@
   }
 }
 @media (max-width: 768px) {
-  .scaleButton:active {
+  .scaleButton:focus:before{
     transform: scale(1.1);
     transition: transform 0.3s ease;
+  }
+  .scaleButton:hover{
+    transform: scale(1);
   }
 }
