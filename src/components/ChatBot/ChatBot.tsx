@@ -24,6 +24,7 @@ import { headers } from 'next/headers';
 import globalService from '@/service/globalService';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { Loader } from './Loader/Loader';
+import Link from 'next/link';
 
 type ChatBotProps = {
   chatbot: Chatbot;
@@ -163,10 +164,10 @@ export const ChatBot: React.FC<ChatBotProps> = ({
   return (
     <>
       <div
-        className="sticky top-0 w-full z-10 p-[5%]"
+        className="sticky top-0 w-[88%] z-10 m-auto py-[5%]"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
-        <div className="flex justify-between  m-auto mb-0 w-full items-center z-10">
+        <div className="flex justify-between  m-auto mb-0  items-center z-10">
           <div className="flex items-center">
             <Image
               className="rounded-full m-1 mr-2 w-10 h-10"
@@ -182,7 +183,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
         </div>
       </div>
       <div ref={endOfChat} className={'overflow-scroll h-[80%]'}>
-        <div className="flex flex-col m-auto w-[88%] border-b border-black pb-2 mb-0 mt-0">
+        <div className="flex flex-col m-auto w-[88%] border-b border-black pb-4 mb-0 mt-0">
           {chatbot.settings.suggested_messages.map((msg) => {
             return (
               <Suggestion
@@ -196,7 +197,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
           })}
         </div>
         <div
-          className={'flex flex-col w-[90%] m-auto mt-5'}
+          className={'flex flex-col w-[88%] m-auto mt-4'}
           ref={messagesBlock}
         >
           {chatbot.settings.initial_messages.map((msg, index) => {
@@ -290,12 +291,13 @@ export const ChatBot: React.FC<ChatBotProps> = ({
           </div>
           <div className=" flex justify-center items-center space-x-1 mt-2">
             <p>Powered by</p>
-            <a
-              href="https://godman.tech/"
+            <Link
+              href={'https://cheerful-plans-273208.framer.app'}
               className={' hover:text-black active:text-black underline'}
+              target="_blank"
             >
               Godman
-            </a>
+            </Link>
           </div>
         </div>
       </div>

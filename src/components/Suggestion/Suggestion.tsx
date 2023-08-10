@@ -35,7 +35,7 @@ export const Suggestion: React.FC<SuggestionProps> = ({
         color: settings.bot_font_color,
         borderColor: 'rgb(30, 35, 48)',
       }}
-      className={`${s.scaleButton} rounded-lg whitespace-break-spaces  mr-1 mt-1 justify-center items-center  inline-block h-auto `}
+      className={`${s.scaleButton} rounded-lg whitespace-break-spaces mt-2 justify-center items-center  inline-block h-auto `}
     >
       <span className={'text-[0.93rem]'}>{textProp}</span>
     </Button>
