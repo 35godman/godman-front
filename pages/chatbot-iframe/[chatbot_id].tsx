@@ -30,11 +30,14 @@ const ChatbotIframe = () => {
     <>{chatbot && <ChatbotContainer chatbot={chatbot} isIframe={true} />}</>
   );
 };
+//eslint-disable-next-line
+// @ts-ignore
+export async function getServerSideProps(context) {
+  context.res.setHeader(
+    'Content-Security-Policy',
+    "frame-ancestors 'self' example.com",
+  );
 
-ChatbotIframe.getInitialProps = async () => {
-  return {
-    noLayout: true,
-  };
-};
-
+  return { props: { noLayout: true } };
+}
 export default ChatbotIframe;

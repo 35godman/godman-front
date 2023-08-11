@@ -10,6 +10,7 @@ import { Chatbot } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { resetChars } from '@/features/slices/charsCountSlice';
 import { useSelector } from 'react-redux';
+import Head from 'next/head';
 
 export const ChatbotsList: FC = () => {
   const router = useRouter();
@@ -42,40 +43,52 @@ export const ChatbotsList: FC = () => {
     await router.push(`/gs-bot?chatbot_id=${response.data._id}`);
   };
   return (
-    <div className={s.botsListWrapper}>
-      {/*<iframe*/}
-      {/*  src="http://localhost:3000/chatbot-iframe/64d26bc3e5387df06821bdcb"*/}
-      {/*  width="100%"*/}
-      {/*  style={{ height: '100%', minHeight: '700px' }}*/}
-      {/*  id="godman-chatbot"*/}
-      {/*></iframe>*/}
-
-      <div>
-        <div className={s.botsListHeader}>
-          <div>
-            <PrimaryButton onclick={createChatbot}>
-              Создать чатбот
-            </PrimaryButton>
-          </div>
-          <div>
-            <Title className="mt-8" level={3}>
-              My Chatbots
-            </Title>
-          </div>
-          <div className={s.botListAll}>
-            {botsDB.length > 0 &&
-              botsDB.map((bot) => {
-                return (
-                  <CardBot
-                    botID={bot._id}
-                    key={bot._id}
-                    nameBot={bot.chatbot_name}
-                  />
-                );
-              })}
+    <>
+      <Head>
+        <script
+          src="http://localhost:5050/static/scripts/iframe.js"
+          defer
+        ></script>
+      </Head>
+      <div className={s.botsListWrapper}>
+        {/*<iframe*/}
+        {/*  src="http://localhost:3000/chatbot-iframe/64d26bc3e5387df06821bdcb"*/}
+        {/*  width="100%"*/}
+        {/*  id="godman-chatbot"*/}
+        {/*></iframe>*/}
+        {/*<iframe*/}
+        {/*  src="https://www.chatbase.co/chatbot-iframe/lciKz7FlMEb2lsfwxgAXN"*/}
+        {/*  width="100%"*/}
+        {/*  style={{ height: '100%', minHeight: '700px' }}*/}
+        {/*  frameBorder="0"*/}
+        {/*></iframe>*/}
+        <div>
+          <div className={s.botsListHeader}>
+            <div>
+              <PrimaryButton onclick={createChatbot}>
+                Создать чатбот
+              </PrimaryButton>
+            </div>
+            <div>
+              <Title className="mt-8" level={3}>
+                My Chatbots
+              </Title>
+            </div>
+            <div className={s.botListAll}>
+              {botsDB.length > 0 &&
+                botsDB.map((bot) => {
+                  return (
+                    <CardBot
+                      botID={bot._id}
+                      key={bot._id}
+                      nameBot={bot.chatbot_name}
+                    />
+                  );
+                })}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

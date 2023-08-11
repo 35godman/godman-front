@@ -262,18 +262,17 @@ export const ChatBot: React.FC<ChatBotProps> = ({
               {/*  icon={<ReloadOutlined style={{ fontSize: '26px' }} />}*/}
               {/*  disabled={!messages.length}*/}
               {/*></Button>*/}
-              <Input
+              <Input.TextArea
+                rows={3}
                 value={questionValue}
                 onChange={(e) => setQuestionValue(e.target.value)}
                 placeholder="Ask me anything..."
-                style={{ fontSize: '1rem' }}
                 onKeyDown={async (e) => {
                   if (e.key === 'Enter' && questionValue.length > 0) {
                     await sendMessage(questionValue);
                   }
                 }}
-                aria-label="chat input"
-                className="m-0 w-full min-h-[4.5rem] max-h-36 pr-7 rounded-lg big-placeholder hover:border-white focus:border-0 focus:border-white"
+                className="m-0 w-full min-h-[4.5rem] max-h-36 pr-16 rounded-lg big-placeholder hover:border-white focus:border-0 focus:border-white"
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 ">
                 <Button
