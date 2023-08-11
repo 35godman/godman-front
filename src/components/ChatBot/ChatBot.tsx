@@ -107,6 +107,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
         while (true) {
           const { done, value } = await reader.read();
           if (done) {
+            endOfChat.current?.removeEventListener('wheel', handleScroll);
             break;
           }
           const text = new TextDecoder().decode(value);
