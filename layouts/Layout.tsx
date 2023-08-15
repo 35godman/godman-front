@@ -1,7 +1,5 @@
 import React from 'react';
-import s from './GeneralLayout.module.css';
 import { Header } from '@/components/Header/Header';
-import { Footer } from '@/components/Footer/Footer';
 import Head from 'next/head';
 import { IntlProvider } from 'react-intl';
 import ru from '@/../lang/ru.json';

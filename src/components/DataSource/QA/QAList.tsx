@@ -8,12 +8,14 @@ import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/features/store';
 import { addFile, removeFile } from '@/features/slices/charsCountSlice';
 import { QAState } from '@/types/models/chatbotCustom/QA.type';
+import { useIntl } from 'react-intl';
 
 type QAListProps = {
   chatbot: Chatbot;
 };
 const QAList: FC<QAListProps> = ({ chatbot }) => {
   const { TextArea } = Input;
+  const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
@@ -60,18 +62,26 @@ const QAList: FC<QAListProps> = ({ chatbot }) => {
 
   const submitQnA = async () => {
     setSubmitLoading(true);
-    try {
-      await globalService.post(`/chatbot/add-qna?chatbot_id=${chatbot._id}`, {
+    const response = await globalService.post(
+      `/sources/add-qna?chatbot_id=${chatbot._id}`,
+      {
         data: qnaList,
-      });
-    } catch (e) {
-      message.error(e.message);
+      },
+    );
+    if (response.status === 201) {
+      message.success(intl.formatMessage({ id: 'message.success' }));
+      setSubmitLoading(false);
+    } else {
+      message.error(response.data.message);
       setSubmitLoading(false);
     }
   };
   return (
     <>
-      <PrimaryButton onclick={handleAddQna} text={'Добавить'} />
+      <PrimaryButton
+        onclick={handleAddQna}
+        text={intl.formatMessage({ id: 'QAList.add' })}
+      />
       {isTextAreaVisible && (
         <>
           <TextArea
@@ -98,22 +108,10 @@ const QAList: FC<QAListProps> = ({ chatbot }) => {
             <DeleteOutlined onClick={() => handleRemoveQna(qna._id)} />
           </div>
         ))}
-
-      {/*{alreadyUploadedQA &&*/}
-      {/*  alreadyUploadedQA.map((qna, index) => {*/}
-      {/*    return (*/}
-      {/*      <div key={index}>*/}
-      {/*        <TextArea rows={2} value={qna.question} disabled />*/}
-      {/*        <TextArea rows={2} value={qna.answer} disabled />*/}
-      {/*        <DeleteOutlined onClick={() => handleRemoveQna(qna._id)} />*/}
-      {/*      </div>*/}
-      {/*    );*/}
-      {/*  })}*/}
-
       <div className={'sticky bottom-1 mt-5'}>
         <PrimaryButton
           onclick={submitQnA}
-          text={'Загрузить ответы на вопросы'}
+          text={intl.formatMessage({ id: 'QAList.upload' })}
           disabled={!qnaList.length}
           loading={submitLoading}
         />

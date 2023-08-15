@@ -10,6 +10,7 @@ import crawlService from '@/service/crawlService';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/features/store';
 import { addFile, removeFile } from '@/features/slices/charsCountSlice';
+import { useIntl } from 'react-intl';
 
 type FileDraggerProps = {
   chatbot: Chatbot;
@@ -19,6 +20,7 @@ type FileDraggerProps = {
 const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
   const { Dragger } = Upload;
   const dispatch = useAppDispatch();
+  const intl = useIntl();
   const [files, setFiles] = useState<UploadFile<unknown>[]>([]);
   const [fileInfo, setFileInfo] = useState<FileSize[]>([]);
   const [alreadyUploadedFiles, setAlreadyUploadedFiles] = useState<
@@ -80,10 +82,10 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
         setAlreadyUploadedFiles(updatedChatbot.sources.files);
         setFileInfo([]);
         setFiles([]);
-        message.info('Успешно загружено');
+        message.success(intl.formatMessage({ id: 'message.success' }));
         setUploadLoading(false);
       } else {
-        message.info('Ошибка при загрузке');
+        message.error(intl.formatMessage({ id: 'message.error' }));
       }
     }
   };
@@ -104,6 +106,8 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
       );
       dispatch(removeFile(file._id));
       setDeleteLoading(false);
+    } else {
+      message.error(intl.formatMessage({ id: 'message.error' }));
     }
   };
 
@@ -133,7 +137,7 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
           return <></>;
         }}
       >
-        <p>Upload files</p>
+        <p>{intl.formatMessage({ id: 'fileDragger.upload' })}</p>
       </Dragger>
       <PrimaryButton
         onclick={loadFilesOnServer}
@@ -153,7 +157,9 @@ const FileDragger: FC<FileDraggerProps> = ({ chatbot, getChatbot }) => {
           </List.Item>
         )}
       ></List>
-      <Typography>Загруженные файлы</Typography>
+      <Typography>
+        {intl.formatMessage({ id: 'fileDragger.uploaded-files' })}
+      </Typography>
       <List
         dataSource={alreadyUploadedFiles}
         renderItem={(item) => (

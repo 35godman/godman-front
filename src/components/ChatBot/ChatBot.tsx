@@ -1,42 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Suggestion } from '../Suggestion/Suggestion';
-import {
-  Button,
-  Collapse,
-  CollapseProps,
-  Input,
-  message,
-  Spin,
-  Typography,
-} from 'antd';
-import { ReloadOutlined, SendOutlined } from '@ant-design/icons';
+import { Button, Input, Typography } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import { Chatbot } from '@/types/models/globals';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/features/store';
 import { MessageState } from '@/types/models/chatbotCustom/messageState';
-import { domainConfig } from '@/config/domain.config';
 import { nanoid } from 'nanoid';
 import { RoleState } from '@/types/models/role';
 import { ChatMessage } from '@/components/ChatMessage/ChatMessage';
-import { useRouter } from 'next/router';
-import { headers } from 'next/headers';
-import globalService from '@/service/globalService';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+
 import { Loader } from './Loader/Loader';
 import Link from 'next/link';
+import { useIntl } from 'react-intl';
 
 type ChatBotProps = {
   chatbot: Chatbot;
   setCollapseOpen?: (isOpen: boolean) => void;
 };
 
-const { Title } = Typography;
-
 export const ChatBot: React.FC<ChatBotProps> = ({
   chatbot,
   setCollapseOpen,
 }) => {
+  const intl = useIntl();
   const [questionValue, setQuestionValue] = useState<string>('');
   const [messages, setMessages] = useState<MessageState[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
@@ -290,7 +276,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
             </div>
           </div>
           <div className=" flex justify-center items-center space-x-1 mt-2">
-            <p>Powered by</p>
+            <p>{intl.formatMessage({ id: 'chatbot.powered-by' })}</p>
             <Link
               href={'https://cheerful-plans-273208.framer.app'}
               className={' hover:text-black active:text-black underline'}

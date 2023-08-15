@@ -1,23 +1,22 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Tabs } from 'antd';
 import { useRouter } from 'next/router';
-import { ChatBot } from '../ChatBot/ChatBot';
 import { Settings } from '../Settings/Settings';
 import { DataSource } from '../DataSource/DataSource';
-import s from './GeneralSettingsBot.module.css';
 import { AxiosResponse } from 'axios';
 import globalService from '@/service/globalService';
-import { Chatbot, User } from '@/types/models/globals';
+import { Chatbot } from '@/types/models/globals';
 import { useAppDispatch } from '@/features/store';
-import { setUser } from '@/features/slices/userSlice';
 import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
 import { addFile } from '@/features/slices/charsCountSlice';
 import EmbedCode from '@/components/EmbedCode/EmbedCode';
 import ChatbotContainer from '@/components/ChatBot/ChatbotContainer';
-import { nanoid } from 'nanoid';
+import { useIntl } from 'react-intl';
+import { Loader } from '@/components/ChatBot/Loader/Loader';
 
 export const GeneralSettingsBot: FC = () => {
   const router = useRouter();
+  const intl = useIntl();
   const dispatch = useAppDispatch();
   const { chatbot_id } = router.query;
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
@@ -67,12 +66,12 @@ export const GeneralSettingsBot: FC = () => {
   const tabs = [
     {
       key: 'chatbot',
-      label: 'Chatbot',
+      label: intl.formatMessage({ id: 'generalSettingsBot.chatbot' }),
       children: <ChatbotContainer chatbot={chatbot as Chatbot} />,
     },
     {
       key: 'settings',
-      label: 'Settings',
+      label: intl.formatMessage({ id: 'generalSettingsBot.settings' }),
       children: (
         <Settings
           getChatbot={getChatbotSettings}
@@ -85,7 +84,7 @@ export const GeneralSettingsBot: FC = () => {
     },
     {
       key: 'sources',
-      label: 'Sources',
+      label: intl.formatMessage({ id: 'generalSettingsBot.sources' }),
       children: (
         <DataSource
           chatbot={chatbot as Chatbot}
@@ -96,7 +95,7 @@ export const GeneralSettingsBot: FC = () => {
     },
     {
       key: 'embed',
-      label: 'Embed on site',
+      label: intl.formatMessage({ id: 'generalSettingsBot.embed' }),
       children: (
         <>
           <EmbedCode
@@ -107,14 +106,14 @@ export const GeneralSettingsBot: FC = () => {
         </>
       ),
     },
-    {
-      key: 'share',
-      label: 'Share',
-      children: <div>Здесь будет компонент Share</div>,
-    },
+    // {
+    //   key: 'share',
+    //   label: 'Share',
+    //   children: <div>Здесь будет компонент Share</div>,
+    // },
     {
       key: 'delete',
-      label: 'Delete Bot',
+      label: intl.formatMessage({ id: 'generalSettingsBot.delete' }),
       children: (
         <>
           <DeleteTab chatbot={chatbot as Chatbot} />
@@ -124,7 +123,7 @@ export const GeneralSettingsBot: FC = () => {
   ];
   return (
     <>
-      {chatbot && (
+      {chatbot ? (
         <Tabs
           defaultActiveKey="1"
           centered
@@ -132,6 +131,10 @@ export const GeneralSettingsBot: FC = () => {
           items={tabs}
           onChange={(activeKey: string) => selectCurrentTab(activeKey)}
         />
+      ) : (
+        <div className={'flex justify-center w-full'}>
+          <Loader />
+        </div>
       )}
     </>
   );

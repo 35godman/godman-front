@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
    */
   //eslint-disable-next-line
   const AnyComponent = Component as any;
+
   return (
     <>
       <Provider store={store}>

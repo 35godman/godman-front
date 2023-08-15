@@ -10,6 +10,7 @@ import QAList from '@/components/DataSource/QA/QAList';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
 import { selectCurrentSize } from '@/features/slices/charsCountSlice';
+import { useIntl } from 'react-intl';
 
 type DataSourceProps = {
   chatbot: Chatbot;
@@ -24,7 +25,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
   const charsInChatbot = useSelector(selectCurrentSize);
   const { Paragraph } = Typography;
   const [retrainLoading, setRetrainLoading] = useState<boolean>(false);
-
+  const intl = useIntl();
   const [, setActiveTab] = useState<string>('Files');
 
   const handleTabClick = (key: string) => {
@@ -47,7 +48,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
   const tabs = [
     {
       key: 'Files',
-      label: 'Files',
+      label: intl.formatMessage({ id: 'dataSource.files' }),
       children: (
         <>
           <FileDragger chatbot={chatbot} getChatbot={getChatbot} />
@@ -56,7 +57,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
     },
     {
       key: 'Text',
-      label: 'Text',
+      label: intl.formatMessage({ id: 'dataSource.text' }),
       children: (
         <>
           <TextSource chatbot={chatbot} setChatbot={setChatbot} />
@@ -65,7 +66,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
     },
     {
       key: 'Website',
-      label: 'Website',
+      label: intl.formatMessage({ id: 'dataSource.website' }),
       children: (
         <>
           <CrawledComponent chatbot={chatbot} getChatbot={getChatbot} />
@@ -74,7 +75,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
     },
     {
       key: 'Q&A',
-      label: 'Q&A',
+      label: intl.formatMessage({ id: 'dataSource.qa' }),
       children: (
         <>
           <QAList chatbot={chatbot} />
@@ -93,12 +94,18 @@ export const DataSource: React.FC<DataSourceProps> = ({
       />
       <div className={'flex flex-col'}>
         <div className={'flex flex-col'}>
-          <Paragraph>Количество символов {charsInChatbot}</Paragraph>
-          <Paragraph>Макс. количество {chatbot.settings.char_limit}</Paragraph>
+          <Paragraph>
+            {intl.formatMessage({ id: 'dataSource.char-amount' })}:{' '}
+            {charsInChatbot}
+          </Paragraph>
+          <Paragraph>
+            {intl.formatMessage({ id: 'dataSource.max-char-amount' })}:{' '}
+            {chatbot.settings.char_limit}
+          </Paragraph>
         </div>
 
         <PrimaryButton
-          text={'Обучить'}
+          text={intl.formatMessage({ id: 'dataSource.train' })}
           onclick={handleRetrain}
           loading={retrainLoading}
         />

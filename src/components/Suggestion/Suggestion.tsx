@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Button } from 'antd';
 import { ChatbotSettings } from '@/types/models/globals';
 import s from './Suggestion.module.css';

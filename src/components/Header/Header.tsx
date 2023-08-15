@@ -1,6 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import s from './Header.module.css';
-import globalService from '@/service/globalService';
 import { message } from 'antd';
 import { useRouter } from 'next/router';
 import { RootState, useAppDispatch } from '@/features/store';
@@ -10,8 +8,10 @@ import { domainConfig } from '@/config/domain.config';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
 import Image from 'next/image';
+import { useIntl } from 'react-intl';
 export const Header = () => {
   const initialRender = useRef(true);
+  const intl = useIntl();
   const user = useSelector((state: RootState) => state.user);
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -64,11 +64,11 @@ export const Header = () => {
           </div>
           <PrimaryButton
             onclick={() => goToPage('chatbot-list')}
-            text={'Список чатботов'}
+            text={intl.formatMessage({ id: 'header.list' })}
           />
           <PrimaryButton
             onclick={() => goToPage('account')}
-            text={'Мой аккаунт'}
+            text={intl.formatMessage({ id: 'header.acc' })}
           />
         </>
       )}

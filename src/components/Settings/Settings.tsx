@@ -18,9 +18,7 @@ import s from './Settings.module.css';
 import { Prompts } from '@/types/enums/prompts';
 import { Chatbot, ChatbotSettings } from '@/types/models/globals';
 import { VisibilityOptions } from '@/types/models/chatbotCustom/visibility.type';
-import { CustomerInfo } from '@/types/models/chatbotCustom/customer-info.type';
 import { LimitState } from '@/types/models/chatbotCustom/limit.type';
-import SwitchForm from '@/components/Settings/formItems/SwitchForm/SwitchForm';
 import ChatPreview from '@/components/ChatPreview/ChatPreview';
 import globalService from '@/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
@@ -93,21 +91,21 @@ export const Settings: React.FC<SettingsPropsType> = ({
     });
   };
 
-  const changeCustomerInfoSetting = <K extends keyof CustomerInfo>(
-    key: K,
-    value: CustomerInfo[K],
-  ) => {
-    setChatbot({
-      ...chatbot,
-      settings: {
-        ...chatbot.settings,
-        customer_info: {
-          ...chatbot.settings.customer_info,
-          [key]: value,
-        },
-      },
-    });
-  };
+  // const changeCustomerInfoSetting = <K extends keyof CustomerInfo>(
+  //   key: K,
+  //   value: CustomerInfo[K],
+  // ) => {
+  //   setChatbot({
+  //     ...chatbot,
+  //     settings: {
+  //       ...chatbot.settings,
+  //       customer_info: {
+  //         ...chatbot.settings.customer_info,
+  //         [key]: value,
+  //       },
+  //     },
+  //   });
+  // };
   const changeChatbotRootSetting = <K extends keyof Chatbot>(
     key: K,
     value: Chatbot[K],

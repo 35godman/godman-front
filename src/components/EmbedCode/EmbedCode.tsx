@@ -4,6 +4,7 @@ import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
 import globalService from '@/service/globalService';
 import { message } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
+import { useIntl } from 'react-intl';
 
 type EmbedCodeProps = {
   chatbot: Chatbot;
@@ -13,8 +14,10 @@ type EmbedCodeProps = {
 
 const EmbedCode: FC<EmbedCodeProps> = ({ chatbot, getChatbot, selected }) => {
   const [showModal, setShowModal] = useState<boolean>(true);
+  const intl = useIntl();
   const [newChatbot, setNewChatbot] = useState<Chatbot>(chatbot);
   const changeVisibility = async () => {
+    message.loading(intl.formatMessage({ id: 'message.loading' }));
     const response = await globalService.post(
       `chatbot/generate-iframe?chatbot_id=${chatbot._id}`,
     );
@@ -22,8 +25,10 @@ const EmbedCode: FC<EmbedCodeProps> = ({ chatbot, getChatbot, selected }) => {
       const updatedChatbot = await getChatbot();
       if (updatedChatbot) {
         setNewChatbot(updatedChatbot);
-        message.info('Успешно обновлена видимость');
+        message.success(intl.formatMessage({ id: 'message.success' }));
       }
+    } else {
+      message.error(intl.formatMessage({ id: 'message.error' }));
     }
   };
   /**
@@ -52,9 +57,7 @@ const EmbedCode: FC<EmbedCodeProps> = ({ chatbot, getChatbot, selected }) => {
               show={showModal}
               onConfirm={changeVisibility}
               onCancel={() => setShowModal(false)}
-              text={
-                'Ваш чатбот приватный. Для генерации iframe, сделаем его публичным, ок?'
-              }
+              text={intl.formatMessage({ id: 'embedCode.private-bot-alert' })}
             />
           )}
         </>

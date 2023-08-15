@@ -1,20 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import s from '@/components/DataSource/DataSource.module.css';
-import { Button, Input, message, Progress, Space, Typography } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { Input, message, Progress, Space, Typography } from 'antd';
 import { AxiosResponse } from 'axios';
 import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLink.type';
 import crawlService from '@/service/crawlService';
 import { Chatbot, CrawlingStatus, FileUpload } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/features/store';
-import { addFile, removeFile } from '@/features/slices/charsCountSlice';
-import { useRouter } from 'next/router';
+import { removeFile } from '@/features/slices/charsCountSlice';
 import globalService from '@/service/globalService';
 import { FixedSizeList as List } from 'react-window';
-import CrawledListItem from '@/components/DataSource/CrawledComponent/CrawledListItem';
 import { WrappedCrawledListItem } from '@/components/DataSource/CrawledComponent/WrapperCrawledListItem';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { useIntl } from 'react-intl';
 
 type CrawledComponentProps = {
   chatbot: Chatbot;
@@ -25,6 +23,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
   chatbot,
   getChatbot,
 }) => {
+  const intl = useIntl();
   const dispatch = useAppDispatch();
   const [websiteUrl, setWebsiteUrl] = useState<string>('');
   const [alreadyUploadedLinks, setAlreadyUploadedLinks] = useState<
@@ -41,6 +40,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
   const [crawlLoading, setCrawlLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [crawlLoadingPercent, setCrawlLoadingPercent] = useState<number>(0);
+  const [urlsRegex, setUrlRegex] = useState<string>('');
 
   useEffect(() => {
     setAlreadyUploadedLinks(chatbot.sources.website);
@@ -67,7 +67,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
     setWebsiteUrl(e.target.value);
   };
   const handleWebsiteParse = async () => {
-    message.loading('Ожидайте, контент с сайта загружается');
+    message.loading(intl.formatMessage({ id: 'message.loading' }));
     setCrawlStatus('PENDING');
     setCrawlLoading(true);
     try {
@@ -75,12 +75,13 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
         `/crawler/crawl?chatbot_id=${chatbot._id}`,
         {
           weblink: websiteUrl,
+          filter: urlsRegex,
         },
       );
       if (res.status === 201) {
         await getChatbot();
       } else {
-        message.error('Ошибка');
+        message.error(intl.formatMessage({ id: 'message.error' }));
       }
       setCrawlLoading(false);
       setCrawlLoadingPercent(0);
@@ -96,8 +97,10 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
       `/chatbot/reset-websources?chatbot_id=${chatbot._id}`,
     );
     if (response.status === 201) {
-      message.success('Успешно удалено');
+      message.success(intl.formatMessage({ id: 'message.success' }));
       await getChatbot();
+    } else {
+      message.error(intl.formatMessage({ id: 'message.error' }));
     }
     setDeleteLoading(false);
   };
@@ -121,7 +124,9 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
       body,
     );
     if (response.status === 201) {
-      message.success('успешно удалено');
+      message.success(intl.formatMessage({ id: 'message.success' }));
+    } else {
+      message.error(intl.formatMessage({ id: 'message.error' }));
     }
   };
 
@@ -129,11 +134,9 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
     <>
       <div className={s.webInputWrap}>
         <Input
-          placeholder="Enter website URL"
-          style={{
-            marginBottom: '16px',
-            marginRight: '16px',
-          }}
+          placeholder={intl.formatMessage({
+            id: 'crawledComponent.enter-weblink',
+          })}
           value={websiteUrl}
           onChange={handleWebsiteUrlChange}
         />
@@ -144,6 +147,18 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
           disabled={!websiteUrl.length}
         />
       </div>
+      <div className={'flex flex-col w-[50%] text-sm'}>
+        <Typography>
+          {intl.formatMessage({ id: 'crawledComponent.enter-linkregex' })}
+        </Typography>
+        <Input
+          placeholder={intl.formatMessage({
+            id: 'crawledComponent.filter',
+          })}
+          value={urlsRegex}
+          onChange={(e) => setUrlRegex(e.target.value)}
+        />
+      </div>
       <div className={'flex justify-end '}>
         <div className={'flex flex-col align-middle '}>
           <PrimaryButton
@@ -152,7 +167,10 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
             text={'Удалить все'}
             disabled={!chatbot.sources.website.length}
           />
-          <Typography>Кол-во страниц {alreadyUploadedLinks.length}</Typography>
+          <Typography>
+            {intl.formatMessage({ id: 'crawledComponent.page-count' })}{' '}
+            {alreadyUploadedLinks.length}
+          </Typography>
         </div>
       </div>
       {

@@ -6,6 +6,7 @@ import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/features/store';
 import { addFile } from '@/features/slices/charsCountSlice';
 import { fileConfig } from '@/config/file.config';
+import { useIntl } from 'react-intl';
 
 type TextSourceProps = {
   chatbot: Chatbot;
@@ -13,6 +14,7 @@ type TextSourceProps = {
 };
 
 const TextSource: FC<TextSourceProps> = ({ chatbot }) => {
+  const intl = useIntl();
   const { TextArea } = Input;
   const dispatch = useAppDispatch();
   const [textSource, setTextSource] = useState<string>(chatbot.sources.text);
@@ -44,14 +46,14 @@ const TextSource: FC<TextSourceProps> = ({ chatbot }) => {
   return (
     <>
       <TextArea
-        placeholder="Введите текст"
+        placeholder={intl.formatMessage({ id: 'textSource.enter-text' })}
         rows={15}
         value={textSource}
         onChange={handleTextAreaChange}
       />
       <PrimaryButton
         onclick={saveText}
-        text={'Сохранить текст'}
+        text={intl.formatMessage({ id: 'textSource.save-text' })}
         loading={uploadLoading}
       />
     </>
