@@ -35,3 +35,6 @@
 //     }
 //   }
 // }
+Cypress.Commands.add('getBySelector', (selector, ...args) => {
+  return cy.get(`[data-test=${selector}]`, ...args);
+});

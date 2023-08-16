@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { chatbotReducer } from '@/features/slices/chatbotSlice';
 import { userReducer } from '@/features/slices/userSlice';
-import { charsCountReducer } from '@/features/slices/charsCountSlice';
+import { addFile, charsCountReducer } from '@/features/slices/charsCountSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,16 +11,24 @@ export const store = configureStore({
     chars: charsCountReducer,
   },
 });
-// if (process.env.NODE_ENV !== 'production') {
-//   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//   // @ts-ignore
-//   if (window && window?.Cypress) {
-//     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//     // @ts-ignore
-//     window.store = store;
-//   }
-// }
+if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  if (window && window?.Cypress) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.store = store;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.setTestReduxState = (initialState) => {
+      store.dispatch(addFile(initialState));
+    };
+  }
+}
 
+export const getStore = () => {
+  return store;
+};
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export type RootState = ReturnType<typeof store.getState>;

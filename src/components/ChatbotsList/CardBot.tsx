@@ -18,7 +18,12 @@ export const CardBot: React.FC<CardBotProps> = ({ nameBot, botID }) => {
   };
 
   return (
-    <Card hoverable style={{ width: 240 }} onClick={changeChatbot}>
+    <Card
+      hoverable
+      style={{ width: 240 }}
+      onClick={changeChatbot}
+      data-test={`card-${botID}`}
+    >
       <Meta title={nameBot} description={botID} />
     </Card>
   );
