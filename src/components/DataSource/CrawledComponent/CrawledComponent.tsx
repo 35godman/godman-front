@@ -13,6 +13,7 @@ import { FixedSizeList as List } from 'react-window';
 import { WrappedCrawledListItem } from '@/components/DataSource/CrawledComponent/WrapperCrawledListItem';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { useIntl } from 'react-intl';
+import CrawlFilter from '@/components/DataSource/CrawledComponent/CrawlFilter';
 
 type CrawledComponentProps = {
   chatbot: Chatbot;
@@ -26,6 +27,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const [websiteUrl, setWebsiteUrl] = useState<string>('');
+  const [linksToParse, setLinksToParse] = useState<string[]>([]);
   const [alreadyUploadedLinks, setAlreadyUploadedLinks] = useState<
     FileUpload[]
   >(() => chatbot.sources.website);
@@ -40,7 +42,6 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
   const [crawlLoading, setCrawlLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [crawlLoadingPercent, setCrawlLoadingPercent] = useState<number>(0);
-  const [urlsRegex, setUrlRegex] = useState<string>('');
 
   useEffect(() => {
     setAlreadyUploadedLinks(chatbot.sources.website);
@@ -75,7 +76,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
         `/crawler/crawl?chatbot_id=${chatbot._id}`,
         {
           weblink: websiteUrl,
-          filter: urlsRegex,
+          filter: linksToParse,
         },
       );
       if (res.status === 201) {
@@ -142,21 +143,15 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
         />
         <PrimaryButton
           onclick={handleWebsiteParse}
-          text={'Parse website'}
+          text={intl.formatMessage({ id: 'crawledComponent.crawl' })}
           loading={crawlLoading}
           disabled={!websiteUrl.length}
         />
       </div>
-      <div className={'flex flex-col w-[50%] text-sm'}>
-        <Typography>
-          {intl.formatMessage({ id: 'crawledComponent.enter-linkregex' })}
-        </Typography>
-        <Input
-          placeholder={intl.formatMessage({
-            id: 'crawledComponent.filter',
-          })}
-          value={urlsRegex}
-          onChange={(e) => setUrlRegex(e.target.value)}
+      <div className={'flex flex-col w-[50%] text-sm mt-5'}>
+        <CrawlFilter
+          linksToParse={linksToParse}
+          setLinksToParse={setLinksToParse}
         />
       </div>
       <div className={'flex justify-end '}>
@@ -164,7 +159,7 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
           <PrimaryButton
             onclick={deleteAll}
             loading={deleteLoading}
-            text={'Удалить все'}
+            text={intl.formatMessage({ id: 'crawledComponent.delete-all' })}
             disabled={!chatbot.sources.website.length}
           />
           <Typography>

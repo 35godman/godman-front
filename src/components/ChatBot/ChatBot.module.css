@@ -61,3 +61,11 @@
   width: 50px !important;
   height: 50px !important;
 }
+
+.alignPlaceholder{
+
+}
+.alignPlaceholder::placeholder {
+  line-height: 4.5rem;
+}
+

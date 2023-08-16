@@ -8,7 +8,7 @@ import { MessageState } from '@/types/models/chatbotCustom/messageState';
 import { nanoid } from 'nanoid';
 import { RoleState } from '@/types/models/role';
 import { ChatMessage } from '@/components/ChatMessage/ChatMessage';
-
+import s from './ChatBot.module.css';
 import { Loader } from './Loader/Loader';
 import Link from 'next/link';
 import { useIntl } from 'react-intl';
@@ -259,7 +259,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
                     await sendMessage(questionValue);
                   }
                 }}
-                className="m-0 w-full min-h-[4.5rem] max-h-36 pr-16 rounded-lg big-placeholder hover:border-white focus:border-0 focus:border-white"
+                className={`${s.alignPlaceholder} m-0 w-full min-h-[4.5rem] max-h-36 pr-16 rounded-lg big-placeholder hover:border-white focus:border-0 focus:border-white`}
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 ">
                 <Button
