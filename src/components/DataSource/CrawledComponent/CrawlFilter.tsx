@@ -26,7 +26,10 @@ const CrawlFilter: FC<CrawlFilterProps> = ({
   return (
     <>
       <div>
-        <Input onChange={(e) => setCurrentLink(e.target.value)} />
+        <Input
+          onChange={(e) => setCurrentLink(e.target.value)}
+          value={currentLink}
+        />
         <PrimaryButton onclick={addToLinksToParse}>
           <FormattedMessage id={'crawlFilter.addToFilter'} />
         </PrimaryButton>
