@@ -11,7 +11,7 @@ export const store = configureStore({
     chars: charsCountReducer,
   },
 });
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (window && window?.Cypress) {

@@ -249,19 +249,26 @@ export const ChatBot: React.FC<ChatBotProps> = ({
               {/*  icon={<ReloadOutlined style={{ fontSize: '26px' }} />}*/}
               {/*  disabled={!messages.length}*/}
               {/*></Button>*/}
-              <Input.TextArea
-                rows={3}
-                value={questionValue}
-                onChange={(e) => setQuestionValue(e.target.value)}
-                placeholder="Ask me anything..."
-                onKeyDown={async (e) => {
-                  if (e.key === 'Enter' && questionValue.length > 0) {
-                    await sendMessage(questionValue);
-                  }
-                }}
-                className={`${s.alignPlaceholder} m-0 w-full min-h-[4.5rem] max-h-36 pr-16 rounded-lg big-placeholder hover:border-white focus:border-0 focus:border-white`}
-              />
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 ">
+              <div className={`${s.textAreaContainer} bg-white`}>
+                <Input.TextArea
+                  autoSize={true}
+                  rows={4}
+                  value={questionValue}
+                  onChange={(e) => setQuestionValue(e.target.value)}
+                  placeholder="Ask me anything..."
+                  onKeyDown={async (e) => {
+                    if (e.key === 'Enter' && questionValue.length > 3) {
+                      await sendMessage(questionValue);
+                    }
+                  }}
+                  className={`m-0 w-full py-4
+                  min-h-[4.5rem] max-h-36 pr-16 
+                  rounded-lg hover:border-white
+                  border-none
+                  focus:border-0 focus:border-none focus:shadow-none`}
+                />
+              </div>
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 ">
                 <Button
                   loading={buttonLoading}
                   className={`w-auto border-0 bg-white disabled:bg-white`}

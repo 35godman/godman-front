@@ -42,6 +42,8 @@ export const DataSource: React.FC<DataSourceProps> = ({
     if (response.status === 201) {
       await getChatbot();
       setRetrainLoading(false);
+    } else {
+      setRetrainLoading(false);
     }
   };
 

@@ -94,9 +94,10 @@ const CrawledComponent: FC<CrawledComponentProps> = ({
 
   const deleteAll = async () => {
     setDeleteLoading(true);
-    const response = await globalService.post(
+    const response = await crawlService.post(
       `/chatbot/reset-websources?chatbot_id=${chatbot._id}`,
     );
+    setAlreadyUploadedLinks([]);
     if (response.status === 201) {
       message.success(intl.formatMessage({ id: 'message.success' }));
       await getChatbot();
