@@ -21,7 +21,7 @@ describe('<CardBot />', () => {
       // @ts-ignore
       <Provider store={window.store}>
         <MockRouter asPath="/path/to/route#hash">
-          <CardBot nameBot={'test'} botID={'test-123'} />
+          <CardBot data-shmid="cy-button" nameBot={'test'} botID={'test-123'} />
         </MockRouter>
       </Provider>,
     );
@@ -43,10 +43,23 @@ describe('<CardBot />', () => {
   it('should navigate to correct URL on card click', () => {
     cy.getBySelector('card-test-123').click();
 
-    cy.spy().as('changeChatbot');
+    cy.get('[data-shmid="cy-button"]').click();
+
+    cy.get('[data-shmid="cy-button"]').invoke(
+      'on',
+      'change',
+      cy.stub().as('field-changed'),
+    );
+    cy.get('[data-shmid="cy-button"]').click();
+    cy.get('@field-changed').should('have.been.calledOnce');
+
     cy.get('@router-push').should(
       'have.been.calledWith',
       '/gs-bot?chatbot_id=test-123',
     );
+
+    cy.window().its('state').invoke('getState').should('deep.equal', {
+      chatbot_name: 'test-123',
+    });
   });
 });

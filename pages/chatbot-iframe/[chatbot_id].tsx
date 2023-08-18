@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Chatbot } from '@/types/models/globals';
 import { AxiosResponse } from 'axios';
-import globalService from '@/service/globalService';
+import globalService from '@/shared/service/globalService';
 import ChatbotContainer from '@/components/ChatBot/ChatbotContainer';
 import { domainConfig } from '@/config/domain.config';
 import { IntlProvider } from 'react-intl';

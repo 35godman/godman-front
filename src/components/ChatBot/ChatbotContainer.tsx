@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Collapse, CollapseProps, Spin } from 'antd';
-import globalService from '@/service/globalService';
+import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import { ChatBot } from '@/components/ChatBot/ChatBot';
 import { FormattedMessage } from 'react-intl';

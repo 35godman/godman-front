@@ -2,7 +2,7 @@ import { Tabs, Typography } from 'antd';
 import React, { useState } from 'react';
 import s from './DataSource.module.css';
 import { Chatbot } from '@/types/models/globals';
-import fileUploadService from '@/service/pineconeService';
+import fileUploadService from '@/shared/service/pineconeService';
 import CrawledComponent from '@/components/DataSource/CrawledComponent/CrawledComponent';
 import FileDragger from '@/components/DataSource/FileDragger/FileDragger';
 import TextSource from '@/components/DataSource/TextSource/TextSource';

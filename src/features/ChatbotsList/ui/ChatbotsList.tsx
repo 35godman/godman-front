@@ -1,16 +1,17 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import s from './ChatbotsList.module.css';
 import { Typography } from 'antd';
-import { CardBot } from './CardBot';
+import { CardBot } from '../../entities/ChatbotsList/CardBot';
 import { useRouter } from 'next/router';
 import { RootState, useAppDispatch } from '@/features/store';
 import { AxiosResponse } from 'axios';
-import globalService from '@/service/globalService';
+import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { resetChars } from '@/features/slices/charsCountSlice';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { getHashId } from '../model';
 
 export const ChatbotsList: FC = () => {
   const router = useRouter();

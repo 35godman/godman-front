@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Chatbot } from '@/types/models/globals';
 import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
-import globalService from '@/service/globalService';
+import globalService from '@/shared/service/globalService';
 import { message } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { useIntl } from 'react-intl';

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Settings } from '../Settings/Settings';
 import { DataSource } from '../DataSource/DataSource';
 import { AxiosResponse } from 'axios';
-import globalService from '@/service/globalService';
+import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import { useAppDispatch } from '@/features/store';
 import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';

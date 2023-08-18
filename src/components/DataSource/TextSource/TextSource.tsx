@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Input, message } from 'antd';
-import globalService from '@/service/globalService';
+import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/features/store';

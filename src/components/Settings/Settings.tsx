@@ -20,7 +20,7 @@ import { Chatbot, ChatbotSettings } from '@/types/models/globals';
 import { VisibilityOptions } from '@/types/models/chatbotCustom/visibility.type';
 import { LimitState } from '@/types/models/chatbotCustom/limit.type';
 import ChatPreview from '@/components/ChatPreview/ChatPreview';
-import globalService from '@/service/globalService';
+import globalService from '@/shared/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { removeStaticFieldsFromObject } from '@/helpers/obj/removeStaticFieldsFromObject';
 import { convertMessagesToArray } from '@/helpers/obj/convertMessagesToArray';
@@ -35,6 +35,7 @@ type SettingsPropsType = {
   setNewDataUpdated: (y: boolean) => void;
   newDataUpdated: boolean;
   getChatbot: () => Promise<Chatbot | undefined>;
+  onSubmit: ({ chatbot_name: string }) => void;
 };
 export const Settings: React.FC<SettingsPropsType> = ({
   chatbot,
@@ -42,6 +43,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
   setNewDataUpdated,
   newDataUpdated,
   getChatbot,
+  onSubmit,
 }) => {
   const [fileInfo, setFileInfo] = useState<UploadFile | null>(null);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
@@ -122,6 +124,9 @@ export const Settings: React.FC<SettingsPropsType> = ({
   };
 
   const handleSubmit = async () => {
+    onSubmit({
+      chatbot_name: chatbot.chatbot_name,
+    });
     setSaveLoading(true);
     const updatedChatbot = { ...chatbot };
     /**

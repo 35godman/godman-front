@@ -5,6 +5,8 @@ import NextNProgress from 'nextjs-progressbar';
 import { Provider } from 'react-redux';
 import store from '@/features/store';
 import { Layout } from '../layouts/Layout';
+import { App } from '@/app/App';
+
 function MyApp({ Component, pageProps }: AppProps) {
   const { noLayout, ...rest } = pageProps;
 
@@ -15,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const AnyComponent = Component as any;
 
   return (
-    <>
+    <App>
       <Provider store={store}>
         <NextNProgress />
         {noLayout ? (
@@ -30,7 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Layout>
         )}
       </Provider>
-    </>
+    </App>
   );
 }
 
