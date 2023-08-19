@@ -21,7 +21,12 @@ describe('<CardBot />', () => {
       // @ts-ignore
       <Provider store={window.store}>
         <MockRouter asPath="/path/to/route#hash">
-          <CardBot data-shmid="cy-button" nameBot={'test'} botID={'test-123'} />
+          <CardBot
+            data-shmid="cy-button"
+            nameBot={'test'}
+            botID={'test-123'}
+            onClick={() => Promise.resolve()}
+          />
         </MockRouter>
       </Provider>,
     );
