@@ -1,17 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import s from './ChatbotsList.module.css';
 import { Typography } from 'antd';
-import { CardBot } from '../../entities/ChatbotsList/CardBot';
 import { useRouter } from 'next/router';
-import { RootState, useAppDispatch } from '@/features/store';
+import { RootState, useAppDispatch } from '@/features/store/store';
 import { AxiosResponse } from 'axios';
 import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
-import { resetChars } from '@/features/slices/charsCountSlice';
+import { resetChars } from '@/features/store/slices/charsCountSlice';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { getHashId } from '../model';
+import { CardBot } from '@/entities/CardBot/CardBot';
 
 export const ChatbotsList: FC = () => {
   const router = useRouter();
@@ -43,6 +42,11 @@ export const ChatbotsList: FC = () => {
     dispatch(resetChars());
     await router.push(`/gs-bot?chatbot_id=${response.data._id}`);
   };
+  const changeChatbot = async (botID: string) => {
+    dispatch(resetChars());
+    await router.push(`/gs-bot?chatbot_id=${botID}`);
+  };
+
   return (
     <>
       <div className={s.botsListWrapper}>
@@ -76,6 +80,7 @@ export const ChatbotsList: FC = () => {
                   return (
                     <CardBot
                       botID={bot._id}
+                      onClick={() => changeChatbot(bot._id)}
                       key={bot._id}
                       nameBot={bot.chatbot_name}
                     />

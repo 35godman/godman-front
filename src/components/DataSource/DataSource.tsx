@@ -9,7 +9,7 @@ import TextSource from '@/components/DataSource/TextSource/TextSource';
 import QAList from '@/components/DataSource/QA/QAList';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
-import { selectCurrentSize } from '@/features/slices/charsCountSlice';
+import { selectCurrentSize } from '@/features/store/slices/charsCountSlice';
 import { useIntl } from 'react-intl';
 
 type DataSourceProps = {

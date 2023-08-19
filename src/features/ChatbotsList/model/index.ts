@@ -1,1 +1,0 @@
-export { getHashId } from './getHashId';

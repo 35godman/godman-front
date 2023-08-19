@@ -151,7 +151,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({
   return (
     <>
       <div
-        className="sticky top-0 w-[88%] z-10 m-auto py-[5%]"
+        className="sticky top-0 w-[88%] z-10 m-auto py-8"
         style={{ backgroundColor: chatbot.settings.footer_color }}
       >
         <div className="flex justify-between  m-auto mb-0  items-center z-10">
@@ -261,8 +261,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({
                       await sendMessage(questionValue);
                     }
                   }}
-                  className={`m-0 w-full py-4
-                  min-h-[4.5rem] max-h-36 pr-16 
+                  className={`m-0 w-full
+                 max-h-36 pr-16 
                   rounded-lg hover:border-white
                   border-none
                   focus:border-0 focus:border-none focus:shadow-none`}

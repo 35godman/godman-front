@@ -1,6 +1,7 @@
 import React from 'react';
 import { Login } from '@/features/Login/Login';
 import { RegistrationForm } from '@/features/Register';
+import { Tabs } from 'antd';
 
 const index = () => {
   const tabs = [
@@ -13,10 +14,11 @@ const index = () => {
   ];
 
   return (
-    // <div className={s.loginWrapper}>
-    //   <Tabs defaultActiveKey="login" centered items={tabs} />
-    // </div>
-    <></>
+    <>
+      <div className={'max-w-full max-h-screen '}>
+        <Tabs defaultActiveKey="login" centered items={tabs} />
+      </div>
+    </>
   );
 };
 export default index;

@@ -2,7 +2,7 @@ import React from 'react';
 import { CardBot } from './CardBot';
 import MockRouter from '../../../cypress/utils/router';
 import { Provider } from 'react-redux';
-import { getStore } from '@/features/store';
+import { getStore } from '@/features/store/store';
 import { mount } from 'cypress/react18';
 import { userStub } from '../../../test/stubs/user';
 import { chatbotStub } from '../../../test/stubs/chatbot';

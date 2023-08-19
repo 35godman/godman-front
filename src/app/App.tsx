@@ -1,10 +1,13 @@
-import { Provider } from 'redux';
-import { store } from './store';
+import { Provider } from 'react-redux';
+import store from '@/features/store/store';
+import React, { FC } from 'react';
+import NextNProgress from 'nextjs-progressbar';
 
-export const App = ({ children }) => {
+export const App: FC = ({ children }) => {
   return (
     <Provider store={store}>
-      <UserContextProvider>{children}</UserContextProvider>
+      <NextNProgress />
+      <>{children}</>
     </Provider>
   );
 };

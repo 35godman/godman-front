@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/features/store';
+import { RootState } from '@/features/store/store';
 import Cookies from 'js-cookie';
 import { Typography } from 'antd';
 import { FormattedMessage } from 'react-intl';

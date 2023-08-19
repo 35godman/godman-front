@@ -6,8 +6,8 @@ import { CrawledLink } from '@/components/DataSource/CrawledComponent/crawledLin
 import crawlService from '@/shared/service/crawlService';
 import { Chatbot, CrawlingStatus, FileUpload } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
-import { useAppDispatch } from '@/features/store';
-import { removeFile } from '@/features/slices/charsCountSlice';
+import { useAppDispatch } from '@/features/store/store';
+import { removeFile } from '@/features/store/slices/charsCountSlice';
 import globalService from '@/shared/service/globalService';
 import { FixedSizeList as List } from 'react-window';
 import { WrappedCrawledListItem } from '@/components/DataSource/CrawledComponent/WrapperCrawledListItem';

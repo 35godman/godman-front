@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { ChatbotsList } from '../ChatbotsList';
+import { ChatbotsList } from '../CardBot';
 
 jest.mock('next/router', () => ({
   useRouter: () => ({
@@ -16,7 +16,7 @@ jest.mock('react-redux', () => ({
   }),
 }));
 
-test('ChatbotsList renders correctly', () => {
+test('CardBot renders correctly', () => {
   const list = renderer.create(<ChatbotsList />).toJSON();
   expect(list).toMatchSnapshot();
 });

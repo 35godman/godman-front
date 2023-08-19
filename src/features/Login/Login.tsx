@@ -4,8 +4,8 @@ import { LoginValues, RegisterValues } from '@/types/types';
 import s from './Login.module.css';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-import { setUser } from '@/features/slices/userSlice';
-import { useAppDispatch } from '@/features/store';
+import { setUser } from '@/features/store/slices/userSlice';
+import { useAppDispatch } from '@/features/store/store';
 import globalService from '@/shared/service/globalService';
 import { FormattedMessage } from 'react-intl';
 
@@ -26,14 +26,6 @@ export const Login: React.FC = () => {
     }
   };
 
-  const registerHandler = async (values: RegisterValues) => {
-    const response = await globalService.post('user/register', values);
-    if (response.status === 201) {
-      Modal.success({
-        title: `User ${values.username} registered`,
-      });
-    }
-  };
   return (
     <div className={'m-auto flex justify-center'}>
       <Form

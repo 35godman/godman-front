@@ -1,5 +1,7 @@
 import React from 'react';
 import { ChatbotSettings } from '@/types/models/globals';
+import ReactMarkdown from 'react-markdown';
+
 type ChatMessageProps = {
   textProp: string;
   chat_role: 'user' | 'assistant' | 'system';
@@ -35,7 +37,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
               color: settings.bot_font_color,
             }}
           >
-            <p className={'text-[0.93rem]'}>{textProp}</p>
+            {/*<p className={'text-[0.93rem]'}></p>*/}
+            <ReactMarkdown>{textProp}</ReactMarkdown>
           </div>
         </div>
       )}

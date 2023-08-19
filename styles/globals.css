@@ -22,3 +22,6 @@
     font-weight: 500;
     font-size: 15px;
 }
+ol li {
+    list-style: decimal inside;
+}

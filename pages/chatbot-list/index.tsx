@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ChatbotsList } from '@/features/ChatbotsList/ChatbotsList';
+import { ChatbotsList } from '@/features/ChatbotsList/ui';
 const ChatbotListPage: FC = () => {
   return (
     <>

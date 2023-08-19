@@ -29,6 +29,7 @@
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-intl": "^6.4.4",
+    "react-markdown": "^8.0.7",
     "react-virtualized-auto-sizer": "^1.0.20",
     "react-window": "^1.8.9",
     "sharp": "^0.32.4"

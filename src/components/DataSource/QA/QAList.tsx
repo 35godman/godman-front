@@ -5,8 +5,8 @@ import { Chatbot } from '@/types/models/globals';
 import { DeleteOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
-import { useAppDispatch } from '@/features/store';
-import { addFile, removeFile } from '@/features/slices/charsCountSlice';
+import { useAppDispatch } from '@/features/store/store';
+import { addFile, removeFile } from '@/features/store/slices/charsCountSlice';
 import { QAState } from '@/types/models/chatbotCustom/QA.type';
 import { useIntl } from 'react-intl';
 

@@ -1,4 +1,17 @@
+import { RegisterValues } from '@/types/types';
+import globalService from '@/shared/service/globalService';
+import { Button, Form, Input, Modal } from 'antd';
+import { FormattedMessage } from 'react-intl';
+
 export const RegistrationForm = () => {
+  const registerHandler = async (values: RegisterValues) => {
+    const response = await globalService.post('user/register', values);
+    if (response.status === 201) {
+      Modal.success({
+        title: `User ${values.username} registered`,
+      });
+    }
+  };
   return (
     <div className={'flex justify-center'}>
       <Form

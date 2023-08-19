@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import { chatbotReducer } from '@/features/slices/chatbotSlice';
-import { userReducer } from '@/features/slices/userSlice';
-import { addFile, charsCountReducer } from '@/features/slices/charsCountSlice';
+import { chatbotReducer } from '@/features/store/slices/chatbotSlice';
+import { userReducer } from '@/features/store/slices/userSlice';
+import {
+  addFile,
+  charsCountReducer,
+} from '@/features/store/slices/charsCountSlice';
 
 export const store = configureStore({
   reducer: {
