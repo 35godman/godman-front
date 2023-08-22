@@ -1,11 +1,11 @@
 import { RegisterValues } from '@/types/types';
-import globalService from '@/shared/service/globalService';
 import { Button, Form, Input, Modal } from 'antd';
 import { FormattedMessage } from 'react-intl';
+import { registUser } from '@/features/Register/api';
 
 export const RegistrationForm = () => {
   const registerHandler = async (values: RegisterValues) => {
-    const response = await globalService.post('user/register', values);
+    const response = await registUser(values);
     if (response.status === 201) {
       Modal.success({
         title: `User ${values.username} registered`,

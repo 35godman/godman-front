@@ -2,8 +2,11 @@ import React, { FC, useState } from 'react';
 import { Collapse, CollapseProps, Spin } from 'antd';
 import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
-import { ChatBot } from '@/components/ChatBot/ChatBot';
+import { ChatBot } from '@/features/Chatbot/ui/Chatbot/ChatBot';
 import { FormattedMessage } from 'react-intl';
+import { getConversationSource } from '@/features/Chatbot/api';
+import { VectorsCollapse } from '@/features/Chatbot/ui/VectorsCollapse';
+import { useChatbotContainer } from '@/features/Chatbot/model/useChatbotContainer';
 
 type ChatbotContainerProps = {
   chatbot: Chatbot;
@@ -11,31 +14,13 @@ type ChatbotContainerProps = {
 };
 
 const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
-  const [isCollapseOpen, setIsCollapseOpen] = useState<boolean>(false);
-  const [vectorsUsed, setVectorsUsed] = useState<string>('');
-  const [isViewSourceAvailable, setIsViewSourceAvailable] =
-    useState<boolean>(false);
+  const {
+    vectorsUsed,
+    isViewSourceAvailable,
+    showMessageSource,
+    setIsViewSourceAvailable,
+  } = useChatbotContainer(chatbot._id);
 
-  const collapseItems: CollapseProps['items'] = [
-    {
-      key: '1',
-      label: <FormattedMessage id={'chatbot.show-source'} />,
-      children: (
-        <>{vectorsUsed ? <p>{vectorsUsed}</p> : <Spin size={'small'} />}</>
-      ),
-    },
-  ];
-  const showMessageSource = async () => {
-    if (!isCollapseOpen) {
-      setVectorsUsed('');
-      const conversationId = localStorage.getItem('conversationId');
-      const conversationSource = await globalService.get(
-        `/conversation/show-latest-source?chatbot_id=${chatbot._id}&conversation_id=${conversationId}`,
-      );
-      setVectorsUsed(conversationSource.data.source);
-    }
-    setIsCollapseOpen((prevState) => !prevState);
-  };
   return (
     <>
       {isIframe ? (
@@ -56,11 +41,11 @@ const ChatbotContainer: FC<ChatbotContainerProps> = ({ chatbot, isIframe }) => {
               setCollapseOpen={setIsViewSourceAvailable}
             />
           </div>
-          <div>
-            {isViewSourceAvailable && (
-              <Collapse items={collapseItems} onChange={showMessageSource} />
-            )}
-          </div>
+          <VectorsCollapse
+            vectorsUsed={vectorsUsed}
+            showMessageSource={showMessageSource}
+            isViewSourceAvailable={isViewSourceAvailable}
+          />
         </>
       )}
     </>

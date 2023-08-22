@@ -10,9 +10,9 @@ import { useAppDispatch } from '@/features/store/store';
 import DeleteTab from '@/components/GeneralSettingsBot/DeleteTab/DeleteTab';
 import { addFile } from '@/features/store/slices/charsCountSlice';
 import EmbedCode from '@/components/EmbedCode/EmbedCode';
-import ChatbotContainer from '@/components/ChatBot/ChatbotContainer';
+import ChatbotContainer from '@/features/Chatbot/ui/ChatbotContainer';
 import { useIntl } from 'react-intl';
-import { Loader } from '@/components/ChatBot/Loader/Loader';
+import { Loader } from '@/features/Chatbot/ui/Loader/Loader';
 
 export const GeneralSettingsBot: FC = () => {
   const router = useRouter();

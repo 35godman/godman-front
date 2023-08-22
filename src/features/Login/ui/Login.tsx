@@ -1,20 +1,19 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input, Tabs, Modal, notification } from 'antd';
-import { LoginValues, RegisterValues } from '@/types/types';
-import s from './Login.module.css';
+import { Button, Checkbox, Form, Input, notification } from 'antd';
+import { LoginValues } from '@/types/types';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { setUser } from '@/features/store/slices/userSlice';
 import { useAppDispatch } from '@/features/store/store';
-import globalService from '@/shared/service/globalService';
 import { FormattedMessage } from 'react-intl';
+import { loginUser } from '@/features/Login/api';
 
 export const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const loginHandler = async (values: LoginValues) => {
-    const response = await globalService.post('auth/login', values);
+    const response = await loginUser(values);
     if (response.data) {
       Cookies.set('access_token', response.data.token.access_token);
       dispatch(setUser(response.data.user));

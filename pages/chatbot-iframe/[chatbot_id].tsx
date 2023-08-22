@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Chatbot } from '@/types/models/globals';
 import { AxiosResponse } from 'axios';
 import globalService from '@/shared/service/globalService';
-import ChatbotContainer from '@/components/ChatBot/ChatbotContainer';
+import ChatbotContainer from '@/features/Chatbot/ui/ChatbotContainer';
 import { domainConfig } from '@/config/domain.config';
 import { IntlProvider } from 'react-intl';
 import ru from '../../lang/ru.json';

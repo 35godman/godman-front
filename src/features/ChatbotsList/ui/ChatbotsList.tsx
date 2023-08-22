@@ -11,6 +11,11 @@ import { resetChars } from '@/features/store/slices/charsCountSlice';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { CardBot } from '@/entities/CardBot/CardBot';
+import {
+  createChatbot,
+  getChatbotsByUserId,
+} from '@/features/ChatbotsList/api';
+import Head from 'next/head';
 
 export const ChatbotsList: FC = () => {
   const router = useRouter();
@@ -18,29 +23,22 @@ export const ChatbotsList: FC = () => {
   const user = useSelector((state: RootState) => state.user);
   const { Title } = Typography;
   const [botsDB, setBotsDB] = useState<Chatbot[]>([]);
-  const getBotsByUserId = useCallback(async () => {
-    const response: AxiosResponse<Chatbot[]> = await globalService.get(
-      `/chatbot/find/user/${user._id}`,
-    );
-    setBotsDB(response.data);
+  const getBots = useCallback(async () => {
+    const chatbots = await getChatbotsByUserId(user._id);
+    setBotsDB(chatbots);
   }, [user]);
 
   useEffect(() => {
     if (user._id) {
-      getBotsByUserId();
+      getBots();
     }
     //eslint-disable-next-line
   }, [user]);
 
-  const createChatbot = async () => {
-    const response: AxiosResponse<Chatbot> = await globalService.post(
-      '/chatbot/create-default',
-      {
-        user_id: user._id,
-      },
-    );
+  const createHandler = async () => {
+    const resData = await createChatbot(user._id);
     dispatch(resetChars());
-    await router.push(`/gs-bot?chatbot_id=${response.data._id}`);
+    await router.push(`/gs-bot?chatbot_id=${resData._id}`);
   };
   const changeChatbot = async (botID: string) => {
     dispatch(resetChars());
@@ -49,6 +47,12 @@ export const ChatbotsList: FC = () => {
 
   return (
     <>
+      <Head>
+        <script
+          src="https://godman.tech/static/scripts/embed-script.js"
+          defer
+        ></script>
+      </Head>
       <div className={s.botsListWrapper}>
         {/*<iframe*/}
         {/*  src="http://localhost:3000/chatbot-iframe/64d4cb756deecfdc32ccc6f7"*/}
@@ -65,7 +69,7 @@ export const ChatbotsList: FC = () => {
         <div>
           <div className={s.botsListHeader}>
             <div>
-              <PrimaryButton onclick={createChatbot}>
+              <PrimaryButton onclick={createHandler}>
                 <FormattedMessage id={'chatbotList.create'} />
               </PrimaryButton>
             </div>
