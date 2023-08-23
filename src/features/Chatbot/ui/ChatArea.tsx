@@ -18,7 +18,6 @@ export type ChatAreaProps = {
   currentAnswer: string;
   isBotAnswering: boolean;
 };
-// let userScrolled = false;
 const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
   { currentAnswer, isBotAnswering, messages, chatbot },
   ref,
@@ -30,11 +29,11 @@ const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
   useEffect(() => {
     userScrolled.current = false;
     const handleScroll = () => {
-      console.log(userScrolled);
       userScrolled.current = true;
-      // userScrolled = true;
     };
-    ref.current?.addEventListener('wheel', handleScroll);
+    if (ref && typeof ref !== 'function' && ref.current) {
+      ref.current.addEventListener('wheel', handleScroll);
+    }
   }, [isBotAnswering, ref]);
 
   useEffect(() => {
