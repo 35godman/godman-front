@@ -49,18 +49,20 @@ export const ChatBot: React.FC<ChatBotProps> = ({
   return (
     <>
       <ChatbotHeader chatbot={chatbot} />
-      <SuggestedContainer
-        chatbot={chatbot}
-        buttonLoading={buttonLoading}
-        sendMessage={sendMessage}
-      />
-      <ChatArea
-        ref={messagesBlock}
-        chatbot={chatbot}
-        messages={messages}
-        currentAnswer={currentAnswer}
-        isBotAnswering={isBotAnswering}
-      />
+      <div className={'overflow-scroll h-[80%]'}>
+        <SuggestedContainer
+          chatbot={chatbot}
+          buttonLoading={buttonLoading}
+          sendMessage={sendMessage}
+        />
+        <ChatArea
+          ref={messagesBlock}
+          chatbot={chatbot}
+          messages={messages}
+          currentAnswer={currentAnswer}
+          isBotAnswering={isBotAnswering}
+        />
+      </div>
       <ChatbotFooter
         chatbot={chatbot}
         questionValue={questionValue}
