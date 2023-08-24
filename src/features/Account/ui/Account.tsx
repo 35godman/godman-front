@@ -1,13 +1,13 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/features/store/store';
+import { RootState } from '@/app/store/store';
 import Cookies from 'js-cookie';
 import { Typography } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 
-const AccountComponent = () => {
+const Account = () => {
   const router = useRouter();
 
   const user = useSelector((state: RootState) => state.user);
@@ -44,4 +44,4 @@ const AccountComponent = () => {
   );
 };
 
-export default AccountComponent;
+export default Account;

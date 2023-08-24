@@ -8,8 +8,8 @@ import { Chatbot, FileUpload } from '@/types/models/globals';
 import { DeleteOutlined } from '@ant-design/icons';
 import crawlService from '@/shared/service/crawlService';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
-import { useAppDispatch } from '@/features/store/store';
-import { addFile, removeFile } from '@/features/store/slices/charsCountSlice';
+import { useAppDispatch } from '@/app/store/store';
+import { addFile, removeFile } from '@/app/store/slices/charsCountSlice';
 import { useIntl } from 'react-intl';
 
 type FileDraggerProps = {

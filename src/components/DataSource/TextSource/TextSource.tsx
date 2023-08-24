@@ -3,8 +3,8 @@ import { Input, message } from 'antd';
 import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
-import { useAppDispatch } from '@/features/store/store';
-import { addFile } from '@/features/store/slices/charsCountSlice';
+import { useAppDispatch } from '@/app/store/store';
+import { addFile } from '@/app/store/slices/charsCountSlice';
 import { fileConfig } from '@/config/file.config';
 import { useIntl } from 'react-intl';
 

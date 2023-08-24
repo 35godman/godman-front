@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AccountComponent from '@/components/Account/Account';
+import AccountComponent from '@/features/Account/ui/Account';
 const AccountPage = () => {
   return <AccountComponent />;
 };

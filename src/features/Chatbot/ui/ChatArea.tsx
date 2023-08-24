@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from 'react';
 import { Chatbot } from '@/types/models/globals';
-import { ChatMessage } from '@/components/ChatMessage/ChatMessage';
+import { ChatMessage } from '@/entities/ChatMessage/ChatMessage';
 import { MessageState } from '@/types/models/chatbotCustom/messageState';
 import { Loader } from '@/features/Chatbot/ui/Loader';
 import { scrollToBottom } from '@/features/Chatbot/lib/scrollToBottomOfRef';
@@ -17,9 +17,10 @@ export type ChatAreaProps = {
   messages: MessageState[];
   currentAnswer: string;
   isBotAnswering: boolean;
+  preview_messages?: string[];
 };
 const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
-  { currentAnswer, isBotAnswering, messages, chatbot },
+  { currentAnswer, isBotAnswering, messages, chatbot, preview_messages },
   ref,
 ) => {
   const endOfBlock = useRef<HTMLDivElement | null>(null);
@@ -41,6 +42,27 @@ const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
       scrollToBottom(endOfBlock);
     }
   }, [currentAnswer]);
+
+  /**
+   * @COMMENT FOR PREVIEW
+   */
+  if (preview_messages?.length) {
+    return (
+      <div className={'flex flex-col w-[88%] m-auto mt-4'} ref={ref}>
+        {preview_messages.map((msg, index) => {
+          return (
+            <ChatMessage
+              settings={chatbot.settings}
+              chat_role={'assistant'}
+              textProp={msg}
+              key={index}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div className={'flex flex-col w-[88%] m-auto mt-4'} ref={ref}>
       {chatbot.settings.initial_messages.map((msg, index) => {

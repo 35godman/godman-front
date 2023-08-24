@@ -29,7 +29,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         </div>
       )}
       {chat_role === 'assistant' && (
-        <div className="flex justify-start max-w-[80%]">
+        <div className="flex justify-start max-w-[80%] my-5">
           <div
             className="whitespace-pre-wrap prose text-inherit text-left break-words dark:prose-invert transition duration-300 ease-in-out rounded-lg rounded-r-sm bg-gray-800 text-white p-4 max-w-4/5 rounded-tl-[15px] rounded-tr-[15px] rounded-bl-none rounded-br-[15px]"
             style={{

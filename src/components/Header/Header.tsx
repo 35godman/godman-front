@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { message } from 'antd';
 import { useRouter } from 'next/router';
-import { RootState, useAppDispatch } from '@/features/store/store';
-import { setUser } from '@/features/store/slices/userSlice';
+import { RootState, useAppDispatch } from '@/app/store/store';
+import { setUser } from '@/app/store/slices/userSlice';
 import Cookies from 'js-cookie';
 import { domainConfig } from '@/config/domain.config';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';

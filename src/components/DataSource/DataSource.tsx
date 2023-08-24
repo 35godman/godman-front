@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import s from './DataSource.module.css';
 import { Chatbot } from '@/types/models/globals';
 import fileUploadService from '@/shared/service/pineconeService';
-import CrawledComponent from '@/components/DataSource/CrawledComponent/CrawledComponent';
+import CrawledComponent from '@/features/Crawled/Crawled';
 import FileDragger from '@/components/DataSource/FileDragger/FileDragger';
 import TextSource from '@/components/DataSource/TextSource/TextSource';
 import QAList from '@/components/DataSource/QA/QAList';
 import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
-import { selectCurrentSize } from '@/features/store/slices/charsCountSlice';
+import { selectCurrentSize } from '@/app/store/slices/charsCountSlice';
 import { useIntl } from 'react-intl';
 
 type DataSourceProps = {

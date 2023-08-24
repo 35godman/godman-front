@@ -19,7 +19,7 @@ import { Prompts } from '@/types/enums/prompts';
 import { Chatbot, ChatbotSettings } from '@/types/models/globals';
 import { VisibilityOptions } from '@/types/models/chatbotCustom/visibility.type';
 import { LimitState } from '@/types/models/chatbotCustom/limit.type';
-import ChatPreview from '@/components/ChatPreview/ChatPreview';
+import ChatPreview from '@/features/ChatPreview/ui/ChatPreview';
 import globalService from '@/shared/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { removeStaticFieldsFromObject } from '@/helpers/obj/removeStaticFieldsFromObject';

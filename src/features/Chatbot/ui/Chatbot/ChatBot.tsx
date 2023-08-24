@@ -7,7 +7,7 @@ import { Chatbot } from '@/types/models/globals';
 import { MessageState } from '@/types/models/chatbotCustom/messageState';
 import { nanoid } from 'nanoid';
 import { RoleState } from '@/types/models/role';
-import { ChatMessage } from '@/components/ChatMessage/ChatMessage';
+import { ChatMessage } from '@/entities/ChatMessage/ChatMessage';
 import s from './ChatBot.module.css';
 import { Loader } from '@/features/Chatbot/ui/Loader/Loader';
 import Link from 'next/link';

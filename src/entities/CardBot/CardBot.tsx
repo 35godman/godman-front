@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card } from 'antd';
 import { useRouter } from 'next/router';
-import { resetChars } from '@/features/store/slices/charsCountSlice';
-import { useAppDispatch } from '@/features/store/store';
+import { resetChars } from '@/app/store/slices/charsCountSlice';
+import { useAppDispatch } from '@/app/store/store';
 const { Meta } = Card;
 
 type CardBotProps = {

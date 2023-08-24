@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Button } from 'antd';
 
 type PrimaryButtonProps = {
-  onclick: () => void;
+  onclick: (data?: unknown) => void | Promise<void>;
   text?: string;
   disabled?: boolean;
   loading?: boolean;

@@ -1,4 +1,4 @@
-import CrawledListItem from '@/components/DataSource/CrawledComponent/CrawledListItem';
+import CrawledListItem from '@/features/Crawled/ui/CrawledListItem';
 import { FileUpload } from '@/types/models/globals';
 import React from 'react';
 

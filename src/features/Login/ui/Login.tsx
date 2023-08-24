@@ -3,8 +3,8 @@ import { Button, Checkbox, Form, Input, notification } from 'antd';
 import { LoginValues } from '@/types/types';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-import { setUser } from '@/features/store/slices/userSlice';
-import { useAppDispatch } from '@/features/store/store';
+import { setUser } from '@/app/store/slices/userSlice';
+import { useAppDispatch } from '@/app/store/store';
 import { FormattedMessage } from 'react-intl';
 import { loginUser } from '@/features/Login/api';
 
