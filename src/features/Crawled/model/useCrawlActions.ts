@@ -44,7 +44,12 @@ const useCrawlActions = (args: useCrawlActionsArgs) => {
     setCrawlStatus('PENDING');
     setCrawlLoading(true);
     try {
-      const res = await crawlWebsite(chatbot._id, websiteUrl, linksToParse);
+      const res = await crawlWebsite(
+        chatbot._id,
+        websiteUrl,
+        linksToParse,
+        alreadyUploadedLinks,
+      );
       if (res.status === 201) {
         await getChatbot();
       } else {

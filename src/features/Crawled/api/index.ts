@@ -1,15 +1,18 @@
 import { AxiosResponse } from 'axios';
 import { CrawledLink } from '@/features/Crawled/crawledLink.type';
 import crawlService from '@/shared/service/crawlService';
+import { FileUpload } from '@/types/models/globals';
 
 export const crawlWebsite = async (
   id: string,
   websiteUrl: string,
   linksToParse: string[],
+  alreadyUploadedLinks: FileUpload[],
 ) => {
   return await crawlService.post(`/crawler/crawl?chatbot_id=${id}`, {
     weblink: websiteUrl,
     filter: linksToParse,
+    alreadyUploadedLinks: alreadyUploadedLinks || [],
   });
 };
 
