@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Input, message } from 'antd';
 import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/app/store/store';
 import { addFile } from '@/app/store/slices/charsCountSlice';
 import { fileConfig } from '@/config/file.config';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from '@/components/Header/Header';
+import { Header } from '@/entities/Header/Header';
 import Head from 'next/head';
 import { IntlProvider } from 'react-intl';
 import ru from '@/../lang/ru.json';

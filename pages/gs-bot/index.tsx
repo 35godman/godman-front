@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { GeneralSettingsBot } from '@/components/GeneralSettingsBot/GeneralSettingsBot';
+import { GeneralSettingsBot } from '@/features/GeneralSettingsBot/GeneralSettingsBot';
 
 const GeneralSettingsBotPage: FC = () => {
   return <GeneralSettingsBot />;

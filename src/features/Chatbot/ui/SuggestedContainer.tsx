@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Suggestion } from '@/components/Suggestion/Suggestion';
+import { Suggestion } from '@/entities/Suggestion/Suggestion';
 import { Chatbot } from '@/types/models/globals';
 
 export type SuggestedContainerProps = {

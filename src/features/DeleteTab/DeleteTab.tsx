@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Button } from 'antd';
-import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
+import ConfirmModal from '@/entities/ConfirmModal/ConfirmModal';
 import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import { useRouter } from 'next/router';

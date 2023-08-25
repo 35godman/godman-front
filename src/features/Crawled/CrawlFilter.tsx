@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Button, Input, List, Typography } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { FormattedMessage } from 'react-intl';
 import { useFilterLinksToParse } from '@/features/Crawled/model/useFilterLinksToParse';
 

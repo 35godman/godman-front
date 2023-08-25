@@ -4,7 +4,7 @@ import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
 import { DeleteOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/app/store/store';
 import { addFile, removeFile } from '@/app/store/slices/charsCountSlice';
 import { QAState } from '@/types/models/chatbotCustom/QA.type';

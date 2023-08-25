@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { FileUpload } from '@/types/models/globals';
 import { Button, List, Typography } from 'antd';
-import s from '@/components/DataSource/DataSource.module.css';
+import s from '@/features/DataSource/DataSource.module.css';
 import { DeleteOutlined } from '@ant-design/icons';
 
 type CrawledListItem = {

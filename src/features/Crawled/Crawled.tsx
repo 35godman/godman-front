@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Typography } from 'antd';
 import { Chatbot } from '@/types/models/globals';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { FixedSizeList as List } from 'react-window';
 import { WrappedCrawledListItem } from '@/features/Crawled/ui/WrapperCrawledListItem';
 import AutoSizer from 'react-virtualized-auto-sizer';

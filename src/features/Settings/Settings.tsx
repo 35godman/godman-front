@@ -24,7 +24,7 @@ import globalService from '@/shared/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { removeStaticFieldsFromObject } from '@/helpers/obj/removeStaticFieldsFromObject';
 import { convertMessagesToArray } from '@/helpers/obj/convertMessagesToArray';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;

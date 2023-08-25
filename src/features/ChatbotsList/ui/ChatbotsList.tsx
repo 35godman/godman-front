@@ -6,7 +6,7 @@ import { RootState, useAppDispatch } from '@/app/store/store';
 import { AxiosResponse } from 'axios';
 import globalService from '@/shared/service/globalService';
 import { Chatbot } from '@/types/models/globals';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { resetChars } from '@/app/store/slices/charsCountSlice';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';

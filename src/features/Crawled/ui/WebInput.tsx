@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import s from '@/components/DataSource/DataSource.module.css';
+import s from '@/features/DataSource/DataSource.module.css';
 import { Input } from 'antd';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { useIntl } from 'react-intl';
 
 type WebInputProps = {

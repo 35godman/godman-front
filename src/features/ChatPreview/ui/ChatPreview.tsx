@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Button, Image, Input, Typography } from 'antd';
-import { Suggestion } from '@/components/Suggestion/Suggestion';
+import { Suggestion } from '@/entities/Suggestion/Suggestion';
 import { SendOutlined } from '@ant-design/icons';
 import { Chatbot } from '@/types/models/globals';
 import { ChatMessage } from '@/entities/ChatMessage/ChatMessage';

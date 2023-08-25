@@ -51,6 +51,7 @@ const useCrawlActions = (args: useCrawlActionsArgs) => {
         alreadyUploadedLinks,
       );
       if (res.status === 201) {
+        message.success(intl.formatMessage({ id: 'message.success' }));
         await getChatbot();
       } else {
         message.error(intl.formatMessage({ id: 'message.error' }));

@@ -1,13 +1,13 @@
-import { Tabs, Typography } from 'antd';
+import { message, Tabs, Typography } from 'antd';
 import React, { useState } from 'react';
 import s from './DataSource.module.css';
 import { Chatbot } from '@/types/models/globals';
 import fileUploadService from '@/shared/service/pineconeService';
 import CrawledComponent from '@/features/Crawled/Crawled';
-import FileDragger from '@/components/DataSource/FileDragger/FileDragger';
-import TextSource from '@/components/DataSource/TextSource/TextSource';
-import QAList from '@/components/DataSource/QA/QAList';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import FileDragger from '@/features/FileDragger/FileDragger';
+import TextSource from '@/features/TextSource/TextSource';
+import QAList from '@/features/QA/QAList';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
 import { selectCurrentSize } from '@/app/store/slices/charsCountSlice';
 import { useIntl } from 'react-intl';
@@ -41,6 +41,7 @@ export const DataSource: React.FC<DataSourceProps> = ({
 
     if (response.status === 201) {
       await getChatbot();
+      message.success(intl.formatMessage({ id: 'message.success' }));
       setRetrainLoading(false);
     } else {
       setRetrainLoading(false);

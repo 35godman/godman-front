@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Suggestion } from '../../../../components/Suggestion/Suggestion';
+import { Suggestion } from '@/entities/Suggestion/Suggestion';
 import { Button, Input, Typography } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import Image from 'next/image';

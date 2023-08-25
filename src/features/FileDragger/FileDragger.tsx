@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
 import { Button, List, message, Typography, Upload } from 'antd';
 import { AxiosResponse } from 'axios';
-import { FileSize } from '@/components/DataSource/DataSourcePropsType';
+import { FileSize } from '@/features/DataSource/DataSourcePropsType';
 import globalService from '@/shared/service/globalService';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { Chatbot, FileUpload } from '@/types/models/globals';
 import { DeleteOutlined } from '@ant-design/icons';
 import crawlService from '@/shared/service/crawlService';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { useAppDispatch } from '@/app/store/store';
 import { addFile, removeFile } from '@/app/store/slices/charsCountSlice';
 import { useIntl } from 'react-intl';

@@ -5,7 +5,7 @@ import { RootState, useAppDispatch } from '@/app/store/store';
 import { setUser } from '@/app/store/slices/userSlice';
 import Cookies from 'js-cookie';
 import { domainConfig } from '@/config/domain.config';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import { useIntl } from 'react-intl';

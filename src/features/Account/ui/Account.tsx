@@ -5,7 +5,7 @@ import { RootState } from '@/app/store/store';
 import Cookies from 'js-cookie';
 import { Typography } from 'antd';
 import { FormattedMessage } from 'react-intl';
-import PrimaryButton from '@/components/UI/PrimaryButton/PrimaryButton';
+import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 
 const Account = () => {
   const router = useRouter();
