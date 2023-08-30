@@ -248,7 +248,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
         />
         <Title level={5}>
           <FormattedMessage id={'settings.max-tokens'} />{' '}
-          {chatbot.settings.temperature}
+          {chatbot.settings.max_tokens}
         </Title>
         <Slider
           min={100}
