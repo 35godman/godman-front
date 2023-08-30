@@ -44,5 +44,6 @@
   "header.acc": "Мой аккаунт",
   "message.success": "Операция выполнена успешно",
   "message.error": "Ошибка при выполнение операции",
-  "message.loading": "Идет загрузка, ожидайте"
+  "message.loading": "Идет загрузка, ожидайте",
+  "settings.max-tokens": "Кол-во токенов в ответе"
 }

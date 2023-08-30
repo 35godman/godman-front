@@ -25,6 +25,7 @@ import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { removeStaticFieldsFromObject } from '@/helpers/obj/removeStaticFieldsFromObject';
 import { convertMessagesToArray } from '@/helpers/obj/convertMessagesToArray';
 import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
+import { FormattedMessage } from 'react-intl';
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
@@ -244,6 +245,17 @@ export const Settings: React.FC<SettingsPropsType> = ({
           step={0.1}
           onChange={(temp) => changeChatbotSetting('temperature', temp)}
           value={chatbot.settings.temperature}
+        />
+        <Title level={5}>
+          <FormattedMessage id={'settings.max-tokens'} />{' '}
+          {chatbot.settings.temperature}
+        </Title>
+        <Slider
+          min={100}
+          max={1000}
+          step={100}
+          onChange={(num) => changeChatbotSetting('max_tokens', num)}
+          value={chatbot.settings.max_tokens}
         />
         <Title level={5}>Visibility</Title>
         <Form.Item label="">
