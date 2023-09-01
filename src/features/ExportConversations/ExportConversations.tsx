@@ -41,7 +41,7 @@ const ExportConversations: FC<ExportConversationProps> = ({ chatbot }) => {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = `${chatbot._id}.pdf`;
-      //link.click();
+      link.click();
       setFetching(false);
       URL.revokeObjectURL(link.href);
     } catch (e) {
