@@ -13,6 +13,7 @@ import EmbedCode from '@/features/EmbedCode/EmbedCode';
 import ChatbotContainer from '@/features/Chatbot/ui/ChatbotContainer';
 import { useIntl } from 'react-intl';
 import { Loader } from '@/features/Chatbot/ui/Loader/Loader';
+import ExportConversations from '@/features/ExportConversations/ExportConversations';
 
 export const GeneralSettingsBot: FC = () => {
   const router = useRouter();
@@ -106,11 +107,15 @@ export const GeneralSettingsBot: FC = () => {
         </>
       ),
     },
-    // {
-    //   key: 'share',
-    //   label: 'Share',
-    //   children: <div>Здесь будет компонент Share</div>,
-    // },
+    {
+      key: 'export',
+      label: 'Экспорт диалогов',
+      children: (
+        <>
+          <ExportConversations chatbot={chatbot as Chatbot} />
+        </>
+      ),
+    },
     {
       key: 'delete',
       label: intl.formatMessage({ id: 'generalSettingsBot.delete' }),
