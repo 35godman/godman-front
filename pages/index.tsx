@@ -2,23 +2,17 @@ import React from 'react';
 import { Login } from '@/features/Login/ui/Login';
 import { RegistrationForm } from '@/features/Register';
 import { Tabs } from 'antd';
+import MainPage from '@/entities/MainPage/MainPage';
 
 const index = () => {
-  const tabs = [
-    { key: 'login', label: 'Login', children: <Login /> },
-    {
-      key: 'register',
-      label: 'Registration',
-      children: <RegistrationForm />,
-    },
-  ];
-
   return (
     <>
-      <div className={'max-w-full max-h-screen '}>
-        <Tabs defaultActiveKey="login" centered items={tabs} />
-      </div>
+      <MainPage />
     </>
   );
 };
+export async function getServerSideProps() {
+  return { props: { noLayout: true } };
+}
+
 export default index;

@@ -2,26 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .big-placeholder::placeholder {
-    font-size: 1.25rem;
+  font-size: 1.25rem;
 }
 @font-face {
-    font-family: 'haborosansnormregular';
-    src: url('../public/fonts/haborosansnormregular-webfont.woff2') format('woff2'),
+  font-family: 'haborosansnormregular';
+  src: url('../public/fonts/haborosansnormregular-webfont.woff2')
+      format('woff2'),
     url('../public/fonts/haborosansnormregular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
+  font-weight: normal;
+  font-style: normal;
 }
 
-*:not(svg) {
-    /*font-family: 'League Spartan', sans-serif;*/
-    /*font-family: "haborosansnormregular", sans-serif; !* Fallback to sans-serif *!*/
-    font-family: "Montserrat",sans-serif;
-    font-weight: 500;
-    font-size: 15px;
+p,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
 }
 ol li {
-    list-style: decimal inside;
+  list-style: decimal inside;
 }
