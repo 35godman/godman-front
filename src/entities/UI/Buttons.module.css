@@ -2,21 +2,32 @@
   border-radius: 100px;
   border: 2px solid #5ec6fa;
   color: #fff;
+  width: 100%;
+  max-width: 284px;
+  height: 43px;
+  transition: all 0.2s;
+  font-family: Sofia Sans;
 }
 .btnRegular:hover {
   border-radius: 100px;
   border: 2px solid #5ec6fa;
   color: #fff;
   box-shadow: 0px 0px 40px 0px rgba(94, 198, 250, 0.44) inset;
-}
-
-.btnRegular:hover span {
   color: #fff !important;
 }
 
 .btnPrimary {
+  width: 100%;
+  max-width: 284px;
   border-radius: 100px;
   background: linear-gradient(280deg, #2f55e5 -15.76%, #5ebffa 83.46%);
   border: none;
   color: #fff;
+  height: 43px;
+  transition: all 0.2s;
+  font-family: Sofia Sans;
+}
+.btnPrimary:hover {
+  box-shadow: 0px 0px 40px 0px rgba(94, 198, 250, 0.44);
+  color: #fff !important;
 }

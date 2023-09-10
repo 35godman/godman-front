@@ -3,8 +3,8 @@ import Button from 'antd/lib/button';
 import s from './Buttons.module.css';
 
 type btnProps = {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   onClick?: () => void;
   type: string;
   text: string;

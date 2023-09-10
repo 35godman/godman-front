@@ -1,0 +1,44 @@
+.cardWrapper {
+  width: 284px;
+  height: 128px;
+  border: 2px solid #3e85f680;
+  border-radius: 16px;
+  padding: 16px;
+  transition: all 0.2s;
+  font-family: Sofia Sans;
+}
+.cardWrapper:hover {
+  box-shadow: 0px 0px 40px 0px rgba(94, 198, 250, 0.44) inset;
+}
+
+.heading {
+  color: #fff;
+  margin-bottom: 10px;
+  font-family: Sofia Sans;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  font-family: Sofia Sans;
+}
+.text {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Sofia Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%; /* 17.6px */
+  letter-spacing: 0.16px;
+}
+.headingWrapper {
+  display: flex;
+  align-items: baseline;
+  font-family: Sofia Sans;
+}
+.imgWrapper {
+  margin-right: 10px;
+}
+
+.img {
+  height: 18px;
+}
