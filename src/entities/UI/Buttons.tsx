@@ -8,6 +8,7 @@ type btnProps = {
   onClick?: () => void;
   type: string;
   text: string;
+  style?: any;
 };
 
 export const BtnUniv: React.FC<btnProps> = ({
@@ -16,11 +17,12 @@ export const BtnUniv: React.FC<btnProps> = ({
   onClick,
   type,
   text,
+  style,
 }) => {
   if (type === 'regular') {
     return (
       <Button
-        style={{ width: `${width}px`, height: `${height}px` }}
+        style={{ width: `${width}px`, height: `${height}px`, ...style }}
         onClick={onClick}
         className={s.btnRegular}
       >
@@ -30,7 +32,7 @@ export const BtnUniv: React.FC<btnProps> = ({
   } else {
     return (
       <Button
-        style={{ width: `${width}px`, height: `${height}px` }}
+        style={{ width: `${width}px`, height: `${height}px`, ...style }}
         onClick={onClick}
         className={s.btnPrimary}
       >

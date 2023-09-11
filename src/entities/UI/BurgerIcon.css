@@ -1,0 +1,16 @@
+.burger-icon {
+  cursor: pointer;
+  overflow: visible;
+}
+
+.line {
+  transition: transform 0.3s ease;
+}
+
+.crossed .top {
+  transform: translate(0px, -8px) rotate(45deg);
+}
+
+.crossed .bottom {
+  transform: translate(-5px, 11px) rotate(-45deg);
+}

@@ -6,11 +6,14 @@ import { InputAskAI } from '../UI/InputAskAI';
 import { CardFeatures } from '../UI/CardFeatures';
 import { CardCases } from '../UI/CardCases';
 import { CardPricing } from '../UI/CardPricing';
+import { Header } from '../UI/Header';
+import cn from 'classnames';
 const MainPage = () => {
   return (
-    <>
+    <div className={s.generalWrapper}>
       <main className={s.mainPage}>
-        <MainPageHeader />
+        {/* <MainPageHeader /> */}
+        <Header />
       </main>
       <section className={s.experience}>
         <div className={s.centralWrapper}>
@@ -18,15 +21,13 @@ const MainPage = () => {
             Revolutionizing the Sales Experience with{' '}
             <span className={s.gradientText}>Adaptive AI</span>
           </h1>
-          <p className={s.subtitleH1}>
+          <p className={cn(s.subtitleH1, s.godmansText)}>
             Godman's adaptive AI technology can transform any business,
             providing personalized, lightning-fast customer interactions that
-            will keep you ahead of the gameGodman's adaptive AI technology can
-            transform any business, providing personalized, lightning-fast
-            customer interactions that will keep you ahead of the game
+            will keep you ahead of the game
           </p>
 
-          <BtnUniv
+          {/* <BtnUniv
             width={284}
             height={43}
             type={'regular'}
@@ -58,10 +59,10 @@ const MainPage = () => {
             ]}
             price={0}
             logo="basic"
-          />
+          /> */}
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
