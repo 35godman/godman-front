@@ -16,12 +16,15 @@
 /* 56 */
 .h2 {
   color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  /* h2 mob */
   font-family: Sofia Sans;
-  font-size: 56px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
-  letter-spacing: 1.12px;
+  line-height: 100%; /* 30px */
+  letter-spacing: 0.6px;
+  margin-bottom: 16px;
 }
 /* 28 */
 .h3 {
@@ -85,7 +88,7 @@
 .experience {
   margin-top: 90px;
   width: 100vw;
-  height: 100vh;
+  min-height: 100%;
   background: #030827;
   padding: 0 16px;
 }
@@ -93,7 +96,6 @@
 .centralWrapper {
   max-width: 1440px;
   margin: 0 auto;
-  height: 100vh;
   /* background-image: url('/imgGeneralPage/bg-sphere.png'); */
   background-size: cover;
   background-position: center; /* Центрирует изображение */
@@ -102,4 +104,50 @@
 
 .godmansText {
   margin-top: 24px;
+  margin-bottom: 64px;
+}
+
+.benefitsWrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 98px;
+}
+
+.benefit {
+  margin-bottom: 32px;
+}
+
+.benifitText {
+  color: #fff;
+  font-family: Sofia Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 14px */
+  letter-spacing: 0.28px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.benifitSubtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-family: Sofia Sans;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 20px */
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* feautures SECTION */
+.section {
+  padding: 0 16px;
+  padding-bottom: 120px;
+}
+
+.textAfter {
+  margin-bottom: 88px;
 }

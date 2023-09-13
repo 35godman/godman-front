@@ -7,7 +7,7 @@ type CardPricingProps = {
   text: string;
   benefits: Array<string>;
   price: number;
-  logo: 'basic' | 'pro' | 'enterprise';
+  logo: string;
 };
 
 export const CardPricing: React.FC<CardPricingProps> = ({

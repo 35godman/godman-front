@@ -6,6 +6,7 @@
   padding: 16px;
   transition: all 0.2s;
   font-family: Sofia Sans;
+  margin-bottom: 18px;
 }
 .cardWrapper:hover {
   box-shadow: 0px 0px 40px 0px rgba(94, 198, 250, 0.44) inset;
