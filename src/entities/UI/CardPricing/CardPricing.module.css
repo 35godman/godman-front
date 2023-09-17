@@ -1,0 +1,88 @@
+.cardWrapper {
+  transition: all 0.3s;
+  height: 610px;
+  width: 100%;
+  max-width: 410px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.6);
+  /* body mob */
+  font-family: Sofia Sans;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 110%; /* 17.6px */
+  letter-spacing: 0.16px;
+  border-radius: 16px;
+  border: 2px solid rgba(62, 133, 246, 0.5);
+  margin-bottom: 24px;
+}
+.cardWrapper:hover {
+  transition: all 0.3s;
+  box-shadow: 0px 0px 40px 0px rgba(94, 198, 250, 0.44) inset;
+}
+/* .footerWrap {
+  padding: 0 24px;
+} */
+.name {
+  color: #fff;
+  font-family: Sofia Sans;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-family: Sofia Sans;
+}
+.img {
+  height: 26px;
+  margin-right: 10px;
+}
+.benefit {
+  font-family: Sofia Sans;
+  display: flex;
+  margin-bottom: 21px;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 110%; /* 17.6px */
+  letter-spacing: 0.16px;
+}
+.imgOk {
+  height: 21px;
+  margin-right: 10px;
+  align-items: baseline;
+}
+.text {
+  padding-bottom: 30px;
+  /* border-bottom: 1px solid #3e85f6; */
+  font-family: Sofia Sans;
+  background-image: linear-gradient(to right, #3e85f6 0%, #3e85f600 100%);
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100% 1px;
+  border-bottom: 3px solid transparent;
+}
+.price {
+  color: #5ec6fa;
+  font-family: Sofia Sans;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 16px;
+}
+.spanPrice {
+  color: #5ec6fa;
+  font-family: Sofia Sans;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}

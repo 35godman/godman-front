@@ -27,3 +27,7 @@ h5 {
 ol li {
   list-style: decimal inside;
 }
+
+body {
+  cursor: url('/imgGeneralPage/hover_coursor.png'), auto;
+}

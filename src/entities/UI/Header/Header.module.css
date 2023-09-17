@@ -1,0 +1,56 @@
+.header {
+  background: #030827;
+  cursor: url('/imgGeneralPage/hover_coursor.png'), auto;
+}
+
+.navWrapper {
+  width: 90vw;
+  height: 60px;
+  margin: 0 auto;
+  padding: 10px;
+  padding: 10px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 32px;
+  border: 1px solid #2f55e5;
+  background: rgba(94, 198, 250, 0.05);
+}
+.text {
+  color: rgba(255, 255, 255, 0.95);
+  font-family: Sofia Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 0.333px;
+}
+.logoWrapper {
+  display: flex;
+}
+.navPanel {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease-in-out;
+  transition: margin-top 0.3s ease-in-out;
+  color: #fff;
+  font-family: Sofia Sans;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 29px;
+  letter-spacing: 0em;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+}
+
+.open {
+  transition: height 0.3s ease-in-out;
+  transition: margin-top 0.3s ease-in-out;
+  margin-top: 80px;
+  padding: 16px 0;
+  height: 100vh; /* или любое другое значение, в зависимости от вашего дизайна */
+}
+.link {
+  margin-bottom: 21px;
+}

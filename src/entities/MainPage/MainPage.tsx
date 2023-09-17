@@ -1,117 +1,24 @@
 import React from 'react';
 import s from './MainPage.module.css';
 import MainPageHeader from '@/entities/MainPage/Header/MainPageHeader';
-import { BtnUniv } from '../UI/Buttons';
-import { InputAskAI } from '../UI/InputAskAI';
-import { CardFeatures } from '../UI/CardFeatures';
-import { CardCases } from '../UI/CardCases';
-import { CardPricing } from '../UI/CardPricing';
-import { Header } from '../UI/Header';
+import { BtnUniv } from '../UI/Buttons/Buttons';
+import { HelpToggle } from '../UI/HelpToggle/HelpToggle';
+import { InputAskAI } from '../UI/InputAskAI/InputAskAI';
+import { CardFeatures } from '../UI/CardFeatures/CardFeatures';
+import { CardCases } from '../UI/CardCases/CardCases';
+import { CardPricing } from '../UI/CardPricing/CardPricing';
+import { Header } from '../UI/Header/Header';
 import cn from 'classnames';
+import { Input } from 'antd';
+import Link from 'next/link';
+import { LogIn } from '../UI/LogIn/LogIn';
+import {
+  cardsFutures,
+  cardsCases,
+  cardsPricing,
+  helpToggleData,
+} from './mainPageData';
 const MainPage = () => {
-  const cardsFutures = [
-    {
-      heading: 'Fast Learning',
-      text:
-        'Our AI chatbot adapts quickly, understanding and selling your products like a seasoned pro.',
-    },
-    {
-      heading: 'Expert Salesmanship',
-      text:
-        'Charming customers like no other, Godman chatbot increases sales effortlessly',
-    },
-    {
-      heading: '24/7 Availability',
-      text:
-        'Got night owls or early birds? Our AI chatbot is there for your customers around the clock.',
-    },
-    {
-      heading: 'Customisable',
-      text:
-        'Tailor the Godman’s features and design to match your business needs.',
-    },
-    {
-      heading: 'Smart Integration',
-      text:
-        'Godman’s chatbot seamlessly integrates with your existing systems.',
-    },
-    {
-      heading: 'Security',
-      text:
-        'Your data is safe with us. We maintain top-level security to protect your information.',
-    },
-  ];
-  const cardsCases = [
-    {
-      name: '-Domenico Birlandaio',
-      text:
-        'The first steps with Godman.AI were simple and pleasant. I use the free version and I see that even in this mode it gives me a lot of opportunities.',
-    },
-    {
-      name: '-Marina Koltseva',
-      text:
-        "It's a miracle! I am delighted with his ability to work with documents and analyze information. He saved me so much time and made the workflow more productive, which is just happiness!",
-    },
-    {
-      name: '-Avishai Altmann',
-      text:
-        'This application impresses with its speed and efficiency. The answers come instantly, and it significantly speeds up my workflow. I am pleased with the choice and recommend it to anyone who appreciates speed and accuracy in their workflow.',
-    },
-    {
-      name: '-Osher Sandler',
-      text:
-        'My startup has clearly become more technologically advanced as soon as I connected Godman',
-    },
-    {
-      name: '-David Roseman',
-      text:
-        'Goodman.AI is a real inspiration. It surprises with its innovation and ease of use. With him, my work has become easier, more efficient and much faster. My best assistant at work 👍🏾',
-    },
-    {
-      name: '-Pablo Gutierrez',
-      text:
-        'This app is a real genius. It answers questions so naturally that sometimes you forget that you are communicating with artificial intelligence 😄',
-    },
-  ];
-  const cardsPricing = [
-    {
-      cardName: 'Basic',
-      text: 'Personal package for individuals & small businesses',
-      benefits: [
-        'Basic Support',
-        '500 Messages',
-        'Sales Insights',
-        '1 Chatbot',
-      ],
-      price: 0,
-      logo: 'basic',
-    },
-    {
-      cardName: 'Pro',
-      text: 'For mid-size businesses, agencies & growing startups.',
-      benefits: [
-        'Priority Support',
-        'Unlimited Conversations',
-        'Advanced Analytics',
-        '3 Chatbots',
-      ],
-      price: 9.99,
-      logo: 'pro',
-    },
-    {
-      cardName: 'Enterprise',
-      text:
-        'For large businesses looking for a custom plan & priority support.',
-      benefits: [
-        'Dedicated Manager',
-        'Custom Integrations',
-        'Scalable Solution',
-        '40 Chatbots',
-      ],
-      price: 99.9,
-      logo: 'enterprise',
-    },
-  ];
   return (
     <div className={s.generalWrapper}>
       <main className={s.mainPage}>
@@ -125,9 +32,9 @@ const MainPage = () => {
             <span className={s.gradientText}>Adaptive AI</span>
           </h1>
           <p className={cn(s.subtitleH1, s.godmansText)}>
-            Godman's adaptive AI technology can transform any business,
-            providing personalized, lightning-fast customer interactions that
-            will keep you ahead of the game
+            Godmans adaptive AI technology can transform any business, providing
+            personalized, lightning-fast customer interactions that will keep
+            you ahead of the game
           </p>
           <InputAskAI />
           <div className={s.benefitsWrapper}>
@@ -144,38 +51,6 @@ const MainPage = () => {
               <h3 className={s.benifitSubtitle}>95% happy users</h3>
             </div>
           </div>
-          {/* <BtnUniv
-            width={284}
-            height={43}
-            type={'regular'}
-            text={'Sign Up Free'}
-          ></BtnUniv>
-          <BtnUniv
-            width={284}
-            height={43}
-            type={'primary'}
-            text={'Sign Up Free'}
-          ></BtnUniv>
-          <CardFeatures
-            heading="Fast Learning"
-            text="Our AI chatbot adapts quickly, understanding and selling your products like a seasoned pro."
-          />
-          <CardCases
-            name="-Marina Koltseva"
-            text="It's a miracle! I am delighted with his ability to work with documents and analyze information. He saved me so much time and made the workflow more productive, which is just happiness!"
-          />
-          <CardPricing
-            cardName="Basic"
-            text="Personal package for individuals & small businesses"
-            benefits={[
-              'Basic Support',
-              '500 Messages',
-              'Sales Insights',
-              '1 Chatbot',
-            ]}
-            price={0}
-            logo="basic"
-          /> */}
         </div>
       </section>
 
@@ -244,7 +119,100 @@ const MainPage = () => {
       {/* Help */}
       <section className={s.section}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
+        {helpToggleData.map(item => {
+          return (
+            <HelpToggle
+              text={item.text}
+              heading={item.heading}
+              key={item.heading}
+            />
+          );
+        })}
+        <HelpToggle
+          text="Godman offers unparalleled AI chatbot functionality, top-notch customer engagement, and an ever-evolving platform built for modern businesses."
+          heading="Why choose Godman?"
+        />
       </section>
+
+      {/* sta */}
+      <section className={`${s.section} ${s.staSection}`}>
+        <div className={s.staWrapper}>
+          <h2 className={s.h2}>
+            Supercharge your sales team and Build your first ChatGPT widget
+            today!
+          </h2>
+          <Input
+            className={s.inputSign}
+            placeholder="Enter your business email"
+          />
+          <BtnUniv type="regular" text={'Sign up free'} />
+        </div>
+      </section>
+      <section className={s.section}>
+        <div className={s.footerWrapper}>
+          <div className={s.logo}>
+            <img
+              className={s.imgFooter}
+              src={'imgGeneralPage/ellipse_pro.png'}
+              alt=""
+            />
+            <p className={s.logoText}>Godman.AI</p>
+          </div>
+          <div className={s.discoverNav}>
+            <p className={s.footerSubtitle}>Discover</p>
+            <Link className={s.footerlink} href={'/'}>
+              Home
+            </Link>
+            <Link className={s.footerlink} href={'/'}>
+              Features
+            </Link>
+            <Link className={s.footerlink} href={'/'}>
+              Cases
+            </Link>
+            <Link className={s.footerlink} href={'/'}>
+              Pricing
+            </Link>
+            <Link className={s.footerlink} href={'/'}>
+              Help
+            </Link>
+          </div>
+          <div className={s.legalNav}>
+            <p className={s.footerSubtitle}>Legal</p>
+            <Link className={s.footerlink} href={'/'}>
+              Privacy Policy
+            </Link>
+            <Link className={s.footerlink} href={'/'}>
+              Terms & Conditions
+            </Link>
+            <Link className={s.footerlink} href={'/'}>
+              Contact us
+            </Link>
+          </div>
+          <div className={s.log}>
+            <Link className={s.footerLoglink} href={'/'}>
+              Sign Up Free
+            </Link>
+            <Link className={s.footerLoglink} href={'/'}>
+              Log in
+            </Link>
+            <Link className={s.footerLoglink} href={'/'}>
+              Get Basic
+            </Link>
+            <Link className={s.footerLoglink} href={'/'}>
+              Get Pro
+            </Link>
+            <Link className={s.footerLoglink} href={'/'}>
+              Get Enterprise
+            </Link>
+          </div>
+          <div className={s.corp}>
+            © 2023 Godman.
+            <br />
+            AI All rights reserved
+          </div>
+        </div>
+      </section>
+      <LogIn />
     </div>
   );
 };
