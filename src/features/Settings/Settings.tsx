@@ -26,6 +26,7 @@ import { removeStaticFieldsFromObject } from '@/helpers/obj/removeStaticFieldsFr
 import { convertMessagesToArray } from '@/helpers/obj/convertMessagesToArray';
 import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { FormattedMessage } from 'react-intl';
+import ColumnBlock from '@/shared/UI/Column/Column';
 
 const { Paragraph, Title } = Typography;
 const { Option } = Select;
@@ -195,10 +196,16 @@ export const Settings: React.FC<SettingsPropsType> = ({
 
   return (
     <div className={s.settings}>
-      <Title level={5}>Chatbot id</Title>
-      <Title level={5}>{chatbot._id}</Title>
-      <Title level={5}>Number of characters</Title>
-      <Paragraph>{chatbot.settings.num_of_characters}</Paragraph>
+      <ColumnBlock>
+        <Title level={5}>Chatbot id</Title>
+        <Title level={5}>{chatbot._id}</Title>
+      </ColumnBlock>
+
+      <ColumnBlock>
+        <Title level={5}>Number of characters</Title>
+        <Paragraph>{chatbot.settings.num_of_characters}</Paragraph>
+      </ColumnBlock>
+
       <Title level={5}>Bot name</Title>
 
       <Form>
@@ -210,138 +217,159 @@ export const Settings: React.FC<SettingsPropsType> = ({
             }
           />
         </Form.Item>
-        <Title level={5}>Model:</Title>
-        <Form.Item label="">
-          <Select
-            value={chatbot.settings.model}
-            onChange={(model) => changeChatbotSetting('model', model)}
-          >
-            <Option value="gpt-3.5-turbo">GPT 3.5 TURBO 4K CONTEXT</Option>
-            <Option value="gpt-3.5-turbo-16k-0613">
-              GPT 3.5 TURBO 16K CONTEXT
-            </Option>
-          </Select>
-        </Form.Item>
-        <Title level={5}>Base Prompt (system message):</Title>
-        <Form.Item label="">
-          <Input.TextArea
-            rows={4}
-            value={chatbot.settings.base_prompt}
+        <ColumnBlock>
+          <Title level={5}>Model:</Title>
+          <Form.Item label="">
+            <Select
+              value={chatbot.settings.model}
+              onChange={(model) => changeChatbotSetting('model', model)}
+            >
+              <Option value="gpt-3.5-turbo">GPT 3.5 TURBO 4K CONTEXT</Option>
+              <Option value="gpt-3.5-turbo-16k-0613">
+                GPT 3.5 TURBO 16K CONTEXT
+              </Option>
+            </Select>
+          </Form.Item>
+        </ColumnBlock>
+
+        <ColumnBlock>
+          <Title level={5}>Base Prompt (system message):</Title>
+          <Form.Item label="">
+            <Input.TextArea
+              rows={4}
+              value={chatbot.settings.base_prompt}
+              onChange={(e) =>
+                changeChatbotSetting('base_prompt', e.target.value)
+              }
+            />
+          </Form.Item>
+          <PrimaryButton onclick={resetBasePrompt} text={'Reset'} />
+          {/*<Paragraph>*/}
+          {/*  1 message using gpt-3.5-turbo costs 1 message credit.*/}
+          {/*</Paragraph>*/}
+        </ColumnBlock>
+
+        <ColumnBlock>
+          <Title level={5}>Temperature {chatbot.settings.temperature}</Title>
+          <Slider
+            min={0}
+            max={1}
+            step={0.1}
+            onChange={(temp) => changeChatbotSetting('temperature', temp)}
+            value={chatbot.settings.temperature}
+          />
+        </ColumnBlock>
+
+        <ColumnBlock>
+          <Title level={5}>
+            <FormattedMessage id={'settings.max-tokens'} />{' '}
+            {chatbot.settings.max_tokens}
+          </Title>
+          <Slider
+            min={100}
+            max={1000}
+            step={100}
+            onChange={(num) => changeChatbotSetting('max_tokens', num)}
+            value={chatbot.settings.max_tokens}
+          />
+        </ColumnBlock>
+
+        <ColumnBlock>
+          <Title level={5}>Visibility</Title>
+          <Form.Item label="">
+            <Select
+              value={chatbot.settings.visibility}
+              onChange={(vis: VisibilityOptions) =>
+                changeChatbotSetting('visibility', vis)
+              }
+            >
+              <Option value="private">Private</Option>
+              <Option value="public">Public</Option>
+              <Option value="embedded">
+                Private but can be embedded on website
+              </Option>
+            </Select>
+          </Form.Item>
+          <Paragraph>
+            &apos;Private&apos;: No one can access your chatbot except you (your
+            account)
+          </Paragraph>
+          <Paragraph>
+            &apos;Private but can be embedded on website&apos;: Other people
+            can&apos;t access your chatbot if you send them the link, but you
+            can still embed it on your website and your website visitors will be
+            able to use it. (make sure to set your domains)
+          </Paragraph>
+          <Paragraph>
+            &apos;Public&apos;: Anyone with the link can access it on
+            chatbase.co and can be embedded on your website.
+          </Paragraph>
+          <Paragraph>
+            Set to public if you want to be able to send a link of your chatbot
+            to someone to try it.
+          </Paragraph>
+        </ColumnBlock>
+
+        <ColumnBlock>
+          <Title level={5}>Domains</Title>
+          <Form.Item label="">
+            <Input.TextArea
+              rows={4}
+              value={chatbot.settings.new_domains}
+              onChange={(e) =>
+                addToArrayOfString('new_domains', e.target.value)
+              }
+              placeholder="example.com"
+            />
+          </Form.Item>
+          <Paragraph>Enter each domain in a new line</Paragraph>
+          <Paragraph>
+            Domains you want to embed your chatbot on. Your chatbot visibility
+            has to be &apos;Public&apos; or &apos;Private but can be embedded on
+            website&apos; for this to work.
+          </Paragraph>
+        </ColumnBlock>
+
+        <ColumnBlock>
+          <Title level={5}>Rate Limiting</Title>
+          <Paragraph>
+            Limit the number of messages sent from one device on the iframe and
+            chat bubble (this limit will not be applied to you on chatbase.co,
+            only on your website for your users to prevent abuse).
+          </Paragraph>
+          <Space direction="horizontal" align="start">
+            <Paragraph>Limit to only</Paragraph>
+            <InputNumber
+              min={1}
+              height={5}
+              value={chatbot.settings.rate_limit.messages_limit}
+              onChange={(value) => {
+                if (value) {
+                  changeRateLimitSetting('messages_limit', value);
+                }
+              }}
+            />
+            <Paragraph>messages every</Paragraph>
+            <InputNumber
+              min={1}
+              value={chatbot.settings.rate_limit.seconds}
+              onChange={(value) => {
+                if (value) {
+                  changeRateLimitSetting('seconds', value);
+                }
+              }}
+            />
+            <Paragraph>seconds</Paragraph>
+          </Space>
+          <Title level={5}>Show this message to show when limit is hit</Title>
+          <Input
+            value={chatbot.settings.rate_limit.limit_end_message}
             onChange={(e) =>
-              changeChatbotSetting('base_prompt', e.target.value)
+              changeRateLimitSetting('limit_end_message', e.target.value)
             }
           />
-        </Form.Item>
-        <PrimaryButton onclick={resetBasePrompt} text={'Reset'} />
+        </ColumnBlock>
 
-        <Paragraph>
-          1 message using gpt-3.5-turbo costs 1 message credit.
-        </Paragraph>
-
-        <Title level={5}>Temperature {chatbot.settings.temperature}</Title>
-        <Slider
-          min={0}
-          max={1}
-          step={0.1}
-          onChange={(temp) => changeChatbotSetting('temperature', temp)}
-          value={chatbot.settings.temperature}
-        />
-        <Title level={5}>
-          <FormattedMessage id={'settings.max-tokens'} />{' '}
-          {chatbot.settings.max_tokens}
-        </Title>
-        <Slider
-          min={100}
-          max={1000}
-          step={100}
-          onChange={(num) => changeChatbotSetting('max_tokens', num)}
-          value={chatbot.settings.max_tokens}
-        />
-        <Title level={5}>Visibility</Title>
-        <Form.Item label="">
-          <Select
-            value={chatbot.settings.visibility}
-            onChange={(vis: VisibilityOptions) =>
-              changeChatbotSetting('visibility', vis)
-            }
-          >
-            <Option value="private">Private</Option>
-            <Option value="public">Public</Option>
-            <Option value="embedded">
-              Private but can be embedded on website
-            </Option>
-          </Select>
-        </Form.Item>
-        <Paragraph>
-          &apos;Private&apos;: No one can access your chatbot except you (your
-          account)
-        </Paragraph>
-        <Paragraph>
-          &apos;Private but can be embedded on website&apos;: Other people
-          can&apos;t access your chatbot if you send them the link, but you can
-          still embed it on your website and your website visitors will be able
-          to use it. (make sure to set your domains)
-        </Paragraph>
-        <Paragraph>
-          &apos;Public&apos;: Anyone with the link can access it on chatbase.co
-          and can be embedded on your website.
-        </Paragraph>
-        <Paragraph>
-          Set to public if you want to be able to send a link of your chatbot to
-          someone to try it.
-        </Paragraph>
-        <Title level={5}>Domains</Title>
-        <Form.Item label="">
-          <Input.TextArea
-            rows={4}
-            value={chatbot.settings.new_domains}
-            onChange={(e) => addToArrayOfString('new_domains', e.target.value)}
-            placeholder="example.com"
-          />
-        </Form.Item>
-        <Paragraph>Enter each domain in a new line</Paragraph>
-        <Paragraph>
-          Domains you want to embed your chatbot on. Your chatbot visibility has
-          to be &apos;Public&apos; or &apos;Private but can be embedded on
-          website&apos; for this to work.
-        </Paragraph>
-        <Title level={5}>Rate Limiting</Title>
-        <Paragraph>
-          Limit the number of messages sent from one device on the iframe and
-          chat bubble (this limit will not be applied to you on chatbase.co,
-          only on your website for your users to prevent abuse).
-        </Paragraph>
-        <Space direction="horizontal" align="start">
-          <Paragraph>Limit to only</Paragraph>
-          <InputNumber
-            min={1}
-            height={5}
-            value={chatbot.settings.rate_limit.messages_limit}
-            onChange={(value) => {
-              if (value) {
-                changeRateLimitSetting('messages_limit', value);
-              }
-            }}
-          />
-          <Paragraph>messages every</Paragraph>
-          <InputNumber
-            min={1}
-            value={chatbot.settings.rate_limit.seconds}
-            onChange={(value) => {
-              if (value) {
-                changeRateLimitSetting('seconds', value);
-              }
-            }}
-          />
-          <Paragraph>seconds</Paragraph>
-        </Space>
-        <Title level={5}>Show this message to show when limit is hit</Title>
-        <Input
-          value={chatbot.settings.rate_limit.limit_end_message}
-          onChange={(e) =>
-            changeRateLimitSetting('limit_end_message', e.target.value)
-          }
-        />
         {/*<Title level={3}>Collect Customer Info</Title>*/}
         {/*<Title level={5}>Title</Title>*/}
         {/*<Form.Item label="">*/}
@@ -396,35 +424,66 @@ export const Settings: React.FC<SettingsPropsType> = ({
         <div className={'flex justify-between'}>
           <div>
             <Title level={3}>Chat Interface</Title>
-            <Title level={5}>applies when embedded on a website</Title>
-            <Title level={5}>Initial Messages</Title>
-            <Space direction="vertical">
-              <TextArea
-                style={{
-                  width: '430px',
-                  marginBottom: '5px',
-                }}
-                rows={4}
-                value={chatbot.settings.new_initial_messages}
-                onChange={(e) =>
-                  addToArrayOfString('new_initial_messages', e.target.value)
-                }
-              />
-            </Space>
-            <Title level={5}>Suggested Messages</Title>
-            <Space direction="vertical">
-              <TextArea
-                style={{
-                  width: '430px',
-                  marginBottom: '5px',
-                }}
-                rows={4}
-                value={chatbot.settings.new_suggested_messages}
-                onChange={(e) =>
-                  addToArrayOfString('new_suggested_messages', e.target.value)
-                }
-              />
-            </Space>
+            <ColumnBlock>
+              <Title level={5}>Initial Messages</Title>
+              <Space direction="vertical">
+                <TextArea
+                  style={{
+                    width: '430px',
+                    marginBottom: '5px',
+                  }}
+                  rows={4}
+                  value={chatbot.settings.new_initial_messages}
+                  onChange={(e) =>
+                    addToArrayOfString('new_initial_messages', e.target.value)
+                  }
+                />
+              </Space>
+            </ColumnBlock>
+            <ColumnBlock>
+              <Title level={5}>Suggested Messages</Title>
+              <Space direction="vertical">
+                <TextArea
+                  style={{
+                    width: '430px',
+                    marginBottom: '5px',
+                  }}
+                  rows={4}
+                  value={chatbot.settings.new_suggested_messages}
+                  onChange={(e) =>
+                    addToArrayOfString('new_suggested_messages', e.target.value)
+                  }
+                />
+              </Space>
+            </ColumnBlock>
+            <ColumnBlock>
+              <Title level={5}>Update chatbot profile picture</Title>
+              <Space direction="vertical">
+                <Checkbox
+                  checked={chatbot.settings.remove_profile_picture_checked}
+                  onChange={(e) =>
+                    changeChatbotSetting(
+                      'remove_profile_picture_checked',
+                      e.target.checked,
+                    )
+                  }
+                >
+                  Remove profile picture
+                </Checkbox>
+
+                {!chatbot.settings.remove_profile_picture_checked && (
+                  <>
+                    <Upload
+                      onChange={handleUpload}
+                      multiple={false}
+                      maxCount={1}
+                    >
+                      <Button>Загрузить фото профиля</Button>
+                    </Upload>
+                  </>
+                )}
+              </Space>
+            </ColumnBlock>
             {/*<Title level={5}>Theme</Title>*/}
             {/*<Select*/}
             {/*  value={chatbot.settings.theme}*/}
@@ -433,28 +492,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
             {/*  <Option value="light">Light</Option>*/}
             {/*  <Option value="dark">Dark</Option>*/}
             {/*</Select>*/}
-            <Title level={5}>Update chatbot profile picture</Title>
-            <Space direction="vertical">
-              <Checkbox
-                checked={chatbot.settings.remove_profile_picture_checked}
-                onChange={(e) =>
-                  changeChatbotSetting(
-                    'remove_profile_picture_checked',
-                    e.target.checked,
-                  )
-                }
-              >
-                Remove profile picture
-              </Checkbox>
 
-              {!chatbot.settings.remove_profile_picture_checked && (
-                <>
-                  <Upload onChange={handleUpload} multiple={false} maxCount={1}>
-                    <Button>Загрузить фото профиля</Button>
-                  </Upload>
-                </>
-              )}
-            </Space>
             <Form.Item>
               <Title level={5}>Display name</Title>
               <Input
@@ -464,54 +502,77 @@ export const Settings: React.FC<SettingsPropsType> = ({
                 }
               />
             </Form.Item>
-            <Title level={5}>User Message Color</Title>
-            <ColorPicker
-              format={'hex'}
-              onChange={(color) => {
-                changeChatbotSetting('user_message_color', color.toHexString());
-              }}
-              defaultValue={chatbot.settings.user_message_color}
-            />
-            <Title level={5}>Chatbot Message Color</Title>
-            <ColorPicker
-              format={'hex'}
-              onChange={(color) => {
-                changeChatbotSetting('bot_message_color', color.toHexString());
-              }}
-              defaultValue={chatbot.settings.bot_message_color}
-            />
-            <Title level={5}>Chat theme color</Title>
-            <ColorPicker
-              format={'hex'}
-              defaultValue={chatbot.settings.footer_color}
-              onChange={(color) => {
-                changeChatbotSetting('footer_color', color.toHexString());
-              }}
-            />
-            <Title level={5}>User font color</Title>
-            <ColorPicker
-              format={'hex'}
-              defaultValue={chatbot.settings.user_font_color}
-              onChange={(color) => {
-                changeChatbotSetting('user_font_color', color.toHexString());
-              }}
-            />
-            <Title level={5}>Bot Font Color</Title>
-            <ColorPicker
-              format={'hex'}
-              defaultValue={chatbot.settings.bot_font_color}
-              onChange={(color) => {
-                changeChatbotSetting('bot_font_color', color.toHexString());
-              }}
-            />
-            <Title level={5}>Bot language</Title>
-            <Select
-              value={chatbot.settings.language}
-              onChange={(lang) => changeChatbotSetting('language', lang)}
-            >
-              <Option value="EN">English</Option>
-              <Option value="RU">Russian</Option>
-            </Select>
+            <ColumnBlock>
+              <Title level={5}>User Message Color</Title>
+              <ColorPicker
+                format={'hex'}
+                onChange={(color) => {
+                  changeChatbotSetting(
+                    'user_message_color',
+                    color.toHexString(),
+                  );
+                }}
+                defaultValue={chatbot.settings.user_message_color}
+              />
+            </ColumnBlock>
+            <ColumnBlock>
+              {' '}
+              <Title level={5}>Chatbot Message Color</Title>
+              <ColorPicker
+                format={'hex'}
+                onChange={(color) => {
+                  changeChatbotSetting(
+                    'bot_message_color',
+                    color.toHexString(),
+                  );
+                }}
+                defaultValue={chatbot.settings.bot_message_color}
+              />
+            </ColumnBlock>
+            <ColumnBlock>
+              {' '}
+              <Title level={5}>Chat theme color</Title>
+              <ColorPicker
+                format={'hex'}
+                defaultValue={chatbot.settings.footer_color}
+                onChange={(color) => {
+                  changeChatbotSetting('footer_color', color.toHexString());
+                }}
+              />
+            </ColumnBlock>
+            <ColumnBlock>
+              {' '}
+              <Title level={5}>User font color</Title>
+              <ColorPicker
+                format={'hex'}
+                defaultValue={chatbot.settings.user_font_color}
+                onChange={(color) => {
+                  changeChatbotSetting('user_font_color', color.toHexString());
+                }}
+              />
+            </ColumnBlock>
+
+            <ColumnBlock>
+              <Title level={5}>Bot Font Color</Title>
+              <ColorPicker
+                format={'hex'}
+                defaultValue={chatbot.settings.bot_font_color}
+                onChange={(color) => {
+                  changeChatbotSetting('bot_font_color', color.toHexString());
+                }}
+              />
+            </ColumnBlock>
+
+            <ColumnBlock>
+              <Title level={5}>Bot language</Title>
+              <Select
+                value={chatbot.settings.language}
+                onChange={(lang) => changeChatbotSetting('language', lang)}
+              >
+                <Option value="EN">English</Option>
+                <Option value="RU">Russian</Option>
+              </Select>
+            </ColumnBlock>
           </div>
           <div
             className={'flex flex-col w-[50%] border-x-blue-100 border-x-2'}

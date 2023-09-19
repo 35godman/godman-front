@@ -14,7 +14,8 @@ import ChatbotContainer from '@/features/Chatbot/ui/ChatbotContainer';
 import { useIntl } from 'react-intl';
 import { Loader } from '@/features/Chatbot/ui/Loader/Loader';
 import ExportConversations from '@/features/ExportConversations/ExportConversations';
-
+import s from './GeneralSettingsBot.module.css';
+import { useWindowWidth } from '@/shared/hooks/useWindowWidth';
 export const GeneralSettingsBot: FC = () => {
   const router = useRouter();
   const intl = useIntl();
@@ -63,7 +64,7 @@ export const GeneralSettingsBot: FC = () => {
   const selectCurrentTab = (activeKey: string) => {
     setCurrentTabSelected(activeKey);
   };
-
+  const innerWidth = useWindowWidth();
   const tabs = [
     {
       key: 'chatbot',
@@ -130,9 +131,9 @@ export const GeneralSettingsBot: FC = () => {
     <>
       {chatbot ? (
         <Tabs
-          defaultActiveKey="1"
-          centered
-          className={'max-w-[80%] m-auto min-h-[80vh] mb-10'}
+          centered={innerWidth ? innerWidth > 500 : false}
+          defaultActiveKey="chatbot"
+          className={`m-auto mb-10 ml-1 ${s.tabs}`}
           items={tabs}
           onChange={(activeKey: string) => selectCurrentTab(activeKey)}
         />

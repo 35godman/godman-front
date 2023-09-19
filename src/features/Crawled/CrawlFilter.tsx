@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Button, Input, List, Typography } from 'antd';
+import { Button, Input, List, Tooltip, Typography } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { FormattedMessage } from 'react-intl';
@@ -16,18 +16,30 @@ const CrawlFilter: FC<CrawlFilterProps> = ({
 }) => {
   const { currentLink, setCurrentLink, removeFromLinks, addToLinks } =
     useFilterLinksToParse(linksToParse, setLinksToParse);
+
+  const locale = {
+    emptyText: <></>,
+  };
   return (
     <>
       <div className={'flex flex-col w-[50%] text-sm mt-5'}>
         <div>
-          <Input
-            onChange={(e) => setCurrentLink(e.target.value)}
-            value={currentLink}
-          />
+          <div className={'flex items-center'}>
+            <Input
+              onChange={(e) => setCurrentLink(e.target.value)}
+              value={currentLink}
+            />
+            <Tooltip title="prompt text">
+              <span>TIp</span>
+            </Tooltip>
+          </div>
+
           <PrimaryButton onclick={() => addToLinks()}>
             <FormattedMessage id={'crawlFilter.addToFilter'} />
           </PrimaryButton>
           <List
+            locale={locale}
+            footer={false}
             dataSource={linksToParse}
             renderItem={(item) => (
               <List.Item>

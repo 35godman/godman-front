@@ -77,7 +77,7 @@ const Crawled: FC<CrawledComponentProps> = ({ chatbot, getChatbot }) => {
         </div>
       </div>
       <CrawlProgress status={crawlStatus} percent={crawlLoadingPercent} />
-      <AutoSizer style={{ height: '300px' }}>
+      <AutoSizer style={{ height: '100px' }}>
         {({ height, width }: { height: number; width: number }) => {
           return (
             <List

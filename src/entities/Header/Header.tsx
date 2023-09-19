@@ -56,11 +56,16 @@ export const Header = () => {
   };
 
   return (
-    <div className={'flex p-8 justify-evenly bg-blue-400 items-center'}>
+    <div className={'flex p-8 justify-evenly   items-center'}>
       {user._id && (
         <>
           <div className={'w-[35%]'}>
-            <Image src={'/logo.PNG'} alt={'Logo'} width={100} height={100} />
+            <Image
+              src={'/logo-gradient2.svg'}
+              alt={'Logo'}
+              width={200}
+              height={100}
+            />
           </div>
           <PrimaryButton
             onclick={() => goToPage('chatbot-list')}

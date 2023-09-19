@@ -8,3 +8,7 @@
   display: flex;
   justify-content: center;
 }
+.ant-tabs-nav .ant-tabs-nav-wrap:not([class*='ant-tabs-nav-wrap-ping']) {
+  overflow: scroll;
+}
+

@@ -13,10 +13,10 @@ export const useCrawlState = (status: CrawlingStatus) => {
         if (crawlLoadingPercent < 99 && crawlStatus === 'PENDING') {
           setCrawlLoadingPercent((prevState) => prevState + 1);
         } else if (timer) {
-          setCrawlLoadingPercent(0);
+          setCrawlLoadingPercent(99);
           clearInterval(timer as NodeJS.Timer);
         }
-      }, 1200);
+      }, 2000);
     }
     return () => {
       clearInterval(timer as NodeJS.Timer);

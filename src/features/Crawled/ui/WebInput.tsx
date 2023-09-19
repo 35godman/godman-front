@@ -17,7 +17,7 @@ const WebInput: FC<WebInputProps> = ({ onclick, loading, linksToParse }) => {
     setWebsiteUrl(e.target.value);
   };
   return (
-    <div className={s.webInputWrap}>
+    <div className={'flex items-center'}>
       <Input
         placeholder={intl.formatMessage({
           id: 'crawledComponent.enter-weblink',
@@ -26,6 +26,7 @@ const WebInput: FC<WebInputProps> = ({ onclick, loading, linksToParse }) => {
         onChange={handleWebsiteUrlChange}
       />
       <PrimaryButton
+        className={'!mt-0'}
         onclick={() => onclick(websiteUrl, linksToParse)}
         text={intl.formatMessage({ id: 'crawledComponent.crawl' })}
         loading={loading}

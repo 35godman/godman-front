@@ -15,7 +15,7 @@
   "chatbotList.create": "Создать чатбот",
   "chatbotList.my-chatbots": "Мои чатботы",
   "crawledComponent.page-count": "Кол-во страниц",
-  "crawledComponent.crawl": "индексировать сайт",
+  "crawledComponent.crawl": "Индексировать сайт",
   "crawledComponent.delete-all": "Удалить все",
   "crawledComponent.enter-weblink": "Введите ссылку на сайт",
   "crawledComponent.enter-linkregex": "Введите текст из ссылки, который будет пропущен на сайте",

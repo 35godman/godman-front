@@ -31,13 +31,13 @@ const Account = () => {
         }
       >
         <Typography className={'font-bold'}>
-          <FormattedMessage id={'account-email'} />
+          <FormattedMessage id={'account.email'} />
         </Typography>
         <Typography className={'font-bold'}>{user.email}</Typography>
       </div>
       <div className="mx-auto my-0">
         <PrimaryButton onclick={signOut}>
-          <FormattedMessage id={'account-sign-out'} />
+          <FormattedMessage id={'account.sign-out'} />
         </PrimaryButton>
       </div>
     </div>

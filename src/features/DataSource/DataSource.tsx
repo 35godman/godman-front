@@ -11,6 +11,7 @@ import PrimaryButton from '@/entities/PrimaryButton/PrimaryButton';
 import { useSelector } from 'react-redux';
 import { selectCurrentSize } from '@/app/store/slices/charsCountSlice';
 import { useIntl } from 'react-intl';
+import { useWindowWidth } from '@/shared/hooks/useWindowWidth';
 
 type DataSourceProps = {
   chatbot: Chatbot;

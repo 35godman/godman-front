@@ -17,8 +17,9 @@ export const CardBot: React.FC<CardBotProps> = ({
 }) => {
   return (
     <Card
+      className={'border-black border-s-1'}
       hoverable
-      style={{ width: 240 }}
+      style={{ width: 240, margin: '1rem 0' }}
       onClick={onClick}
       data-test={`card-${botID}`}
     >
