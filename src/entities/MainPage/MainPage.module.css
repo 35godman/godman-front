@@ -1,0 +1,290 @@
+.h1 {
+  /* color: rgba(255, 255, 255, 0.95);
+  font-family: Sofia Sans;
+  font-size: 72px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; */
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  font-family: Sofia Sans;
+  font-size: 41px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 36px */
+}
+/* 56 */
+.h2 {
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  /* h2 mob */
+  font-family: Sofia Sans;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 30px */
+  letter-spacing: 0.6px;
+  margin-bottom: 80px;
+}
+/* 28 */
+.h3 {
+  color: rgba(255, 255, 255, 0.95);
+  font-family: Sofia Sans;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+/* 24 */
+.subtitleH1 {
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  font-family: Sofia Sans;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%; /* 21.6px */
+  letter-spacing: 0.36px;
+}
+/* 20 */
+.subtitleH2 {
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  font-family: Sofia Sans;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 24px */
+  letter-spacing: 0.4px;
+}
+/* 18 */
+
+.generalWrapper {
+  background: #030827;
+  padding-top: 10px;
+}
+.bodyText {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Sofia Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.36px;
+}
+
+.gradientText {
+  background: linear-gradient(to right, #5ebffa, #2f55e5);
+  -webkit-background-clip: text;
+  color: transparent;
+  background-position: 70% center;
+}
+
+.mainPage {
+  background: #030827;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.experience {
+  margin-top: 120px;
+  width: 100vw;
+  min-height: 100%;
+  background: #030827;
+  padding: 0 16px;
+  background-image: url('/imgGeneralPage/mobile_bg.png');
+  background-size: 100vw;
+  background-position: 0px 175px;
+  background-repeat: no-repeat;
+}
+
+.centralWrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.godmansText {
+  margin-top: 30px;
+  margin-bottom: 72px;
+}
+
+.benefitsWrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 98px;
+}
+
+.benefit {
+  margin-bottom: 32px;
+}
+
+.benifitText {
+  color: #fff;
+  font-family: Sofia Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 14px */
+  letter-spacing: 0.28px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.benifitSubtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-family: Sofia Sans;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 20px */
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* feautures SECTION */
+.section {
+  padding: 0 16px;
+  padding-bottom: 120px;
+}
+
+.textAfter {
+  margin-bottom: 88px;
+}
+
+.staWrapper {
+  display: flex;
+  padding: 68px 24px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 32px;
+  border-top: 1px solid #2f55e5;
+  border-bottom: 1px solid #2f55e5;
+}
+
+.staSection {
+  background-image: url('/imgGeneralPage/bg_sta.png');
+  background-size: 100vw;
+  background-position: 0px 115px;
+  background-repeat: no-repeat;
+}
+
+.inputSign {
+  border-radius: 32px;
+  border: 2px solid rgba(94, 198, 250, 0.5);
+  background: #070f2f;
+  width: 100%;
+  max-width: 350px !important;
+  text-align: center;
+  height: 54px;
+  margin-bottom: 24px;
+}
+
+.inputSign::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  font-family: Sofia Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: 100%; /* 14px */
+  letter-spacing: 0.28px;
+}
+
+.footerWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url('/imgGeneralPage/bg_footer_mobile.png');
+  background-size: 100vw;
+  /* background-position: 0px 115px; */
+  background-repeat: no-repeat;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 30px;
+  margin-bottom: 24px;
+}
+.logoText {
+  color: #fff;
+  font-family: Sofia Sans;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 0.333px;
+}
+
+.imgFooter {
+  margin-right: 10px;
+  height: 26px;
+}
+
+.discoverNav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.footerSubtitle {
+  color: rgba(255, 255, 255, 0.85);
+  font-family: Sofia Sans;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  letter-spacing: 0.32px;
+}
+
+.footerlink {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: Sofia Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 14px */
+  letter-spacing: 0.28px;
+  margin-top: 10px;
+}
+
+.legalNav {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.log {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.footerLoglink {
+  color: rgba(94, 198, 250, 0.8);
+  font-family: Sofia Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.28px;
+  margin-top: 10px;
+}
+
+.corp {
+  margin-top: 30px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  font-family: Sofia Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 19px; /* 100% */
+}

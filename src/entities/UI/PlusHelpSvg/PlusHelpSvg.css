@@ -1,0 +1,21 @@
+.swg-help-wrapper {
+  padding-top: 5px;
+}
+
+.icon-plus {
+  padding-top: 5px;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.line {
+  transition: transform 0.3s ease;
+}
+
+.crossed-help .top {
+  transform: translate(0px, 0px) rotate(0deg);
+}
+
+.crossed-help .bottom {
+  transform: translate(0px, 26px) rotate(-90deg);
+}

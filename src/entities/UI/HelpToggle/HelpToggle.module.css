@@ -1,0 +1,51 @@
+.toggleWrapper {
+  display: flex;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 16px;
+  border: 2px solid rgba(62, 133, 246, 0.5);
+  background: rgba(1, 5, 52, 0.2);
+  margin-bottom: 24px;
+}
+
+.toggleWrapper:hover {
+  transition: all 0.3s;
+  box-shadow: 0px 0px 40px 0px rgba(94, 198, 250, 0.44) inset;
+}
+
+.heading {
+  width: 100%;
+  color: #fff;
+  font-family: Sofia Sans;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.headingWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: top;
+}
+
+.text {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Sofia Sans;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120% !important; /* 17.6px */
+  letter-spacing: 0.16px;
+}
+
+.openText {
+  max-height: 200px; /* Это значение может потребовать корректировки в зависимости от вашего текста */
+}

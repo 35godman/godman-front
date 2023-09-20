@@ -1,0 +1,39 @@
+.cardWrapper {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  border: 2px solid rgba(62, 133, 246, 0.5);
+  transition: all 0.2s;
+  margin-bottom: 20px;
+}
+.cardWrapper:hover {
+  box-shadow: 0px 0px 40px 0px rgba(94, 198, 250, 0.44) inset;
+}
+.rating {
+  height: 35px;
+  margin-bottom: 20px;
+}
+.text {
+  margin-bottom: 20px;
+  font-family: Sofia Sans;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 110%; /* 17.6px */
+  letter-spacing: 0.16px;
+}
+.name {
+  font-family: Sofia Sans;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 110%; /* 17.6px */
+  letter-spacing: 0.16px;
+}

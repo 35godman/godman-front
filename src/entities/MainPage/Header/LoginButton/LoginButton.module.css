@@ -1,0 +1,13 @@
+.loginButton {
+    box-sizing: border-box;
+    display: block;
+    flex: 0 0 auto;
+    width: 115px;
+    height: 56px;
+    color: white;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    background: #030827;
+    border: 2px solid #5ec6fa;
+    border-radius: 100px;
+}
