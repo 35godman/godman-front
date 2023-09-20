@@ -195,7 +195,7 @@ export const Settings: React.FC<SettingsPropsType> = ({
   if (!chatbot) return null;
 
   return (
-    <div className={s.settings}>
+    <div className={`w-[90%] mx-auto my-0`}>
       <ColumnBlock>
         <Title level={5}>Chatbot id</Title>
         <Title level={5}>{chatbot._id}</Title>

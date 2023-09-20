@@ -68,7 +68,7 @@ const MainPage = () => {
           new heights!
         </p>
         <div className={s.futuresCards}>
-          {cardsFutures.map(item => {
+          {cardsFutures.map((item) => {
             return (
               <CardFeatures
                 text={item.text}
@@ -89,7 +89,7 @@ const MainPage = () => {
           relationships!
         </p>
         <div className={s.casesCards}>
-          {cardsCases.map(item => {
+          {cardsCases.map((item) => {
             return (
               <CardCases key={item.name} name={item.name} text={item.text} />
             );
@@ -101,7 +101,7 @@ const MainPage = () => {
       <section className={s.section}>
         <h2 className={s.h2}>Discover Our Pricing Plans</h2>
         <div className={s.pricingCards}>
-          {cardsPricing.map(item => {
+          {cardsPricing.map((item) => {
             return (
               <CardPricing
                 key={item.cardName}
@@ -119,7 +119,7 @@ const MainPage = () => {
       {/* Help */}
       <section className={s.section}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
-        {helpToggleData.map(item => {
+        {helpToggleData.map((item) => {
           return (
             <HelpToggle
               text={item.text}
@@ -189,10 +189,10 @@ const MainPage = () => {
             </Link>
           </div>
           <div className={s.log}>
-            <Link className={s.footerLoglink} href={'/'}>
+            <Link className={s.footerLoglink} href={'/login'}>
               Sign Up Free
             </Link>
-            <Link className={s.footerLoglink} href={'/'}>
+            <Link className={s.footerLoglink} href={'/login'}>
               Log in
             </Link>
             <Link className={s.footerLoglink} href={'/'}>
@@ -212,7 +212,7 @@ const MainPage = () => {
           </div>
         </div>
       </section>
-      <LogIn />
+      {/*<LogIn />*/}
     </div>
   );
 };

@@ -9,8 +9,6 @@ import { App } from '@/app/App';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { noLayout, ...rest } = pageProps;
-  console.log('=>(_app.tsx:12) pageProps', pageProps);
-  console.log('=>(_app.tsx:12) noLayout', noLayout);
 
   /**
    * @COMMENT had a strange error here, don't know what has cause it

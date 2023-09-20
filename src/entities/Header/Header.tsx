@@ -39,11 +39,11 @@ export const Header = () => {
               await router.push('/chatbot-list');
             }
           } else {
-            await router.push('/');
+            await router.push('/account/login');
           }
         } catch (e) {
           message.info('Нужно войти в аккаунт');
-          await router.push('/');
+          await router.push('/account/login');
         }
       };
       relogin();
