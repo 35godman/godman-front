@@ -55,7 +55,7 @@ const MainPage = () => {
       </section>
 
       {/* Feautures */}
-      <section className={s.section}>
+      <section className={cn(s.section, s.futures)}>
         <h2 className={s.h2}>
           Rise with AI-
           <br />
@@ -117,7 +117,7 @@ const MainPage = () => {
       </section>
 
       {/* Help */}
-      <section className={s.section}>
+      <section className={cn(s.section, s.help)}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
         {helpToggleData.map(item => {
           return (

@@ -219,6 +219,24 @@
   letter-spacing: 0.333px;
 }
 
+.futures {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url('/imgGeneralPage/general_ellipse.png'),
+    url('/imgGeneralPage/general_ellipse.png');
+  background-size: 75vh, 74vh;
+  background-position: -190px 115px, 50px 1000px;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.help {
+  background-image: url('/imgGeneralPage/general_ellipse.png');
+  background-size: 75vh;
+  background-position: -250px 155px;
+  background-repeat: no-repeat;
+}
+
 .imgFooter {
   margin-right: 10px;
   height: 26px;
