@@ -2,6 +2,26 @@
   position: relative;
   width: 100%;
   max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat {
+  height: 60px;
+  transition: height 0.3s ease;
+}
+
+.chat.open {
+  border-radius: 40px;
+  border: 2px solid rgba(62, 133, 246, 0.5);
+  background: #050a29;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .input {
@@ -34,4 +54,9 @@
   background: #070f2f;
   top: 0;
   right: 0px;
+}
+.messagesWrapper {
+  max-height: 300px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
 }

@@ -7,6 +7,7 @@ import { BtnUniv } from '../Buttons/Buttons';
 import { useRouter } from 'next/router';
 
 export const Header = () => {
+  const router = useRouter();
   const [externalState, setExternalState] = useState(false);
   const router = useRouter();
   return (
@@ -41,6 +42,7 @@ export const Header = () => {
           English
         </Link>
         <BtnUniv
+          onClick={async () => await router.push('/account/login')}
           // width={284}
           // height={43}
           onClick={async () => await router.push('/account/login')}
@@ -49,6 +51,7 @@ export const Header = () => {
           style={{ margin: '0 auto', marginBottom: '24px', marginTop: '48px' }}
         ></BtnUniv>
         <BtnUniv
+          onClick={async () => await router.push('/account/login')}
           // width={284}
           // height={43}
           onClick={async () => await router.push('/account/login')}

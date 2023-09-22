@@ -1,0 +1,27 @@
+.featureNav {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 523px;
+  height: 62px;
+  padding-right: 32px;
+  padding-left: 32px;
+  background: #030827;
+  border-radius: 32px;
+  border: 1px solid var(--gradient-hover, #2f55e5);
+  background: #030827;
+  margin-left: 35px;
+}
+.featureLink {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  color: white;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.25rem;
+  font-style: normal;
+  line-height: 150%; /* 1.875rem */
+  letter-spacing: 0.025rem;
+}

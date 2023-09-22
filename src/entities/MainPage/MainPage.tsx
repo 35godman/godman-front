@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './MainPage.module.css';
-import MainPageHeader from '@/entities/MainPage/Header/MainPageHeader';
 import { BtnUniv } from '../UI/Buttons/Buttons';
 import { HelpToggle } from '../UI/HelpToggle/HelpToggle';
 import { InputAskAI } from '../UI/InputAskAI/InputAskAI';
@@ -12,13 +11,32 @@ import cn from 'classnames';
 import { Input } from 'antd';
 import Link from 'next/link';
 import { LogIn } from '../UI/LogIn/LogIn';
+import MainPageHeader from '@/entities/UI/DesktopHeader/MainPageHeader';
 import {
   cardsFutures,
   cardsCases,
   cardsPricing,
   helpToggleData,
 } from './mainPageData';
+import { AxiosResponse } from 'axios/index';
+import { Chatbot } from '@/types/models/globals';
+import globalService from '@/shared/service/globalService';
 const MainPage = () => {
+  const [chatbot, setChatbot] = useState<Chatbot | null>(null);
+
+  const fetchChatbot = async () => {
+    const godmanChatbotId = '64d4cb756deecfdc32ccc6f7';
+    const response: AxiosResponse<Chatbot> = await globalService.get(
+      `/chatbot/public?chatbot_id=${godmanChatbotId}`,
+    );
+
+    setChatbot(response.data);
+  };
+
+  useEffect(() => {
+    fetchChatbot();
+  }, []);
+
   return (
     <div className={s.generalWrapper}>
       <main className={s.mainPage}>
@@ -36,7 +54,7 @@ const MainPage = () => {
             personalized, lightning-fast customer interactions that will keep
             you ahead of the game
           </p>
-          <InputAskAI />
+          {chatbot && <InputAskAI chatbot={chatbot} />}
           <div className={s.benefitsWrapper}>
             <div className={s.benefit}>
               <p className={s.benifitText}>unclaiming the human factor</p>
@@ -55,7 +73,7 @@ const MainPage = () => {
       </section>
 
       {/* Feautures */}
-      <section className={s.section}>
+      <section className={cn(s.section, s.futures)}>
         <h2 className={s.h2}>
           Rise with AI-
           <br />
@@ -117,7 +135,7 @@ const MainPage = () => {
       </section>
 
       {/* Help */}
-      <section className={s.section}>
+      <section className={cn(s.section, s.help)}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
         {helpToggleData.map((item) => {
           return (

@@ -1,15 +1,17 @@
 import { RegisterValues } from '@/types/types';
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, message, Modal } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { registUser } from '@/features/Register/api';
-
-export const RegistrationForm = () => {
+import { FC } from 'react';
+type RegistrationFormProps = {
+  onSuccess?: () => void;
+};
+export const RegistrationForm: FC<RegistrationFormProps> = ({ onSuccess }) => {
   const registerHandler = async (values: RegisterValues) => {
     const response = await registUser(values);
     if (response.status === 201) {
-      Modal.success({
-        title: `User ${values.username} registered`,
-      });
+      message.success(`User ${values.username} registered`);
+      onSuccess && onSuccess();
     }
   };
   return (

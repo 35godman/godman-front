@@ -1,0 +1,25 @@
+.answerWrap {
+  /* margin-bottom: 10px; */
+}
+
+.answer {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Sofia Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 18px */
+  letter-spacing: 0.36px;
+}
+
+.imgAndTextWrap {
+  display: flex;
+  align-items: center;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.ellipseImg {
+  height: 35px;
+  margin-right: 24px;
+}
