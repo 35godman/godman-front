@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './MainPage.module.css';
 import { BtnUniv } from '../UI/Buttons/Buttons';
 import { HelpToggle } from '../UI/HelpToggle/HelpToggle';
@@ -18,7 +18,25 @@ import {
   cardsPricing,
   helpToggleData,
 } from './mainPageData';
+import { AxiosResponse } from 'axios/index';
+import { Chatbot } from '@/types/models/globals';
+import globalService from '@/shared/service/globalService';
 const MainPage = () => {
+  const [chatbot, setChatbot] = useState<Chatbot | null>(null);
+
+  const fetchChatbot = async () => {
+    const godmanChatbotId = '64d4cb756deecfdc32ccc6f7';
+    const response: AxiosResponse<Chatbot> = await globalService.get(
+      `/chatbot/public?chatbot_id=${godmanChatbotId}`,
+    );
+
+    setChatbot(response.data);
+  };
+
+  useEffect(() => {
+    fetchChatbot();
+  }, []);
+
   return (
     <div className={s.generalWrapper}>
       <main className={s.mainPage}>
@@ -36,7 +54,7 @@ const MainPage = () => {
             personalized, lightning-fast customer interactions that will keep
             you ahead of the game
           </p>
-          <InputAskAI />
+          {chatbot && <InputAskAI chatbot={chatbot} />}
           <div className={s.benefitsWrapper}>
             <div className={s.benefit}>
               <p className={s.benifitText}>unclaiming the human factor</p>
@@ -68,7 +86,7 @@ const MainPage = () => {
           new heights!
         </p>
         <div className={s.futuresCards}>
-          {cardsFutures.map(item => {
+          {cardsFutures.map((item) => {
             return (
               <CardFeatures
                 text={item.text}
@@ -89,7 +107,7 @@ const MainPage = () => {
           relationships!
         </p>
         <div className={s.casesCards}>
-          {cardsCases.map(item => {
+          {cardsCases.map((item) => {
             return (
               <CardCases key={item.name} name={item.name} text={item.text} />
             );
@@ -101,7 +119,7 @@ const MainPage = () => {
       <section className={s.section}>
         <h2 className={s.h2}>Discover Our Pricing Plans</h2>
         <div className={s.pricingCards}>
-          {cardsPricing.map(item => {
+          {cardsPricing.map((item) => {
             return (
               <CardPricing
                 key={item.cardName}
@@ -119,7 +137,7 @@ const MainPage = () => {
       {/* Help */}
       <section className={cn(s.section, s.help)}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
-        {helpToggleData.map(item => {
+        {helpToggleData.map((item) => {
           return (
             <HelpToggle
               text={item.text}

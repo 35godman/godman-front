@@ -4,8 +4,10 @@ import Image from 'next/image';
 import { BurgerIcon } from '../BurgerIcon/BurgerIcon';
 import Link from 'next/link';
 import { BtnUniv } from '../Buttons/Buttons';
+import { useRouter } from 'next/router';
 
 export const Header = () => {
+  const router = useRouter();
   const [externalState, setExternalState] = useState(false);
   return (
     <header className={s.header}>
@@ -39,13 +41,15 @@ export const Header = () => {
           English
         </Link>
         <BtnUniv
+          onClick={async () => await router.push('/account/login')}
           // width={284}
           // height={43}
           type={'regular'}
-          text={'Sign Up Free'}
+          text={'Login'}
           style={{ margin: '0 auto', marginBottom: '24px', marginTop: '48px' }}
         ></BtnUniv>
         <BtnUniv
+          onClick={async () => await router.push('/account/login')}
           // width={284}
           // height={43}
           type={'primary'}
