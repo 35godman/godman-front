@@ -1,0 +1,20 @@
+.signUpButton {
+  color: #fff;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 0.0225rem;
+  box-sizing: border-box;
+  display: block;
+  flex: 0 0 auto;
+  width: 169px;
+  height: 56px;
+  margin-left: 22px;
+  cursor: pointer;
+  border-radius: 6.25rem;
+  background: linear-gradient(280deg, #2f55e5 -15.76%, #5ebffa 83.46%);
+}
+.signUpButton:hover {
+  color: #fff !important;
+}

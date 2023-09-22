@@ -1,6 +1,5 @@
 import React from 'react';
 import s from './MainPage.module.css';
-import MainPageHeader from '@/entities/MainPage/Header/MainPageHeader';
 import { BtnUniv } from '../UI/Buttons/Buttons';
 import { HelpToggle } from '../UI/HelpToggle/HelpToggle';
 import { InputAskAI } from '../UI/InputAskAI/InputAskAI';
@@ -12,6 +11,7 @@ import cn from 'classnames';
 import { Input } from 'antd';
 import Link from 'next/link';
 import { LogIn } from '../UI/LogIn/LogIn';
+import MainPageHeader from '@/entities/UI/DesktopHeader/MainPageHeader';
 import {
   cardsFutures,
   cardsCases,
