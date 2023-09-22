@@ -41,7 +41,7 @@ export const useChatbot = (
     setIsBotAnswering(true);
     setButtonLoading(true);
     setTimeout(() => {
-      // scrollToBottom(endOfChat);
+      scrollToBottom(endOfChat);
     }, 100);
 
     const newMessages = [

@@ -68,6 +68,11 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
           className={s.input}
           placeholder="Ask the AI about Godman"
           value={questionValue}
+          onKeyDown={async (e) => {
+            if (e.key === 'Enter' && questionValue.length > 3) {
+              await sendMessage(questionValue);
+            }
+          }}
           onChange={(e) => setQuestionValue(e.target.value)}
         />
         <Button
