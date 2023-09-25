@@ -86,3 +86,33 @@
   font-weight: 700;
   line-height: normal;
 }
+
+@media (min-width: 1169px) {
+  .cardWrapper {
+    padding: 48px;
+  }
+  .name {
+    font-size: 32px;
+    font-weight: 700;
+  }
+  .img {
+    height: 32px;
+  }
+  .text {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+  }
+  .imgOk {
+    margin-right: 16px;
+    height: 18px;
+  }
+  .benefit {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: normal;
+    letter-spacing: 0.36px;
+  }
+}

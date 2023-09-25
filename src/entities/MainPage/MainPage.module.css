@@ -81,7 +81,7 @@
 }
 
 .mainPage {
-  background: #030827;
+  /* background: #030827; */
   width: 100%;
   display: flex;
   justify-content: center;
@@ -151,6 +151,18 @@
 
 .textAfter {
   margin-bottom: 88px;
+}
+.futuresText {
+  margin-bottom: 88px;
+}
+.casesText {
+  margin-bottom: 88px;
+}
+
+.pricingCards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .staWrapper {
@@ -308,6 +320,9 @@
 }
 
 @media (min-width: 1169px) {
+  .section {
+    padding: 0 0;
+  }
   .h1 {
     font-size: 72px;
     font-style: normal;
@@ -316,23 +331,95 @@
     margin: 0 auto;
   }
   .experience {
-    /* margin-top: 120px;
-    width: 100vw; */
-    /* max-width: 1440px; */
-    /* margin: 0 auto;
-    min-height: 100%; */
     background: transparent;
-    /* padding: 0 16px; */
     background-image: url('');
-    /* background-size: 100vw;
-    background-position: 0px 0px;
-    background-repeat: no-repeat;
-    */
   }
   .generalWrapper {
     background-image: url('/imgGeneralPage/bg_planet_web.png');
     background-size: 100vw;
     background-position: 0px 0px;
     background-repeat: no-repeat;
+  }
+  .godmansText {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 771px;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: Sofia Sans;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 140%; /* 33.6px */
+    letter-spacing: 0.48px;
+    margin-top: 25px;
+  }
+  .benefitsWrapper {
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-between;
+    padding: 0 80px;
+  }
+  .h2 {
+    font-family: Sofia Sans;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: normal; /* 30px */
+    letter-spacing: 1.12px;
+    margin-bottom: 0px;
+  }
+  .benifitSubtitle {
+    font-size: 32px;
+  }
+  .futuresText {
+    max-width: 712px;
+    margin: 0 auto;
+    margin-top: 16px;
+  }
+  .futuresCards {
+    margin-top: 80px !important;
+    padding: 0 80px;
+    max-width: 1440px;
+    margin-bottom: 280px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+  .cases {
+    margin-top: 280px;
+  }
+  .casesText {
+    max-width: 728px;
+    margin: 0 auto;
+  }
+  .casesCards {
+    margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 100px;
+    justify-content: space-evenly;
+  }
+  .pricing {
+    margin-top: 280px;
+  }
+  .pricingCards {
+    margin: 0 auto;
+    padding: 0 80px;
+    margin-top: 80px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    max-width: 1440px;
+  }
+  .help {
+    margin-top: 280px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .toggleCards {
+    padding: 0 80px;
+    margin-top: 80px;
+    padding-bottom: 280px;
   }
 }

@@ -74,19 +74,15 @@ const MainPage = () => {
 
       {/* Feautures */}
       <section className={cn(s.section, s.futures)}>
-        <h2 className={s.h2}>
-          Rise with AI-
-          <br />
-          powered Sales
-        </h2>
-        <p className={cn(s.subtitleH1, s.textAfter)}>
+        <h2 className={s.h2}>Rise with AI- powered Sales</h2>
+        <p className={cn(s.subtitleH1, s.futuresText)}>
           Welcome to the world of Godman.AI — the powerful chatbot constructor
           for businesses that wants to make learning and selling customer
           products a breeze. Unleash the power of AI to take your business to
           new heights!
         </p>
         <div className={s.futuresCards}>
-          {cardsFutures.map((item) => {
+          {cardsFutures.map(item => {
             return (
               <CardFeatures
                 text={item.text}
@@ -99,27 +95,42 @@ const MainPage = () => {
       </section>
 
       {/* Cases */}
-      <section className={s.section}>
+      <section className={cn(s.section, s.cases)}>
         <h2 className={s.h2}>Loved by Our Users</h2>
-        <p className={cn(s.subtitleH1, s.textAfter)}>
+        <p className={cn(s.subtitleH1, s.casesText)}>
           Godman’s AI chatbot is built to grow and adapt as your business
           evolves, constantly improving sales tactics, and enhancing customer
           relationships!
         </p>
         <div className={s.casesCards}>
-          {cardsCases.map((item) => {
-            return (
-              <CardCases key={item.name} name={item.name} text={item.text} />
-            );
-          })}
+          {cardsCases
+            .reduce((acc: { name: string; text: string }[][], curr, index) => {
+              if (index % 2 === 0) {
+                acc.push([curr]);
+              } else {
+                acc[acc.length - 1].push(curr);
+              }
+              return acc;
+            }, [])
+            .map((pair, index) => (
+              <div key={index} className={s.cardPair}>
+                {pair.map(item => (
+                  <CardCases
+                    key={item.name}
+                    name={item.name}
+                    text={item.text}
+                  />
+                ))}
+              </div>
+            ))}
         </div>
       </section>
 
       {/* Pricing */}
-      <section className={s.section}>
+      <section className={cn(s.section, s.pricing)}>
         <h2 className={s.h2}>Discover Our Pricing Plans</h2>
         <div className={s.pricingCards}>
-          {cardsPricing.map((item) => {
+          {cardsPricing.map(item => {
             return (
               <CardPricing
                 key={item.cardName}
@@ -137,19 +148,17 @@ const MainPage = () => {
       {/* Help */}
       <section className={cn(s.section, s.help)}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
-        {helpToggleData.map((item) => {
-          return (
-            <HelpToggle
-              text={item.text}
-              heading={item.heading}
-              key={item.heading}
-            />
-          );
-        })}
-        <HelpToggle
-          text="Godman offers unparalleled AI chatbot functionality, top-notch customer engagement, and an ever-evolving platform built for modern businesses."
-          heading="Why choose Godman?"
-        />
+        <div className={s.toggleCards}>
+          {helpToggleData.map(item => {
+            return (
+              <HelpToggle
+                text={item.text}
+                heading={item.heading}
+                key={item.heading}
+              />
+            );
+          })}
+        </div>
       </section>
 
       {/* sta */}
