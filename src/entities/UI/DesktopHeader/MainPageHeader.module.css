@@ -1,9 +1,12 @@
 .headerWrapper {
+  padding: 0 56px;
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: space-between;
   max-width: 1440px;
+  display: none;
+  visibility: hidden;
 }
 
 .logoWrapper {
@@ -15,4 +18,10 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+@media (min-width: 1169px) {
+  .headerWrapper {
+    display: flex;
+    visibility: visible;
+  }
 }

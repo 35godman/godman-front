@@ -37,3 +37,8 @@
   line-height: 110%; /* 17.6px */
   letter-spacing: 0.16px;
 }
+@media (min-width: 1169px) {
+  .cardWrapper {
+    padding: 24px 30px;
+  }
+}

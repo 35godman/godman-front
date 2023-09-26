@@ -1,5 +1,4 @@
 .header {
-  background: #030827;
   cursor: url('/imgGeneralPage/hover_coursor.png'), auto;
 }
 
@@ -53,4 +52,10 @@
 }
 .link {
   margin-bottom: 21px;
+}
+@media (min-width: 1169px) {
+  .header {
+    display: none;
+    visibility: hidden;
+  }
 }

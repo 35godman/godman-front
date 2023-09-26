@@ -1,10 +1,4 @@
 .h1 {
-  /* color: rgba(255, 255, 255, 0.95);
-  font-family: Sofia Sans;
-  font-size: 72px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%; */
   color: rgba(255, 255, 255, 0.95);
   text-align: center;
   font-family: Sofia Sans;
@@ -13,7 +7,6 @@
   font-weight: 700;
   line-height: 100%; /* 36px */
 }
-/* 56 */
 .h2 {
   color: rgba(255, 255, 255, 0.95);
   text-align: center;
@@ -26,7 +19,6 @@
   letter-spacing: 0.6px;
   margin-bottom: 80px;
 }
-/* 28 */
 .h3 {
   color: rgba(255, 255, 255, 0.95);
   font-family: Sofia Sans;
@@ -35,7 +27,6 @@
   font-weight: 700;
   line-height: normal;
 }
-/* 24 */
 .subtitleH1 {
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
@@ -46,7 +37,6 @@
   line-height: 120%; /* 21.6px */
   letter-spacing: 0.36px;
 }
-/* 20 */
 .subtitleH2 {
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
@@ -57,7 +47,6 @@
   line-height: 120%; /* 24px */
   letter-spacing: 0.4px;
 }
-/* 18 */
 
 .generalWrapper {
   background: #030827;
@@ -81,7 +70,7 @@
 }
 
 .mainPage {
-  background: #030827;
+  /* background: #030827; */
   width: 100%;
   display: flex;
   justify-content: center;
@@ -152,6 +141,18 @@
 .textAfter {
   margin-bottom: 88px;
 }
+.futuresText {
+  margin-bottom: 88px;
+}
+.casesText {
+  margin-bottom: 88px;
+}
+
+.pricingCards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .staWrapper {
   display: flex;
@@ -168,6 +169,19 @@
   background-size: 100vw;
   background-position: 0px 115px;
   background-repeat: no-repeat;
+}
+
+.staText {
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  /* h2 mob */
+  font-family: Sofia Sans;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 30px */
+  letter-spacing: 0.6px;
+  margin-bottom: 80px;
 }
 
 .inputSign {
@@ -308,6 +322,9 @@
 }
 
 @media (min-width: 1169px) {
+  .section {
+    padding: 0 0;
+  }
   .h1 {
     font-size: 72px;
     font-style: normal;
@@ -316,23 +333,183 @@
     margin: 0 auto;
   }
   .experience {
-    /* margin-top: 120px;
-    width: 100vw; */
-    /* max-width: 1440px; */
-    /* margin: 0 auto;
-    min-height: 100%; */
     background: transparent;
-    /* padding: 0 16px; */
-    background-image: url('');
-    /* background-size: 100vw;
-    background-position: 0px 0px;
-    background-repeat: no-repeat;
-    */
+    background-image: none;
   }
   .generalWrapper {
-    background-image: url('/imgGeneralPage/bg_planet_web.png');
-    background-size: 100vw;
-    background-position: 0px 0px;
+    background-image: url(/imgGeneralPage/Ellipse_desctop_general.png),
+      url(/imgGeneralPage/Ellipse_desctop_general.png),
+      url(/imgGeneralPage/bg_planet_web.png);
+    background-size: 800px auto, 800px auto, 1440px auto;
+    background-position: calc(50% - 700px) 500px, calc(50% + 600px) 600px,
+      center -70px;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+  }
+  .godmansText {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 771px;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: Sofia Sans;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 140%; /* 33.6px */
+    letter-spacing: 0.48px;
+    margin-top: 25px;
+  }
+  .benefitsWrapper {
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-between;
+    padding: 0 80px;
+  }
+  .h2 {
+    font-family: Sofia Sans;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: normal; /* 30px */
+    letter-spacing: 1.12px;
+    margin-bottom: 0px;
+  }
+  .benifitSubtitle {
+    font-size: 32px;
+  }
+  .futures {
+    background-image: none;
+  }
+  .futuresText {
+    max-width: 712px;
+    margin: 0 auto;
+    margin-top: 16px;
+  }
+  .futuresCards {
+    margin-top: 80px !important;
+    padding: 0 80px;
+    max-width: 1440px;
+    margin-bottom: 280px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+  .cases {
+    padding-top: 280px;
+    padding-bottom: 140px;
+    background-image: url(/imgGeneralPage/Ellipse_desctop_general.png);
+    background-size: 800px auto;
+    background-position: center 215px;
     background-repeat: no-repeat;
+  }
+  .casesText {
+    max-width: 728px;
+    margin: 0 auto;
+  }
+  .casesCards {
+    margin: 0 auto;
+    margin-top: 80px;
+    max-width: 1440px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 100px;
+    justify-content: space-evenly;
+  }
+  .pricing {
+    margin-top: 140px;
+    padding-bottom: 140px;
+    background-image: url(/imgGeneralPage/Ellipse_desctop_general_deg.png);
+    background-size: 1300px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .pricingCards {
+    margin: 0 auto;
+    padding: 0 80px;
+    margin-top: 80px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    max-width: 1440px;
+  }
+  .help {
+    padding-top: 140px;
+    background-position: calc(50% - 750px) -100px;
+    margin: 0 auto;
+  }
+  .toggleCards {
+    padding: 0 80px;
+    margin-top: 80px;
+    padding-bottom: 280px;
+  }
+  .staSection {
+    padding: 0 80px;
+    background-image: url(/imgGeneralPage/sta_bg_desktop.png);
+    background-size: 1400px auto;
+    background-position: center 45px;
+    background-repeat: no-repeat;
+  }
+  .staWrapper {
+    padding: 120px;
+    height: 490px;
+    margin-bottom: 280px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .staText {
+    font-size: 51px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%; /* 66.3px */
+    letter-spacing: 1.02px;
+    max-width: 882px;
+  }
+  .btnsStaWrap {
+    width: 500px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .inputSign {
+    width: 500px !important;
+    min-width: 500px;
+    max-width: 500px;
+    padding-right: 235px;
+  }
+  .regul {
+    width: 167px !important;
+    position: absolute;
+    right: 0px;
+  }
+  .corpHidden {
+    display: none;
+    visibility: hidden;
+  }
+  .footerWrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    background-image: url('/imgGeneralPage/footer_stars_desktop.png');
+    background-size: 1640px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .discoverNav {
+    justify-content: space-around;
+  }
+  .legalNav {
+    margin-top: 0px;
+    justify-content: space-around;
+  }
+  .footer {
+    margin-top: 280px;
+  }
+  .log {
+    margin-top: 0;
   }
 }

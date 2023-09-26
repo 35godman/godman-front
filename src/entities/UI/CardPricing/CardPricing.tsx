@@ -55,7 +55,12 @@ export const CardPricing: React.FC<CardPricingProps> = ({
         {benefits.map(benefit => {
           return (
             <div key={benefit} className={s.benefit}>
-              <img className={s.imgOk} src="icon_ok.png" alt="" /> {benefit}
+              <img
+                className={s.imgOk}
+                src="/imgGeneralPage/icon_ok.png"
+                alt=""
+              />{' '}
+              {benefit}
             </div>
           );
         })}

@@ -21,6 +21,7 @@ import {
 import { AxiosResponse } from 'axios/index';
 import { Chatbot } from '@/types/models/globals';
 import globalService from '@/shared/service/globalService';
+import { Footer } from '../Footer/Footer';
 const MainPage = () => {
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
 
@@ -40,7 +41,7 @@ const MainPage = () => {
   return (
     <div className={s.generalWrapper}>
       <main className={s.mainPage}>
-        {/* <MainPageHeader /> */}
+        <MainPageHeader />
         <Header />
       </main>
       <section className={s.experience}>
@@ -74,19 +75,15 @@ const MainPage = () => {
 
       {/* Feautures */}
       <section className={cn(s.section, s.futures)}>
-        <h2 className={s.h2}>
-          Rise with AI-
-          <br />
-          powered Sales
-        </h2>
-        <p className={cn(s.subtitleH1, s.textAfter)}>
+        <h2 className={s.h2}>Rise with AI- powered Sales</h2>
+        <p className={cn(s.subtitleH1, s.futuresText)}>
           Welcome to the world of Godman.AI — the powerful chatbot constructor
           for businesses that wants to make learning and selling customer
           products a breeze. Unleash the power of AI to take your business to
           new heights!
         </p>
         <div className={s.futuresCards}>
-          {cardsFutures.map((item) => {
+          {cardsFutures.map(item => {
             return (
               <CardFeatures
                 text={item.text}
@@ -99,27 +96,42 @@ const MainPage = () => {
       </section>
 
       {/* Cases */}
-      <section className={s.section}>
+      <section className={cn(s.section, s.cases)}>
         <h2 className={s.h2}>Loved by Our Users</h2>
-        <p className={cn(s.subtitleH1, s.textAfter)}>
+        <p className={cn(s.subtitleH1, s.casesText)}>
           Godman’s AI chatbot is built to grow and adapt as your business
           evolves, constantly improving sales tactics, and enhancing customer
           relationships!
         </p>
         <div className={s.casesCards}>
-          {cardsCases.map((item) => {
-            return (
-              <CardCases key={item.name} name={item.name} text={item.text} />
-            );
-          })}
+          {cardsCases
+            .reduce((acc: { name: string; text: string }[][], curr, index) => {
+              if (index % 2 === 0) {
+                acc.push([curr]);
+              } else {
+                acc[acc.length - 1].push(curr);
+              }
+              return acc;
+            }, [])
+            .map((pair, index) => (
+              <div key={index} className={s.cardPair}>
+                {pair.map(item => (
+                  <CardCases
+                    key={item.name}
+                    name={item.name}
+                    text={item.text}
+                  />
+                ))}
+              </div>
+            ))}
         </div>
       </section>
 
       {/* Pricing */}
-      <section className={s.section}>
+      <section className={cn(s.section, s.pricing)}>
         <h2 className={s.h2}>Discover Our Pricing Plans</h2>
         <div className={s.pricingCards}>
-          {cardsPricing.map((item) => {
+          {cardsPricing.map(item => {
             return (
               <CardPricing
                 key={item.cardName}
@@ -137,36 +149,36 @@ const MainPage = () => {
       {/* Help */}
       <section className={cn(s.section, s.help)}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
-        {helpToggleData.map((item) => {
-          return (
-            <HelpToggle
-              text={item.text}
-              heading={item.heading}
-              key={item.heading}
-            />
-          );
-        })}
-        <HelpToggle
-          text="Godman offers unparalleled AI chatbot functionality, top-notch customer engagement, and an ever-evolving platform built for modern businesses."
-          heading="Why choose Godman?"
-        />
+        <div className={s.toggleCards}>
+          {helpToggleData.map(item => {
+            return (
+              <HelpToggle
+                text={item.text}
+                heading={item.heading}
+                key={item.heading}
+              />
+            );
+          })}
+        </div>
       </section>
 
       {/* sta */}
       <section className={`${s.section} ${s.staSection}`}>
         <div className={s.staWrapper}>
-          <h2 className={s.h2}>
+          <h2 className={s.staText}>
             Supercharge your sales team and Build your first ChatGPT widget
             today!
           </h2>
-          <Input
-            className={s.inputSign}
-            placeholder="Enter your business email"
-          />
-          <BtnUniv type="regular" text={'Sign up free'} />
+          <div className={s.btnsStaWrap}>
+            <Input
+              className={s.inputSign}
+              placeholder="Enter your business email"
+            />
+            <BtnUniv clasName={s.regul} type="regular" text={'Sign up free'} />
+          </div>
         </div>
       </section>
-      <section className={s.section}>
+      <section className={cn(s.section, s.footer)}>
         <div className={s.footerWrapper}>
           <div className={s.logo}>
             <img
@@ -223,7 +235,7 @@ const MainPage = () => {
               Get Enterprise
             </Link>
           </div>
-          <div className={s.corp}>
+          <div className={cn(s.corp, s.corpHidden)}>
             © 2023 Godman.
             <br />
             AI All rights reserved

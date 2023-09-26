@@ -9,10 +9,9 @@
   height: 62px;
   padding-right: 32px;
   padding-left: 32px;
-  background: #030827;
+  /* background: #030827; */
   border-radius: 32px;
   border: 1px solid var(--gradient-hover, #2f55e5);
-  background: #030827;
   margin-left: 35px;
 }
 .featureLink {
