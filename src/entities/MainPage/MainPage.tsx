@@ -21,6 +21,7 @@ import {
 import { AxiosResponse } from 'axios/index';
 import { Chatbot } from '@/types/models/globals';
 import globalService from '@/shared/service/globalService';
+import { Footer } from '../Footer/Footer';
 const MainPage = () => {
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
 
@@ -177,7 +178,7 @@ const MainPage = () => {
           </div>
         </div>
       </section>
-      <section className={s.section}>
+      <section className={cn(s.section, s.footer)}>
         <div className={s.footerWrapper}>
           <div className={s.logo}>
             <img

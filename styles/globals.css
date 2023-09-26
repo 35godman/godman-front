@@ -28,6 +28,10 @@ ol li {
   list-style: decimal inside;
 }
 
-body {
-  cursor: url('/imgGeneralPage/hover_coursor.png'), auto;
+/* body {
+  cursor: url('../public/imgGeneralPage/hover_coursor.png'), auto;
+} */
+
+* {
+  cursor: url('../public/imgGeneralPage/hover_coursor.png'), auto;
 }

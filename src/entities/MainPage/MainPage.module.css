@@ -341,7 +341,8 @@
       url(/imgGeneralPage/Ellipse_desctop_general.png),
       url(/imgGeneralPage/bg_planet_web.png);
     background-size: 800px auto, 800px auto, 1440px auto;
-    background-position: -450px 600px, 950px 800px, center -70px;
+    background-position: calc(50% - 700px) 500px, calc(50% + 600px) 600px,
+      center -70px;
     background-repeat: no-repeat, no-repeat, no-repeat;
   }
   .godmansText {
@@ -432,8 +433,8 @@
     max-width: 1440px;
   }
   .help {
-    margin-top: 280px;
-    background-position: -150px -100px;
+    padding-top: 140px;
+    background-position: calc(50% - 750px) -100px;
     margin: 0 auto;
   }
   .toggleCards {
@@ -444,14 +445,16 @@
   .staSection {
     padding: 0 80px;
     background-image: url(/imgGeneralPage/sta_bg_desktop.png);
-    background-size: 100vw;
-    background-position: 0px 45px;
+    background-size: 1400px auto;
+    background-position: center 45px;
     background-repeat: no-repeat;
   }
   .staWrapper {
     padding: 120px;
     height: 490px;
     margin-bottom: 280px;
+    max-width: 1280px;
+    margin: 0 auto;
   }
   .staText {
     font-size: 51px;
@@ -486,10 +489,15 @@
   .footerWrapper {
     max-width: 1440px;
     margin: 0 auto;
+    padding-bottom: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-start;
+    background-image: url('/imgGeneralPage/footer_stars_desktop.png');
+    background-size: 1640px auto;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .discoverNav {
     justify-content: space-around;
@@ -497,5 +505,11 @@
   .legalNav {
     margin-top: 0px;
     justify-content: space-around;
+  }
+  .footer {
+    margin-top: 280px;
+  }
+  .log {
+    margin-top: 0;
   }
 }
