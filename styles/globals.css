@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  cursor: url('../public/imgGeneralPage/hover_coursor.png'),
+    url('../public/imgGeneralPage/hover_coursor.png'), default;
+}
+
+* {
+  cursor: url('../public/imgGeneralPage/hover_coursor.png'),
+    url('../public/imgGeneralPage/hover_coursor.png'), auto;
+}
+
 .big-placeholder::placeholder {
   font-size: 1.25rem;
 }
@@ -26,12 +36,4 @@ h5 {
 }
 ol li {
   list-style: decimal inside;
-}
-
-/* body {
-  cursor: url('../public/imgGeneralPage/hover_coursor.png'), auto;
-} */
-
-* {
-  cursor: url('../public/imgGeneralPage/hover_coursor.png'), auto;
 }
