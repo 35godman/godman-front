@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'antd/lib/button';
 import s from './Buttons.module.css';
+import cn from 'classnames';
 
 type btnProps = {
   width?: number;
@@ -9,6 +10,7 @@ type btnProps = {
   type: string;
   text: string;
   style?: any;
+  clasName?: string;
 };
 
 export const BtnUniv: React.FC<btnProps> = ({
@@ -18,13 +20,14 @@ export const BtnUniv: React.FC<btnProps> = ({
   type,
   text,
   style,
+  clasName,
 }) => {
   if (type === 'regular') {
     return (
       <Button
         style={{ width: `${width}px`, height: `${height}px`, ...style }}
         onClick={onClick}
-        className={s.btnRegular}
+        className={clasName ? cn(s.btnRegular, clasName) : s.btnRegular}
       >
         {text}
       </Button>

@@ -40,7 +40,7 @@ const MainPage = () => {
   return (
     <div className={s.generalWrapper}>
       <main className={s.mainPage}>
-        {/* <MainPageHeader /> */}
+        <MainPageHeader />
         <Header />
       </main>
       <section className={s.experience}>
@@ -164,15 +164,17 @@ const MainPage = () => {
       {/* sta */}
       <section className={`${s.section} ${s.staSection}`}>
         <div className={s.staWrapper}>
-          <h2 className={s.h2}>
+          <h2 className={s.staText}>
             Supercharge your sales team and Build your first ChatGPT widget
             today!
           </h2>
-          <Input
-            className={s.inputSign}
-            placeholder="Enter your business email"
-          />
-          <BtnUniv type="regular" text={'Sign up free'} />
+          <div className={s.btnsStaWrap}>
+            <Input
+              className={s.inputSign}
+              placeholder="Enter your business email"
+            />
+            <BtnUniv clasName={s.regul} type="regular" text={'Sign up free'} />
+          </div>
         </div>
       </section>
       <section className={s.section}>
@@ -232,7 +234,7 @@ const MainPage = () => {
               Get Enterprise
             </Link>
           </div>
-          <div className={s.corp}>
+          <div className={cn(s.corp, s.corpHidden)}>
             © 2023 Godman.
             <br />
             AI All rights reserved

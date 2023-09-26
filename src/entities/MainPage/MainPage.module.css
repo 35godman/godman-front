@@ -1,10 +1,4 @@
 .h1 {
-  /* color: rgba(255, 255, 255, 0.95);
-  font-family: Sofia Sans;
-  font-size: 72px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%; */
   color: rgba(255, 255, 255, 0.95);
   text-align: center;
   font-family: Sofia Sans;
@@ -13,7 +7,6 @@
   font-weight: 700;
   line-height: 100%; /* 36px */
 }
-/* 56 */
 .h2 {
   color: rgba(255, 255, 255, 0.95);
   text-align: center;
@@ -26,7 +19,6 @@
   letter-spacing: 0.6px;
   margin-bottom: 80px;
 }
-/* 28 */
 .h3 {
   color: rgba(255, 255, 255, 0.95);
   font-family: Sofia Sans;
@@ -35,7 +27,6 @@
   font-weight: 700;
   line-height: normal;
 }
-/* 24 */
 .subtitleH1 {
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
@@ -46,7 +37,6 @@
   line-height: 120%; /* 21.6px */
   letter-spacing: 0.36px;
 }
-/* 20 */
 .subtitleH2 {
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
@@ -57,7 +47,6 @@
   line-height: 120%; /* 24px */
   letter-spacing: 0.4px;
 }
-/* 18 */
 
 .generalWrapper {
   background: #030827;
@@ -180,6 +169,19 @@
   background-size: 100vw;
   background-position: 0px 115px;
   background-repeat: no-repeat;
+}
+
+.staText {
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  /* h2 mob */
+  font-family: Sofia Sans;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 30px */
+  letter-spacing: 0.6px;
+  margin-bottom: 80px;
 }
 
 .inputSign {
@@ -332,13 +334,15 @@
   }
   .experience {
     background: transparent;
-    background-image: url('');
+    background-image: none;
   }
   .generalWrapper {
-    background-image: url('/imgGeneralPage/bg_planet_web.png');
-    background-size: 100vw;
-    background-position: 0px 0px;
-    background-repeat: no-repeat;
+    background-image: url(/imgGeneralPage/Ellipse_desctop_general.png),
+      url(/imgGeneralPage/Ellipse_desctop_general.png),
+      url(/imgGeneralPage/bg_planet_web.png);
+    background-size: 800px auto, 800px auto, 1440px auto;
+    background-position: -450px 600px, 950px 800px, center -70px;
+    background-repeat: no-repeat, no-repeat, no-repeat;
   }
   .godmansText {
     display: block;
@@ -372,6 +376,9 @@
   .benifitSubtitle {
     font-size: 32px;
   }
+  .futures {
+    background-image: none;
+  }
   .futuresText {
     max-width: 712px;
     margin: 0 auto;
@@ -387,21 +394,33 @@
     margin: 0 auto;
   }
   .cases {
-    margin-top: 280px;
+    padding-top: 280px;
+    padding-bottom: 140px;
+    background-image: url(/imgGeneralPage/Ellipse_desctop_general.png);
+    background-size: 800px auto;
+    background-position: center 215px;
+    background-repeat: no-repeat;
   }
   .casesText {
     max-width: 728px;
     margin: 0 auto;
   }
   .casesCards {
+    margin: 0 auto;
     margin-top: 80px;
+    max-width: 1440px;
     display: flex;
     flex-wrap: wrap;
     padding: 0 100px;
     justify-content: space-evenly;
   }
   .pricing {
-    margin-top: 280px;
+    margin-top: 140px;
+    padding-bottom: 140px;
+    background-image: url(/imgGeneralPage/Ellipse_desctop_general_deg.png);
+    background-size: 1300px auto;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .pricingCards {
     margin: 0 auto;
@@ -414,12 +433,69 @@
   }
   .help {
     margin-top: 280px;
-    max-width: 1440px;
+    background-position: -150px -100px;
     margin: 0 auto;
   }
   .toggleCards {
     padding: 0 80px;
     margin-top: 80px;
     padding-bottom: 280px;
+  }
+  .staSection {
+    padding: 0 80px;
+    background-image: url(/imgGeneralPage/sta_bg_desktop.png);
+    background-size: 100vw;
+    background-position: 0px 45px;
+    background-repeat: no-repeat;
+  }
+  .staWrapper {
+    padding: 120px;
+    height: 490px;
+    margin-bottom: 280px;
+  }
+  .staText {
+    font-size: 51px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%; /* 66.3px */
+    letter-spacing: 1.02px;
+    max-width: 882px;
+  }
+  .btnsStaWrap {
+    width: 500px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .inputSign {
+    width: 500px !important;
+    min-width: 500px;
+    max-width: 500px;
+    padding-right: 235px;
+  }
+  .regul {
+    width: 167px !important;
+    position: absolute;
+    right: 0px;
+  }
+  .corpHidden {
+    display: none;
+    visibility: hidden;
+  }
+  .footerWrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+  .discoverNav {
+    justify-content: space-around;
+  }
+  .legalNav {
+    margin-top: 0px;
+    justify-content: space-around;
   }
 }
