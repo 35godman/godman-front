@@ -22,6 +22,7 @@ import { AxiosResponse } from 'axios/index';
 import { Chatbot } from '@/types/models/globals';
 import globalService from '@/shared/service/globalService';
 import { Footer } from '../Footer/Footer';
+
 const MainPage = () => {
   const [chatbot, setChatbot] = useState<Chatbot | null>(null);
 
@@ -83,7 +84,7 @@ const MainPage = () => {
           new heights!
         </p>
         <div className={s.futuresCards}>
-          {cardsFutures.map(item => {
+          {cardsFutures.map((item) => {
             return (
               <CardFeatures
                 text={item.text}
@@ -115,7 +116,7 @@ const MainPage = () => {
             }, [])
             .map((pair, index) => (
               <div key={index} className={s.cardPair}>
-                {pair.map(item => (
+                {pair.map((item) => (
                   <CardCases
                     key={item.name}
                     name={item.name}
@@ -131,7 +132,7 @@ const MainPage = () => {
       <section className={cn(s.section, s.pricing)}>
         <h2 className={s.h2}>Discover Our Pricing Plans</h2>
         <div className={s.pricingCards}>
-          {cardsPricing.map(item => {
+          {cardsPricing.map((item) => {
             return (
               <CardPricing
                 key={item.cardName}
@@ -150,7 +151,7 @@ const MainPage = () => {
       <section className={cn(s.section, s.help)}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
         <div className={s.toggleCards}>
-          {helpToggleData.map(item => {
+          {helpToggleData.map((item) => {
             return (
               <HelpToggle
                 text={item.text}

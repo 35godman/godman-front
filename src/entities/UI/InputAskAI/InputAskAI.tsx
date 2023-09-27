@@ -6,16 +6,14 @@ import { AnswerComp } from './AnswerComp';
 import { AskComp } from './AskComp';
 import { useChatbot } from '@/features/Chatbot/model/useChatbot';
 import { Chatbot } from '@/types/models/globals';
-import { ChatMessage } from '@/entities/ChatMessage/ChatMessage';
 import { Loader } from '@/features/Chatbot/ui/Loader';
-
+import CloseChatIcon from '../../../../public/svg/closeChat.svg';
 type InputAskAIProps = {
   chatbot: Chatbot;
 };
 
 export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
-  const [inputValue, setInputValue] = useState('');
-  const [showChat, setShowChat] = useState(true);
+  const [showChat, setShowChat] = useState(false);
   const messagesBlock = useRef<HTMLDivElement | null>(null);
   const {
     questionValue,
@@ -27,62 +25,65 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
     sendMessage,
   } = useChatbot(chatbot, messagesBlock);
 
-  // useEffect(() => {
-  //   setShowChat(questionValue.length > 0);
-  // }, [questionValue]);
+  useEffect(() => {
+    questionValue.length > 0 && setShowChat(true);
+  }, [questionValue]);
 
   return (
-    <div className={showChat ? cn(s.chat, s.open) : s.chat}>
+    <div className={'flex w-full'}>
+      <div className={showChat ? cn(s.chat, s.open) : s.chat}>
+        {showChat && (
+          <div className={s.messagesWrapper}>
+            {chatbot.settings.initial_messages.map((msg) => {
+              return <AnswerComp text={msg} key={msg} />;
+            })}
+            {messages.map((msg) => {
+              if (msg.role === 'user') {
+                return <AnswerComp text={msg.content} key={msg._id} />;
+              } else {
+                return <AskComp text={msg.content} key={msg._id} />;
+              }
+            })}
+            {currentAnswer ? (
+              <div>
+                <AnswerComp text={currentAnswer} />
+              </div>
+            ) : (
+              isBotAnswering && (
+                <Loader
+                  color_bubble={'#fff'}
+                  color_container={chatbot.settings.bot_message_color}
+                />
+              )
+            )}
+          </div>
+        )}
+        <div className={s.wrapper}>
+          <Input
+            className={s.input}
+            placeholder="Ask the AI about Godman"
+            value={questionValue}
+            onKeyDown={async (e) => {
+              if (e.key === 'Enter' && questionValue.length > 3) {
+                await sendMessage(questionValue);
+              }
+            }}
+            onChange={(e) => setQuestionValue(e.target.value)}
+          />
+          <Button
+            className={s.btn}
+            onClick={() => sendMessage(questionValue)}
+            loading={buttonLoading}
+          >
+            Enter
+          </Button>
+        </div>
+      </div>
       {showChat && (
-        <div className={s.messagesWrapper}>
-          {chatbot.settings.initial_messages.map((msg) => {
-            return <AnswerComp text={msg} key={msg} />;
-          })}
-          {messages.map((msg) => {
-            if (msg.role === 'user') {
-              return <AnswerComp text={msg.content} key={msg._id} />;
-            } else {
-              return <AskComp text={msg.content} key={msg._id} />;
-            }
-          })}
-          {currentAnswer ? (
-            <div>
-              <AnswerComp text={currentAnswer} />
-            </div>
-          ) : (
-            isBotAnswering && (
-              <Loader
-                color_bubble={'#fff'}
-                color_container={chatbot.settings.bot_message_color}
-              />
-            )
-          )}
-          {/*<AnswerComp text="What is the Godman.AI?" />*/}
-          {/*<AskComp text="Godman.AI is a n IDE (Integrated Development Enviroment) that is designed for constructing your own chatbot in collaboration with a powerfull AI " />*/}
-          {/*<AnswerComp text="What is the Godman.AI?" />*/}
-          {/*<AskComp text="Godman.AI is a n IDE (Integrated Development Enviroment) that is designed for constructing your own chatbot in collaboration with a powerfull AI " />*/}
+        <div onClick={() => setShowChat(false)} className={s.closeIcon}>
+          <CloseChatIcon />
         </div>
       )}
-      <div className={s.wrapper}>
-        <Input
-          className={s.input}
-          placeholder="Ask the AI about Godman"
-          value={questionValue}
-          onKeyDown={async (e) => {
-            if (e.key === 'Enter' && questionValue.length > 3) {
-              await sendMessage(questionValue);
-            }
-          }}
-          onChange={(e) => setQuestionValue(e.target.value)}
-        />
-        <Button
-          className={s.btn}
-          onClick={() => sendMessage(questionValue)}
-          loading={buttonLoading}
-        >
-          Enter
-        </Button>
-      </div>
     </div>
   );
 };
