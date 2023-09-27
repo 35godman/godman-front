@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './BurgerIcon.css';
 
 type BurgerIconProps = {
   externalSetState?: (state: boolean) => void;
+  externalConst?: boolean;
 };
-export const BurgerIcon: React.FC<BurgerIconProps> = ({ externalSetState }) => {
+export const BurgerIcon: React.FC<BurgerIconProps> = ({
+  externalSetState,
+  externalConst,
+}) => {
   const [isCrossed, setIsCrossed] = useState(false);
 
   const toggleCross = () => {
@@ -13,6 +17,11 @@ export const BurgerIcon: React.FC<BurgerIconProps> = ({ externalSetState }) => {
       externalSetState(!isCrossed);
     }
   };
+  useEffect(() => {
+    if (externalConst !== undefined) {
+      setIsCrossed(externalConst);
+    }
+  }, [externalConst]);
 
   return (
     <svg

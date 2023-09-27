@@ -35,13 +35,21 @@ const MainPage = () => {
     setChatbot(response.data);
   };
 
+  const smoothScrollTo = (id: any, event: any) => {
+    event.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   useEffect(() => {
     fetchChatbot();
   }, []);
 
   return (
     <div className={s.generalWrapper}>
-      <main className={s.mainPage}>
+      <main id="Home" className={s.mainPage}>
         <MainPageHeader />
         <Header />
       </main>
@@ -75,7 +83,7 @@ const MainPage = () => {
       </section>
 
       {/* Feautures */}
-      <section className={cn(s.section, s.futures)}>
+      <section id="Feautures" className={cn(s.section, s.futures)}>
         <h2 className={s.h2}>Rise with AI- powered Sales</h2>
         <p className={cn(s.subtitleH1, s.futuresText)}>
           Welcome to the world of Godman.AI — the powerful chatbot constructor
@@ -84,7 +92,7 @@ const MainPage = () => {
           new heights!
         </p>
         <div className={s.futuresCards}>
-          {cardsFutures.map((item) => {
+          {cardsFutures.map(item => {
             return (
               <CardFeatures
                 text={item.text}
@@ -97,7 +105,7 @@ const MainPage = () => {
       </section>
 
       {/* Cases */}
-      <section className={cn(s.section, s.cases)}>
+      <section id="Cases" className={cn(s.section, s.cases)}>
         <h2 className={s.h2}>Loved by Our Users</h2>
         <p className={cn(s.subtitleH1, s.casesText)}>
           Godman’s AI chatbot is built to grow and adapt as your business
@@ -116,7 +124,7 @@ const MainPage = () => {
             }, [])
             .map((pair, index) => (
               <div key={index} className={s.cardPair}>
-                {pair.map((item) => (
+                {pair.map(item => (
                   <CardCases
                     key={item.name}
                     name={item.name}
@@ -129,10 +137,10 @@ const MainPage = () => {
       </section>
 
       {/* Pricing */}
-      <section className={cn(s.section, s.pricing)}>
+      <section id="Pricing" className={cn(s.section, s.pricing)}>
         <h2 className={s.h2}>Discover Our Pricing Plans</h2>
         <div className={s.pricingCards}>
-          {cardsPricing.map((item) => {
+          {cardsPricing.map(item => {
             return (
               <CardPricing
                 key={item.cardName}
@@ -148,10 +156,10 @@ const MainPage = () => {
       </section>
 
       {/* Help */}
-      <section className={cn(s.section, s.help)}>
+      <section id="Help" className={cn(s.section, s.help)}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
         <div className={s.toggleCards}>
-          {helpToggleData.map((item) => {
+          {helpToggleData.map(item => {
             return (
               <HelpToggle
                 text={item.text}
@@ -164,7 +172,7 @@ const MainPage = () => {
       </section>
 
       {/* sta */}
-      <section className={`${s.section} ${s.staSection}`}>
+      <section id="Sta" className={`${s.section} ${s.staSection}`}>
         <div className={s.staWrapper}>
           <h2 className={s.staText}>
             Supercharge your sales team and Build your first ChatGPT widget
@@ -191,19 +199,39 @@ const MainPage = () => {
           </div>
           <div className={s.discoverNav}>
             <p className={s.footerSubtitle}>Discover</p>
-            <Link className={s.footerlink} href={'/'}>
+            <Link
+              onClick={e => smoothScrollTo('Home', e)}
+              className={s.footerlink}
+              href={'/'}
+            >
               Home
             </Link>
-            <Link className={s.footerlink} href={'/'}>
+            <Link
+              onClick={e => smoothScrollTo('Features', e)}
+              className={s.footerlink}
+              href={'/'}
+            >
               Features
             </Link>
-            <Link className={s.footerlink} href={'/'}>
+            <Link
+              onClick={e => smoothScrollTo('Cases', e)}
+              className={s.footerlink}
+              href={'/'}
+            >
               Cases
             </Link>
-            <Link className={s.footerlink} href={'/'}>
+            <Link
+              onClick={e => smoothScrollTo('Pricing', e)}
+              className={s.footerlink}
+              href={'/'}
+            >
               Pricing
             </Link>
-            <Link className={s.footerlink} href={'/'}>
+            <Link
+              onClick={e => smoothScrollTo('Help', e)}
+              className={s.footerlink}
+              href={''}
+            >
               Help
             </Link>
           </div>
@@ -226,13 +254,25 @@ const MainPage = () => {
             <Link className={s.footerLoglink} href={'/login'}>
               Log in
             </Link>
-            <Link className={s.footerLoglink} href={'/'}>
+            <Link
+              onClick={e => smoothScrollTo('Get_Basic', e)}
+              className={s.footerLoglink}
+              href={'/'}
+            >
               Get Basic
             </Link>
-            <Link className={s.footerLoglink} href={'/'}>
+            <Link
+              onClick={e => smoothScrollTo('Get_Pro', e)}
+              className={s.footerLoglink}
+              href={''}
+            >
               Get Pro
             </Link>
-            <Link className={s.footerLoglink} href={'/'}>
+            <Link
+              onClick={e => smoothScrollTo('Get_Enterprise', e)}
+              className={s.footerLoglink}
+              href={'/'}
+            >
               Get Enterprise
             </Link>
           </div>

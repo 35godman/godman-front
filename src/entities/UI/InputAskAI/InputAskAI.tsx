@@ -25,37 +25,37 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
     sendMessage,
   } = useChatbot(chatbot, messagesBlock);
 
-  useEffect(() => {
-    questionValue.length > 0 && setShowChat(true);
-  }, [questionValue]);
+  // useEffect(() => {
+  //   questionValue.length > 0 && setShowChat(true);
+  // }, [questionValue]);
 
   return (
     <div className={'flex w-full'}>
       <div className={showChat ? cn(s.chat, s.open) : s.chat}>
         {showChat && (
           <div className={s.messagesWrapper}>
-            {chatbot.settings.initial_messages.map((msg) => {
+            {chatbot.settings.initial_messages.map(msg => {
               return <AnswerComp text={msg} key={msg} />;
             })}
-            {messages.map((msg) => {
+            {messages.map(msg => {
               if (msg.role === 'user') {
                 return <AnswerComp text={msg.content} key={msg._id} />;
               } else {
                 return <AskComp text={msg.content} key={msg._id} />;
               }
             })}
-            {currentAnswer ? (
-              <div>
-                <AnswerComp text={currentAnswer} />
-              </div>
-            ) : (
+            {/* {currentAnswer ? ( */}
+            <div>
+              <AnswerComp text={currentAnswer} />
+            </div>
+            {/* ) : (
               isBotAnswering && (
                 <Loader
                   color_bubble={'#fff'}
                   color_container={chatbot.settings.bot_message_color}
                 />
               )
-            )}
+            )} */}
           </div>
         )}
         <div className={s.wrapper}>
@@ -63,16 +63,19 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
             className={s.input}
             placeholder="Ask the AI about Godman"
             value={questionValue}
-            onKeyDown={async (e) => {
+            onKeyDown={async e => {
               if (e.key === 'Enter' && questionValue.length > 3) {
                 await sendMessage(questionValue);
               }
             }}
-            onChange={(e) => setQuestionValue(e.target.value)}
+            onChange={e => setQuestionValue(e.target.value)}
           />
           <Button
             className={s.btn}
-            onClick={() => sendMessage(questionValue)}
+            onClick={() => {
+              sendMessage(questionValue);
+              setShowChat(true);
+            }}
             loading={buttonLoading}
           >
             Enter

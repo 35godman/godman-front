@@ -9,6 +9,14 @@ import { useRouter } from 'next/router';
 export const Header = () => {
   const [externalState, setExternalState] = useState(false);
   const router = useRouter();
+  const smoothScrollTo = (id: any, event: any) => {
+    event.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setExternalState(false);
+    }
+  };
   return (
     <header className={s.header}>
       <div className={s.navWrapper}>
@@ -22,22 +30,41 @@ export const Header = () => {
           />
           <p className={s.text}>Godman.AI</p>
         </div>
-        <BurgerIcon externalSetState={setExternalState} />
+        <BurgerIcon
+          externalConst={externalState}
+          externalSetState={setExternalState}
+        />
       </div>
       <div className={`${s.navPanel} ${externalState ? s.open : ''}`}>
-        <Link className={s.link} href="/">
+        <Link
+          onClick={e => smoothScrollTo('Feautures', e)}
+          className={s.link}
+          href=""
+        >
           Feautures
         </Link>
-        <Link className={s.link} href="/">
+        <Link
+          onClick={e => smoothScrollTo('Cases', e)}
+          className={s.link}
+          href="/"
+        >
           Cases
         </Link>
-        <Link className={s.link} href="/">
+        <Link
+          onClick={e => smoothScrollTo('Pricing', e)}
+          className={s.link}
+          href="/"
+        >
           Pricing
         </Link>
-        <Link className={s.link} href="/about">
+        <Link
+          onClick={e => smoothScrollTo('Help', e)}
+          className={s.link}
+          href=""
+        >
           Help
         </Link>
-        <Link className={s.link} href="/contact">
+        <Link className={s.link} href="">
           English
         </Link>
         <BtnUniv

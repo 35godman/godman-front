@@ -37,3 +37,7 @@ h5 {
 ol li {
   list-style: decimal inside;
 }
+
+html {
+  scroll-behavior: smooth;
+}

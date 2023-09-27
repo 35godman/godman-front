@@ -20,24 +20,29 @@ export const CardPricing: React.FC<CardPricingProps> = ({
   const [src, setSrc] = useState<string>('');
   const [btnType, setType] = useState<string>('regular');
   const [btnText, setText] = useState<string>('');
+  const [id, setId] = useState<string>('');
   useEffect(() => {
     switch (logo) {
       case 'basic':
         setSrc('imgGeneralPage/ellipse_basic.png');
         setText('Get Basic');
+        setId('Get_Basic');
         break;
       case 'pro':
         setSrc('imgGeneralPage/ellipse_pro.png');
         setText('Get Pro');
+        setId('Get_Pro');
         break;
       case 'enterprise':
         setSrc('imgGeneralPage/ellipse_enterprise.png');
         setText('Get Enterprise');
+        setId('Get_Enterprise');
         break;
     }
   }, []);
   return (
     <div
+      id={id}
       className={s.cardWrapper}
       onMouseEnter={() => setType('primary')}
       onMouseLeave={() => setType('regular')}

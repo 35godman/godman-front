@@ -1,5 +1,11 @@
 .header {
   cursor: url('/imgGeneralPage/hover_coursor.png'), auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 100;
 }
 
 .navWrapper {
@@ -13,7 +19,8 @@
   align-items: center;
   border-radius: 32px;
   border: 1px solid #2f55e5;
-  background: rgba(94, 198, 250, 0.05);
+  background: #081332;
+  background-color: #081332;
 }
 .text {
   color: rgba(255, 255, 255, 0.95);
@@ -41,13 +48,16 @@
   display: flex;
   text-align: center;
   flex-direction: column;
+  background: #020827;
+  background-color: #020827;
 }
 
 .open {
   transition: height 0.3s ease-in-out;
   transition: margin-top 0.3s ease-in-out;
-  margin-top: 80px;
+  /* margin-top: 80px; */
   padding: 16px 0;
+  padding-top: 80px;
   height: 100vh;
 }
 .link {
