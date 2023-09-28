@@ -5,7 +5,6 @@
 body {
   cursor: url('../public/imgGeneralPage/hover_coursor.png'),
     url('../public/imgGeneralPage/hover_coursor.png'), default;
-  /*background-color: #020827;*/
 }
 
 * {
@@ -41,4 +40,8 @@ ol li {
 
 html {
   scroll-behavior: smooth;
+}
+
+.background-dg-blue {
+  background-color: #020827;
 }

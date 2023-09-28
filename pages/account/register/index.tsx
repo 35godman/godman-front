@@ -1,16 +1,21 @@
 import React from 'react';
-import s from '@/entities/UI/LogIn/LogIn.module.css';
-import { Input } from 'antd';
-import { BtnUniv } from '@/entities/UI/Buttons/Buttons';
-import Link from 'next/link';
 import { Register } from '@/features/Register';
+import { LogIn } from '@/features/Login';
 
 const RegistrationPage = () => {
   return (
     <>
-      <Register />
+      <div
+        className={
+          'max-w-full min-h-screen background-dg-blue flex items-center'
+        }
+      >
+        <Register />
+      </div>
     </>
   );
 };
-
+export async function getServerSideProps() {
+  return { props: { noLayout: true } };
+}
 export default RegistrationPage;

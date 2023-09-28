@@ -81,7 +81,7 @@ export const cardsPricing = [
       'Scalable Solution',
       '40 Chatbots',
     ],
-    price: 299.9,
+    price: 299.99,
     logo: 'enterprise',
   },
 ];
