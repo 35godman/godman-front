@@ -18,7 +18,7 @@ import {
   cardsPricing,
   helpToggleData,
 } from './mainPageData';
-import { AxiosResponse } from 'axios/index';
+import { AxiosResponse } from 'axios';
 import { Chatbot } from '@/types/models/globals';
 import globalService from '@/shared/service/globalService';
 import { Footer } from '../Footer/Footer';
@@ -92,7 +92,7 @@ const MainPage = () => {
           new heights!
         </p>
         <div className={s.futuresCards}>
-          {cardsFutures.map(item => {
+          {cardsFutures.map((item) => {
             return (
               <CardFeatures
                 text={item.text}
@@ -124,7 +124,7 @@ const MainPage = () => {
             }, [])
             .map((pair, index) => (
               <div key={index} className={s.cardPair}>
-                {pair.map(item => (
+                {pair.map((item) => (
                   <CardCases
                     key={item.name}
                     name={item.name}
@@ -140,7 +140,7 @@ const MainPage = () => {
       <section id="Pricing" className={cn(s.section, s.pricing)}>
         <h2 className={s.h2}>Discover Our Pricing Plans</h2>
         <div className={s.pricingCards}>
-          {cardsPricing.map(item => {
+          {cardsPricing.map((item) => {
             return (
               <CardPricing
                 key={item.cardName}
@@ -159,7 +159,7 @@ const MainPage = () => {
       <section id="Help" className={cn(s.section, s.help)}>
         <h2 className={s.h2}>Frequently Asked Questions</h2>
         <div className={s.toggleCards}>
-          {helpToggleData.map(item => {
+          {helpToggleData.map((item) => {
             return (
               <HelpToggle
                 text={item.text}
@@ -210,35 +210,35 @@ const MainPage = () => {
           <div className={s.discoverNav}>
             <p className={s.footerSubtitle}>Discover</p>
             <Link
-              onClick={e => smoothScrollTo('Home', e)}
+              onClick={(e) => smoothScrollTo('Home', e)}
               className={s.footerlink}
               href={'/'}
             >
               Home
             </Link>
             <Link
-              onClick={e => smoothScrollTo('Features', e)}
+              onClick={(e) => smoothScrollTo('Features', e)}
               className={s.footerlink}
               href={'/'}
             >
               Features
             </Link>
             <Link
-              onClick={e => smoothScrollTo('Cases', e)}
+              onClick={(e) => smoothScrollTo('Cases', e)}
               className={s.footerlink}
               href={'/'}
             >
               Cases
             </Link>
             <Link
-              onClick={e => smoothScrollTo('Pricing', e)}
+              onClick={(e) => smoothScrollTo('Pricing', e)}
               className={s.footerlink}
               href={'/'}
             >
               Pricing
             </Link>
             <Link
-              onClick={e => smoothScrollTo('Help', e)}
+              onClick={(e) => smoothScrollTo('Help', e)}
               className={s.footerlink}
               href={''}
             >
@@ -265,21 +265,21 @@ const MainPage = () => {
               Log in
             </Link>
             <Link
-              onClick={e => smoothScrollTo('Get_Basic', e)}
+              onClick={(e) => smoothScrollTo('Get_Basic', e)}
               className={s.footerLoglink}
               href={'/'}
             >
               Get Basic
             </Link>
             <Link
-              onClick={e => smoothScrollTo('Get_Pro', e)}
+              onClick={(e) => smoothScrollTo('Get_Pro', e)}
               className={s.footerLoglink}
               href={''}
             >
               Get Pro
             </Link>
             <Link
-              onClick={e => smoothScrollTo('Get_Enterprise', e)}
+              onClick={(e) => smoothScrollTo('Get_Enterprise', e)}
               className={s.footerLoglink}
               href={'/'}
             >

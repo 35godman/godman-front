@@ -1,7 +1,4 @@
 import React from 'react';
-import { Login } from '@/features/Login/ui/Login';
-import { RegistrationForm } from '@/features/Register';
-import { Tabs } from 'antd';
 import MainPage from '@/entities/MainPage/MainPage';
 
 const index = () => {

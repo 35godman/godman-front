@@ -54,6 +54,7 @@
 }
 
 .input {
+  color: white;
   margin-top: 42px;
   border-radius: 32px;
   border: 2px solid rgba(94, 198, 250, 0.5);

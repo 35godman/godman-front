@@ -1,9 +1,8 @@
 export type LoginValues = {
-  usernames: string;
+  email: string;
   password: string;
 };
 export type RegisterValues = {
-  username: string;
   password: string;
   email: string;
 };
