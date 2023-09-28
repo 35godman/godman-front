@@ -189,14 +189,24 @@ const MainPage = () => {
       </section>
       <section className={cn(s.section, s.footer)}>
         <div className={s.footerWrapper}>
-          <div className={s.logo}>
-            <img
-              className={s.imgFooter}
-              src={'imgGeneralPage/ellipse_pro.png'}
-              alt=""
-            />
-            <p className={s.logoText}>Godman.AI</p>
+          <div className={s.logoWrapper}>
+            <div className={s.logo}>
+              <img
+                className={s.imgFooter}
+                src={'imgGeneralPage/ellipse_pro.png'}
+                alt=""
+              />
+              <p className={s.logoText}>Godman.AI</p>
+            </div>
+            <div className={s.hiddenCorp}>
+              <div className={s.corpDesctop}>
+                © 2023 Godman.
+                <br />
+                AI All rights reserved
+              </div>
+            </div>
           </div>
+
           <div className={s.discoverNav}>
             <p className={s.footerSubtitle}>Discover</p>
             <Link

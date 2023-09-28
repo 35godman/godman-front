@@ -72,3 +72,22 @@
     max-width: 400px;
   }
 }
+
+@media (min-width: 700px) {
+  .chat.open {
+    padding: 80px !important;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .chat.open .input {
+    max-width: 720px;
+  }
+  .wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    margin-top: 40px;
+  }
+  .generalWrapper {
+    margin-top: 30px;
+  }
+}

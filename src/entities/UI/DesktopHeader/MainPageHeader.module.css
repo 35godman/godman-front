@@ -1,5 +1,6 @@
 .headerWrapper {
   padding: 0 56px;
+  padding-top: 15px;
   display: flex;
   align-items: center;
   width: 100%;
