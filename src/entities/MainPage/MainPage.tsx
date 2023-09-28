@@ -10,7 +10,6 @@ import { Header } from '../UI/Header/Header';
 import cn from 'classnames';
 import { Input } from 'antd';
 import Link from 'next/link';
-import { LogIn } from '../UI/LogIn/LogIn';
 import MainPageHeader from '@/entities/UI/DesktopHeader/MainPageHeader';
 import {
   cardsFutures,

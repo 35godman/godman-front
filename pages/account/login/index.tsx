@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogIn } from '@/features/Login/ui/Login';
+import { LogIn } from '@/features/Login';
 
 const LoginPage = () => {
   return (
