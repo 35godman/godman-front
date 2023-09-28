@@ -25,29 +25,34 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
     sendMessage,
   } = useChatbot(chatbot, messagesBlock);
 
-  // useEffect(() => {
-  //   questionValue.length > 0 && setShowChat(true);
-  // }, [questionValue]);
+  const scrollToTheEndOfChat = (
+    ref: React.RefObject<HTMLDivElement> | null,
+  ) => {
+    if (ref && ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  };
 
   return (
     <div className={'flex w-full'}>
       <div className={showChat ? cn(s.chat, s.open) : s.chat}>
         {showChat && (
-          <div className={s.messagesWrapper}>
-            {chatbot.settings.initial_messages.map(msg => {
+          <div className={s.messagesWrapper} ref={messagesBlock}>
+            {chatbot.settings.initial_messages.map((msg) => {
               return <AnswerComp text={msg} key={msg} />;
             })}
-            {messages.map(msg => {
+            {messages.map((msg) => {
               if (msg.role === 'user') {
                 return <AnswerComp text={msg.content} key={msg._id} />;
               } else {
                 return <AskComp text={msg.content} key={msg._id} />;
               }
             })}
-            {/* {currentAnswer ? ( */}
-            <div>
-              <AnswerComp text={currentAnswer} />
-            </div>
+            {currentAnswer && (
+              <div>
+                <AnswerComp text={currentAnswer} />
+              </div>
+            )}
             {/* ) : (
               isBotAnswering && (
                 <Loader
@@ -63,18 +68,21 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
             className={s.input}
             placeholder="Ask the AI about Godman"
             value={questionValue}
-            onKeyDown={async e => {
+            onKeyDown={async (e) => {
               if (e.key === 'Enter' && questionValue.length > 3) {
+                scrollToTheEndOfChat(messagesBlock);
                 await sendMessage(questionValue);
+                setShowChat(true);
               }
             }}
-            onChange={e => setQuestionValue(e.target.value)}
+            onChange={(e) => setQuestionValue(e.target.value)}
           />
           <Button
             className={s.btn}
-            onClick={() => {
-              sendMessage(questionValue);
+            onClick={async () => {
+              scrollToTheEndOfChat(messagesBlock);
               setShowChat(true);
+              await sendMessage(questionValue);
             }}
             loading={buttonLoading}
           >
