@@ -11,6 +11,7 @@ type btnProps = {
   text: string;
   style?: any;
   clasName?: string;
+  disabled?: boolean;
 };
 
 export const BtnUniv: React.FC<btnProps> = ({
@@ -21,10 +22,12 @@ export const BtnUniv: React.FC<btnProps> = ({
   text,
   style,
   clasName,
+  disabled,
 }) => {
   if (type === 'regular') {
     return (
       <Button
+        disabled={disabled}
         style={{ width: `${width}px`, height: `${height}px`, ...style }}
         onClick={onClick}
         className={clasName ? cn(s.btnRegular, clasName) : s.btnRegular}
@@ -35,6 +38,7 @@ export const BtnUniv: React.FC<btnProps> = ({
   } else {
     return (
       <Button
+        disabled={disabled}
         style={{ width: `${width}px`, height: `${height}px`, ...style }}
         onClick={onClick}
         className={s.btnPrimary}

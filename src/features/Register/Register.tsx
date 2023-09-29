@@ -1,6 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import s from '@/features/Login/ui/LogIn.module.css';
-import { Form, Input, message } from 'antd';
+import sr from './Register.module.css';
+import { Form, Input, message, Typography } from 'antd';
 import { BtnUniv } from '@/entities/UI/Buttons/Buttons';
 import Link from 'next/link';
 import { RegisterValues } from '@/types/types';
@@ -16,7 +17,15 @@ type RegistrationFormProps = {
 export const Register: FC<RegistrationFormProps> = ({ onSuccess }) => {
   const router = useRouter();
   const [password, setPassword] = useState('');
+  const [verifyPassword, setVerifyPassword] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
   const [login, setLogin] = useState('');
+  const [username, setUsername] = useState('');
+  useEffect(() => {
+    if (password && username && verifyPassword && login) {
+      setIsVerified(password === verifyPassword);
+    }
+  }, [password, verifyPassword]);
 
   const registerHandler = async (values: RegisterValues) => {
     const response = await registUser(values);
@@ -27,7 +36,7 @@ export const Register: FC<RegistrationFormProps> = ({ onSuccess }) => {
   };
 
   return (
-    <div className={s.lodInWrapper}>
+    <div className={`${s.lodInWrapper} ${sr.regWrapper}`}>
       <div className={s.headerWrapper}>
         <div className={s.logoLogin}>
           <img
@@ -47,51 +56,87 @@ export const Register: FC<RegistrationFormProps> = ({ onSuccess }) => {
 
       <div className={s.bodyWrapper}>
         <Form name="login" labelCol={{ span: 8 }} autoComplete="off">
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your username!',
-              },
-            ]}
-          >
-            <Input
-              value={login}
-              className={s.input}
-              placeholder="Enter your email"
-              onChange={(e) => setLogin(e.target.value)}
-            />
-          </Form.Item>
+          <div className={`flex flex-col text-white ${s.mt20px}`}>
+            <h3 className={s.text}>Enter Username</h3>
+            <Form.Item
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your username!',
+                },
+              ]}
+            >
+              <Input
+                value={username}
+                className={`${s.input} ${s.mt20px}`}
+                placeholder="Enter your username"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Form.Item>
+          </div>
+          <div className={'flex flex-col text-white'}>
+            <h3 className={s.text}>Enter Email</h3>
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your email!',
+                },
+              ]}
+            >
+              <Input
+                value={login}
+                className={`${s.input} ${s.mt20px}`}
+                placeholder="Enter your email"
+                onChange={(e) => setLogin(e.target.value)}
+              />
+            </Form.Item>
+          </div>
 
-          <Form.Item
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: <FormattedMessage id={'enter_pass'} />,
-              },
-            ]}
-          >
+          <div className={'flex flex-col text-white'}>
+            <h3 className={s.text}>Enter Password</h3>
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: <FormattedMessage id={'enter_pass'} />,
+                },
+              ]}
+            >
+              <Input
+                value={password}
+                className={`${s.input} ${s.mt20px}`}
+                placeholder="Enter your password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Item>
+          </div>
+          <div className={'flex flex-col text-white'}>
+            <h3 className={s.text}>Verify Password</h3>
             <Input
-              value={password}
-              className={s.input}
+              value={verifyPassword}
+              className={`${s.input} ${s.mt20px}`}
               placeholder="Enter your password"
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setVerifyPassword(e.target.value)}
             />
-          </Form.Item>
+          </div>
 
           <BtnUniv
+            disabled={!isVerified}
             type="primary"
             text="Continue"
             onClick={() =>
-              registerHandler({ email: login, password: password })
+              registerHandler({ email: login, password: password, username })
             }
           />
         </Form>
         <div className={s.bodyWrapper}>
-          <p className={s.logInAsk}>
+          <p className={`${s.logInAsk}  ${sr.regAsk}`}>
             Already have an account?{' '}
             <Link href={'/account/login'} className={s.spanLink}>
               Back To Login

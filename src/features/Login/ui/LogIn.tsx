@@ -49,6 +49,7 @@ export const LogIn = () => {
       <div className={'m-auto flex justify-center'}>
         <Form name="login" labelCol={{ span: 8 }} autoComplete="off">
           <Form.Item
+            className={'mb-0'}
             name="email"
             rules={[
               {
@@ -76,7 +77,7 @@ export const LogIn = () => {
           >
             <Input
               value={password}
-              className={s.input}
+              className={`${s.input} ${s.mt20px}`}
               placeholder="Enter your password"
               type={'password'}
               onChange={(e) => setPassword(e.target.value)}
@@ -91,7 +92,7 @@ export const LogIn = () => {
         </Form>
       </div>
       <div className={s.bodyWrapper}>
-        <p className={s.logInAsk}>
+        <p className={`${s.logInAsk}`}>
           Don’t have an account?{' '}
           <Link href={'/account/register'} className={s.spanLink}>
             Sign Up Free

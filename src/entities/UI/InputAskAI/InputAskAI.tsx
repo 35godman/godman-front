@@ -23,7 +23,7 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
     buttonLoading,
     messages,
     sendMessage,
-  } = useChatbot(chatbot, messagesBlock);
+  } = useChatbot(chatbot, null);
 
   const scrollToTheEndOfChat = (
     ref: React.RefObject<HTMLDivElement> | null,
@@ -33,26 +33,26 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
     }
   };
 
+  useEffect(() => {
+    scrollToTheEndOfChat(messagesBlock);
+  }, [messages, currentAnswer]);
+
   return (
     <div className={`flex w-full ${s.generalWrapper}`}>
       <div className={showChat ? cn(s.chat, s.open) : s.chat}>
         {showChat && (
           <div className={s.messagesWrapper} ref={messagesBlock}>
-            {chatbot.settings.initial_messages.map(msg => {
+            {chatbot.settings.initial_messages.map((msg) => {
               return <AnswerComp text={msg} key={msg} />;
             })}
-            {messages.map(msg => {
+            {messages.map((msg) => {
               if (msg.role === 'user') {
                 return <AnswerComp text={msg.content} key={msg._id} />;
               } else {
                 return <AskComp text={msg.content} key={msg._id} />;
               }
             })}
-            {currentAnswer && (
-              <div>
-                <AnswerComp text={currentAnswer} />
-              </div>
-            )}
+            <div>{currentAnswer && <AnswerComp text={currentAnswer} />}</div>
             {/* ) : (
               isBotAnswering && (
                 <Loader
@@ -68,14 +68,14 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
             className={s.input}
             placeholder="Ask the AI about Godman"
             value={questionValue}
-            onKeyDown={async e => {
+            onKeyDown={async (e) => {
               if (e.key === 'Enter' && questionValue.length > 3) {
                 scrollToTheEndOfChat(messagesBlock);
                 await sendMessage(questionValue);
                 setShowChat(true);
               }
             }}
-            onChange={e => setQuestionValue(e.target.value)}
+            onChange={(e) => setQuestionValue(e.target.value)}
           />
           <Button
             className={s.btn}

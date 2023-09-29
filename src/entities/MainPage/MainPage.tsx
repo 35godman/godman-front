@@ -199,9 +199,9 @@ const MainPage = () => {
             </div>
             <div className={s.hiddenCorp}>
               <div className={s.corpDesctop}>
-                © 2023 Godman.
+                © 2023 Godman AI.
                 <br />
-                AI All rights reserved
+                All rights reserved
               </div>
             </div>
           </div>
@@ -286,9 +286,9 @@ const MainPage = () => {
             </Link>
           </div>
           <div className={cn(s.corp, s.corpHidden)}>
-            © 2023 Godman.
+            © 2023 Godman AI.
             <br />
-            AI All rights reserved
+            All rights reserved
           </div>
         </div>
       </section>

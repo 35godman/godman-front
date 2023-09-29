@@ -5,6 +5,7 @@ export type LoginValues = {
 export type RegisterValues = {
   password: string;
   email: string;
+  username: string;
 };
 
 // export type AxiosError = Error & {

@@ -3,11 +3,12 @@ import { Header } from '@/entities/Header/Header';
 import Head from 'next/head';
 import { IntlProvider } from 'react-intl';
 import ru from '@/../lang/ru.json';
+import en from '@/../lang/en.json';
 type Props = {
   children: React.ReactNode;
 };
 export const Layout: React.FC<Props> = ({ children }) => {
-  const messages = ru as typeof ru;
+  const messages = en;
 
   return (
     <>
