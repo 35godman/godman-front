@@ -31,7 +31,7 @@ const MainPageHeader = () => {
           text="Sign Up Free"
           type="primary"
           width={167}
-          onClick={async () => await router.push('account/login')}
+          onClick={async () => await router.push('/account/register')}
         />
       </div>
     </div>

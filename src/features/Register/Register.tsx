@@ -109,6 +109,7 @@ export const Register: FC<RegistrationFormProps> = ({ onSuccess }) => {
               <Input
                 value={password}
                 className={`${s.input} ${s.mt20px}`}
+                style={{ marginBottom: '0' }}
                 placeholder="Enter your password"
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
@@ -116,11 +117,11 @@ export const Register: FC<RegistrationFormProps> = ({ onSuccess }) => {
             </Form.Item>
           </div>
           <div className={'flex flex-col text-white'}>
-            <h3 className={s.text}>Verify Password</h3>
+            {/*<h3 className={s.text}>Verify Password</h3>*/}
             <Input
               value={verifyPassword}
               className={`${s.input} ${s.mt20px}`}
-              placeholder="Enter your password"
+              placeholder="Verify Password"
               type="password"
               onChange={(e) => setVerifyPassword(e.target.value)}
             />

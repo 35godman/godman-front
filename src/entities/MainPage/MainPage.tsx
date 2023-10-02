@@ -199,7 +199,7 @@ const MainPage = () => {
             </div>
             <div className={s.hiddenCorp}>
               <div className={s.corpDesctop}>
-                © 2023 Godman AI.
+                © 2023 Godman AI
                 <br />
                 All rights reserved
               </div>
@@ -257,10 +257,10 @@ const MainPage = () => {
             </Link>
           </div>
           <div className={s.log}>
-            <Link className={s.footerLoglink} href={'/login'}>
+            <Link className={s.footerLoglink} href={'/account/register'}>
               Sign Up Free
             </Link>
-            <Link className={s.footerLoglink} href={'/login'}>
+            <Link className={s.footerLoglink} href={'/account/login'}>
               Log in
             </Link>
             <Link
@@ -286,7 +286,7 @@ const MainPage = () => {
             </Link>
           </div>
           <div className={cn(s.corp, s.corpHidden)}>
-            © 2023 Godman AI.
+            © 2023 Godman AI
             <br />
             All rights reserved
           </div>

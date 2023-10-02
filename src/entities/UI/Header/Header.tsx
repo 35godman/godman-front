@@ -38,28 +38,28 @@ export const Header = () => {
       </div>
       <div className={`${s.navPanel} ${externalState ? s.open : ''}`}>
         <Link
-          onClick={e => smoothScrollTo('Feautures', e)}
+          onClick={(e) => smoothScrollTo('Feautures', e)}
           className={s.link}
           href=""
         >
           Feautures
         </Link>
         <Link
-          onClick={e => smoothScrollTo('Cases', e)}
+          onClick={(e) => smoothScrollTo('Cases', e)}
           className={s.link}
           href="/"
         >
           Cases
         </Link>
         <Link
-          onClick={e => smoothScrollTo('Pricing', e)}
+          onClick={(e) => smoothScrollTo('Pricing', e)}
           className={s.link}
           href="/"
         >
           Pricing
         </Link>
         <Link
-          onClick={e => smoothScrollTo('Help', e)}
+          onClick={(e) => smoothScrollTo('Help', e)}
           className={s.link}
           href=""
         >
@@ -77,7 +77,7 @@ export const Header = () => {
           style={{ margin: '0 auto', marginBottom: '24px', marginTop: '48px' }}
         ></BtnUniv>
         <BtnUniv
-          onClick={async () => await router.push('/account/login')}
+          onClick={async () => await router.push('/account/register')}
           // width={284}
           // height={43}
           type={'primary'}
