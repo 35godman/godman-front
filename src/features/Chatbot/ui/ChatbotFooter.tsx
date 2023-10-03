@@ -51,6 +51,7 @@ const ChatbotFooter: FC<ChatbotFooterProps> = ({
                 placeholder="Ask me anything..."
                 onKeyDown={async (e) => {
                   if (e.key === 'Enter' && questionValue.length > 3) {
+                    e.preventDefault();
                     await sendMessage(questionValue);
                   }
                 }}
