@@ -23,10 +23,8 @@ const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
   { currentAnswer, isBotAnswering, messages, chatbot, preview_messages },
   ref,
 ) => {
-  const endOfBlock = useRef<HTMLDivElement | null>(null);
-
   const userScrolled = useRef(false);
-
+  const messagesBlock = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     userScrolled.current = false;
     const handleScroll = () => {
@@ -37,11 +35,17 @@ const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
     }
   }, [isBotAnswering, ref]);
 
-  useEffect(() => {
-    if (endOfBlock?.current && !userScrolled.current) {
-      scrollToBottom(endOfBlock);
+  const scrollToTheEndOfChat = (
+    ref: React.RefObject<HTMLDivElement> | null,
+  ) => {
+    if (ref && ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
     }
-  }, [currentAnswer]);
+  };
+
+  useEffect(() => {
+    scrollToTheEndOfChat(messagesBlock);
+  }, [messages, currentAnswer]);
 
   /**
    * @COMMENT FOR PREVIEW
@@ -64,7 +68,7 @@ const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
   }
 
   return (
-    <div className={'flex flex-col w-[88%] m-auto mt-4'} ref={ref}>
+    <div className={'flex flex-col w-[88%] m-auto mt-4'} ref={messagesBlock}>
       {chatbot.settings.initial_messages.map((msg, index) => {
         return (
           <ChatMessage
@@ -92,7 +96,7 @@ const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
        * so we moved it to just string state
        */}
       {currentAnswer ? (
-        <div ref={endOfBlock}>
+        <div>
           <ChatMessage
             textProp={currentAnswer}
             chat_role={'assistant'}
