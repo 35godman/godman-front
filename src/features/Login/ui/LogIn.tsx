@@ -59,6 +59,7 @@ export const LogIn = () => {
             ]}
           >
             <Input
+              autoComplete="off"
               value={login}
               className={s.input}
               placeholder="Enter your email"
@@ -77,6 +78,7 @@ export const LogIn = () => {
           >
             <Input
               value={password}
+              autoComplete="off"
               className={`${s.input} ${s.mt20px}`}
               placeholder="Enter your password"
               type={'password'}

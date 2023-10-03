@@ -68,6 +68,7 @@ export const Register: FC<RegistrationFormProps> = ({ onSuccess }) => {
               ]}
             >
               <Input
+                style={{ marginBottom: '0' }}
                 value={username}
                 className={`${s.input} ${s.mt20px}`}
                 placeholder="Enter your username"
@@ -119,6 +120,7 @@ export const Register: FC<RegistrationFormProps> = ({ onSuccess }) => {
           <div className={'flex flex-col text-white'}>
             {/*<h3 className={s.text}>Verify Password</h3>*/}
             <Input
+              style={{ marginTop: '0' }}
               value={verifyPassword}
               className={`${s.input} ${s.mt20px}`}
               placeholder="Verify Password"

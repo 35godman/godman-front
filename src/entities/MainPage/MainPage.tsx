@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import s from './MainPage.module.css';
 import { BtnUniv } from '../UI/Buttons/Buttons';
 import { HelpToggle } from '../UI/HelpToggle/HelpToggle';
@@ -34,13 +34,27 @@ const MainPage = () => {
     setChatbot(response.data);
   };
 
-  const smoothScrollTo = (id: any, event: any) => {
+  const smoothScrollTo = (
+    id: string,
+    event: any,
+    ref?: React.MutableRefObject<HTMLDivElement | null>,
+  ) => {
     event.preventDefault();
+    if (ref) {
+      ref.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      });
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const featuresRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     fetchChatbot();
@@ -82,7 +96,11 @@ const MainPage = () => {
       </section>
 
       {/* Feautures */}
-      <section id="Feautures" className={cn(s.section, s.futures)}>
+      <section
+        id="Feautures"
+        className={cn(s.section, s.futures)}
+        ref={featuresRef}
+      >
         <h2 className={s.h2}>Rise with AI- powered Sales</h2>
         <p className={cn(s.subtitleH1, s.futuresText)}>
           Welcome to the world of Godman.AI — the powerful chatbot constructor
@@ -104,7 +122,7 @@ const MainPage = () => {
       </section>
 
       {/* Cases */}
-      <section id="Cases" className={cn(s.section, s.cases)}>
+      <section id="Cases" className={cn(s.section, s.cases)} ref={featuresRef}>
         <h2 className={s.h2}>Loved by Our Users</h2>
         <p className={cn(s.subtitleH1, s.casesText)}>
           Godman’s AI chatbot is built to grow and adapt as your business
@@ -216,7 +234,7 @@ const MainPage = () => {
               Home
             </Link>
             <Link
-              onClick={(e) => smoothScrollTo('Features', e)}
+              onClick={(e) => smoothScrollTo('', e, featuresRef)}
               className={s.footerlink}
               href={'/'}
             >
