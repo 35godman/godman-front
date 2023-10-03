@@ -1,4 +1,3 @@
-import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { NextRouter } from 'next/router';
 import React from 'react';
 
@@ -35,11 +34,7 @@ interface MockRouterProps extends Partial<NextRouter> {
 const MockRouter = ({ children, ...props }: MockRouterProps) => {
   const router = createRouter(props);
 
-  return (
-    <RouterContext.Provider value={router as NextRouter}>
-      {children}
-    </RouterContext.Provider>
-  );
+  return <></>;
 };
 
 export default MockRouter;
