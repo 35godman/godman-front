@@ -62,6 +62,17 @@ const MainPage = () => {
 
   return (
     <div className={s.generalWrapper}>
+      <script
+        src="https://godman.tech/static/scripts/embed-script.js"
+        defer
+      ></script>
+      <iframe
+        title={'test'}
+        src="https://godman.tech/chatbot-iframe/64d4cb756deecfdc32ccc6f7"
+        width="100%"
+        id="godman-chatbot"
+      ></iframe>
+
       <main id="Home" className={s.mainPage}>
         <MainPageHeader />
         <Header />
