@@ -122,7 +122,7 @@ const MainPage = () => {
       </section>
 
       {/* Cases */}
-      <section id="Cases" className={cn(s.section, s.cases)} ref={featuresRef}>
+      <section id="Cases" className={cn(s.section, s.cases)}>
         <h2 className={s.h2}>Loved by Our Users</h2>
         <p className={cn(s.subtitleH1, s.casesText)}>
           Godman’s AI chatbot is built to grow and adapt as your business
