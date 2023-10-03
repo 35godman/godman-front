@@ -4,6 +4,7 @@ import React, {
   forwardRef,
   ForwardRefRenderFunction,
   useEffect,
+  useLayoutEffect,
   useRef,
 } from 'react';
 import { Chatbot } from '@/types/models/globals';
@@ -11,6 +12,7 @@ import { ChatMessage } from '@/entities/ChatMessage/ChatMessage';
 import { MessageState } from '@/types/models/chatbotCustom/messageState';
 import { Loader } from '@/features/Chatbot/ui/Loader';
 import { scrollToBottom } from '@/features/Chatbot/lib/scrollToBottomOfRef';
+import { animateScroll } from 'react-scroll';
 
 export type ChatAreaProps = {
   chatbot: Chatbot;
@@ -23,36 +25,50 @@ const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
   { currentAnswer, isBotAnswering, messages, chatbot, preview_messages },
   ref,
 ) => {
-  const userScrolled = useRef(false);
   const messagesBlock = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    userScrolled.current = false;
-    const handleScroll = () => {
-      userScrolled.current = true;
-    };
-    if (ref && typeof ref !== 'function' && ref.current) {
-      ref.current.addEventListener('wheel', handleScroll);
-    }
-  }, [isBotAnswering, ref]);
+  const userHasScrolled = useRef(false);
 
-  const scrollToTheEndOfChat = (
-    ref: React.RefObject<HTMLDivElement> | null,
-  ) => {
-    if (ref && ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
+  const scrollToTheEndOfChat = () => {
+    if (!userHasScrolled.current && messagesBlock.current) {
+      messagesBlock.current.scrollTop = messagesBlock.current.scrollHeight;
+    }
+  };
+
+  const handleScroll = () => {
+    if (messagesBlock.current) {
+      const { scrollTop, scrollHeight, clientHeight } = messagesBlock.current;
+      // Check if the user has scrolled away from the bottom
+      userHasScrolled.current = scrollTop < scrollHeight - clientHeight;
     }
   };
 
   useEffect(() => {
-    scrollToTheEndOfChat(messagesBlock);
-  }, [messages, currentAnswer]);
+    const messageBlockCurrent = messagesBlock.current;
+    if (messageBlockCurrent) {
+      messageBlockCurrent.addEventListener('scroll', handleScroll);
+    }
+    // Clean up event listener
+    return () => {
+      if (messageBlockCurrent) {
+        messageBlockCurrent.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [messagesBlock.current]);
 
+  useEffect(() => {
+    userHasScrolled.current = false; // Reset the scroll flag when messages update
+    scrollToTheEndOfChat(); // Immediately scroll to the end
+  }, [messages]);
+
+  useEffect(() => {
+    scrollToTheEndOfChat();
+  }, [currentAnswer, isBotAnswering]);
   /**
    * @COMMENT FOR PREVIEW
    */
   if (preview_messages?.length) {
     return (
-      <div className={'flex flex-col w-[88%] m-auto mt-4'} ref={ref}>
+      <div className={'flex flex-col w-[88%] m-auto mt-4 '} ref={ref}>
         {preview_messages.map((msg, index) => {
           return (
             <ChatMessage
@@ -68,7 +84,13 @@ const ChatArea: ForwardRefRenderFunction<HTMLDivElement, ChatAreaProps> = (
   }
 
   return (
-    <div className={'flex flex-col w-[88%] m-auto mt-4'} ref={messagesBlock}>
+    <div
+      className={
+        'flex flex-col w-[88%] m-auto mt-4 overflow-y-auto max-h-[500px]   scroll-smooth '
+      }
+      ref={messagesBlock}
+      id="myMessageContainer"
+    >
       {chatbot.settings.initial_messages.map((msg, index) => {
         return (
           <ChatMessage

@@ -35,7 +35,7 @@ export const InputAskAI: FC<InputAskAIProps> = ({ chatbot }) => {
 
   useEffect(() => {
     scrollToTheEndOfChat(messagesBlock);
-  }, [messages, currentAnswer]);
+  }, [messages, currentAnswer, isBotAnswering]);
 
   return (
     <div className={`flex w-full ${s.generalWrapper}`}>
