@@ -1,0 +1,214 @@
+.generalWrapper {
+  padding-top: 260px;
+  background: #030827;
+  padding-top: 150px;
+  min-height: 100vh;
+}
+
+.mainPage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.h1Policy {
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  /* h2 mob */
+  font-family: Sofia Sans;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 30px */
+  letter-spacing: 0.6px;
+  margin-bottom: 60px;
+}
+
+.policy {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.section {
+  padding: 0 16px;
+  padding-bottom: 120px;
+}
+
+.footerWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url('/imgGeneralPage/bg_footer_mobile.png');
+  background-size: 100vw;
+  /* background-position: 0px 115px; */
+  background-repeat: no-repeat;
+}
+
+.footerSubtitle {
+  color: rgba(255, 255, 255, 0.85);
+  font-family: Sofia Sans;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  letter-spacing: 0.32px;
+}
+
+.footerlink {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: Sofia Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 14px */
+  letter-spacing: 0.28px;
+  margin-top: 10px;
+}
+.footerLoglink {
+  color: rgba(94, 198, 250, 0.8);
+  font-family: Sofia Sans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.28px;
+  margin-top: 10px;
+}
+
+.footer {
+  padding-bottom: 0px !important;
+  margin-top: 60px;
+}
+
+.imgFooter {
+  margin-right: 10px;
+  height: 26px;
+}
+
+.discoverNav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.legalNav {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 30px;
+  margin-bottom: 24px;
+}
+.logoText {
+  color: #fff;
+  font-family: Sofia Sans;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 0.333px;
+}
+.hiddenCorp {
+  display: none;
+  visibility: hidden;
+}
+
+.log {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.corp {
+  margin-top: 30px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  font-family: Sofia Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 19px; /* 100% */
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 1169px) {
+  .generalWrapper {
+    padding-top: 30px;
+  }
+  .h1Policy {
+    margin-top: 160px;
+    margin-bottom: 105px;
+    color: rgba(255, 255, 255, 0.95);
+    font-family: Sofia Sans;
+    font-size: 56px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 1.12px;
+  }
+  .section {
+    padding: 0 0;
+  }
+  .footerWrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    background-image: url('/imgGeneralPage/footer_stars_desktop.png');
+    background-size: 1640px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .discoverNav {
+    justify-content: space-around;
+  }
+  .legalNav {
+    margin-top: 0px;
+    justify-content: space-around;
+  }
+  .footer {
+    margin-top: 280px;
+  }
+  .log {
+    margin-top: 0;
+    justify-content: space-around;
+  }
+  .logoWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    text-align: left;
+  }
+  .hiddenCorp {
+    display: flex;
+    visibility: visible;
+  }
+  .corpDesctop {
+    text-align: left;
+    margin-top: 75px;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: left;
+    font-family: Sofia Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 19px; /* 100% */
+  }
+
+  .corpHidden {
+    display: none;
+    visibility: hidden;
+  }
+}

@@ -15,7 +15,9 @@ export const CardFeatures: React.FC<CardProps> = ({ heading, text }) => {
         </div>
         <p className={s.heading}>{heading}</p>
       </div>
-      <p className={s.text}>{text}</p>
+      <p style={{ whiteSpace: 'pre-wrap' }} className={s.text}>
+        {text}
+      </p>
     </div>
   );
 };
