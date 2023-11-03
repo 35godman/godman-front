@@ -5,19 +5,22 @@ import Image from 'next/image';
 import s from './MainPageHeader.module.css';
 import { BtnUniv } from '../Buttons/Buttons';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 const MainPageHeader = () => {
   const router = useRouter();
   return (
     // <div className={'flex items-center w-full justify-between'}>
     <div className={s.headerWrapper}>
       <div className={s.logoWrapper}>
-        <Image
-          style={{ marginRight: '5px' }}
-          src="/imgGeneralPage/logoAI.png"
-          alt=""
-          width={251}
-          height={32}
-        />
+        <Link href={'/'}>
+          <Image
+            style={{ marginRight: '5px' }}
+            src="/imgGeneralPage/logoAI.png"
+            alt=""
+            width={251}
+            height={32}
+          />
+        </Link>
       </div>
       <Nav />
       <div className={s.btns}>

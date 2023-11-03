@@ -8,10 +8,7 @@ import { ContactTeam } from '@/entities/MainPage/ContactTeam/ContactTeam';
 const index = () => {
   return (
     <>
-      {/* <ContactTeam /> */}
-      {/* <PAGE404 /> */}
       <MainPage />
-      {/* <PrivacyPolicy /> */}
     </>
   );
 };

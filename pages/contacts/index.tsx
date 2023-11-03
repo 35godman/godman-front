@@ -1,8 +1,12 @@
-import { PrivacyPolicy } from '@/entities/MainPage/PrivacyPolicy/PrivacyPolicy';
 import React from 'react';
+import { ContactTeam } from '@/entities/MainPage/ContactTeam/ContactTeam';
 
 const index = () => {
-  return <PrivacyPolicy />;
+  return (
+    <>
+      <ContactTeam />
+    </>
+  );
 };
 export async function getServerSideProps() {
   return { props: { noLayout: true } };

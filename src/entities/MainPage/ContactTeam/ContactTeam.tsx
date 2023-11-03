@@ -5,6 +5,11 @@ import { Header } from '@/entities/UI/Header/Header';
 import Image from 'next/image';
 import Link from 'next/link';
 import cn from 'classnames';
+import EmailContact from '@/entities/UI/EmailContact/EmailContact';
+import { Input } from 'antd';
+import { BtnUniv } from '@/entities/UI/Buttons/Buttons';
+import mainS from '@/entities/MainPage/MainPage.module.css';
+import { Footer } from '@/entities/Footer/Footer';
 
 export const ContactTeam = () => {
   return (
@@ -71,6 +76,33 @@ export const ContactTeam = () => {
           <p className={s.devItem}>A long search and hiring of specialists?</p>
         </div>
       </section>
+      <div className={mainS.staWrapper}>
+        <h2 className={s.staText}>
+          Our experts will help you scale up quickly and strengthen your
+          existing team. And chatbot with artificial intelligence for your
+          business
+          <span className={s.lightHighlightText}> Minimizes the risks </span>
+          associated with employment,
+          <span className={s.lightHighlightText}> Saves money </span>
+          for salaries and employee management,
+          <span className={s.darkHighlightText}> Increases </span>
+          <span className={s.nogradientHighlight}>speed </span> and you do not
+          waste time on downtime during the search and hiring process!
+        </h2>
+
+        <div className={cn(mainS.btnsStaWrap, s.input)}>
+          <Input
+            className={mainS.inputSign}
+            placeholder="Enter your business email"
+          />
+          <BtnUniv
+            clasName={mainS.regul}
+            type="regular"
+            text={'Sign up free'}
+          />
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };

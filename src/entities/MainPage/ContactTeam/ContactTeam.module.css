@@ -1,7 +1,5 @@
 .contactWrapper {
-  padding-top: 260px;
   background: #030827;
-  padding-top: 150px;
   min-height: 100vh;
 }
 
@@ -15,25 +13,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-width: 1280px;
+  margin: 10rem auto 0;
 }
 
 .title {
-  width: 90vw;
-  margin: 0 auto;
-  margin-bottom: 80px;
+  margin: 0 auto 80px;
   text-align: center;
-}
-
-.heading {
-  color: rgba(255, 255, 255, 0.95);
-  text-align: center;
-  /* h2 mob */
-  font-family: Sofia Sans;
-  font-size: 30px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%; /* 30px */
-  letter-spacing: 0.6px;
+  max-width: 1280px;
 }
 
 .text {
@@ -78,10 +65,12 @@
 }
 
 .development {
-  margin: 0 auto;
-  margin-top: 160px;
-  width: 90vw;
-  max-width: 1440px;
+  margin: 10rem auto 10rem;
+  max-width: 1280px;
+  width: 90%;
+}
+.input {
+  margin-top: 5rem;
 }
 
 .devList {
@@ -111,4 +100,98 @@
   height: 20px; /* Высота изображения */
   background-image: url('/imgGeneralPage/icon_ok.png'); /* Путь к вашему изображению */
   background-size: cover; /* Рекомендуется, чтобы изображение корректно отображалось */
+}
+.staText {
+  color: rgba(255, 255, 255, 0.9);
+
+  text-align: center;
+  /* h3 */
+  font-family: Sofia Sans;
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.lightHighlightText {
+  background: linear-gradient(275deg, #2f55e5 4.26%, #5ebffa 38.94%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* h3 */
+  font-family: Sofia Sans;
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.darkHighlightText {
+  background: linear-gradient(273deg, #2f55e5 61.78%, #5ebffa 97.64%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* h3 */
+  font-family: Sofia Sans;
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.nogradientHighlight {
+  color: #3e85f6e5;
+  font-family: Sofia Sans;
+  font-size: 1.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.cards {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.heading {
+  color: rgba(255, 255, 255, 0.95);
+
+  text-align: center;
+  font-family: Sofia Sans;
+  font-size: 3.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.07rem;
+}
+
+@media screen and (max-width: 767px) {
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .heading {
+    color: rgba(255, 255, 255, 0.95);
+    text-align: center;
+
+    /* h2 mob */
+    font-family: Sofia Sans;
+    font-size: 1.875rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%; /* 1.875rem */
+    letter-spacing: 0.0375rem;
+  }
+  .nogradientHighlight,
+  .staText,
+  .darkHighlightText,
+  .lightHighlightText {
+    font-family: Sofia Sans;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
 }
