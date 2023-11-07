@@ -63,7 +63,10 @@ export const ContactTeam = () => {
           </div>
         </div>
       </section>
-      <section className={cn(s.section, s.development)}>
+      <section
+        className={cn(s.section, s.development)}
+        style={{ margin: '2rem auto' }}
+      >
         <h1 className={s.heading}>
           You are doing business while we provide your development
         </h1>
