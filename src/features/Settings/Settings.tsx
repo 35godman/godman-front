@@ -228,6 +228,9 @@ export const Settings: React.FC<SettingsPropsType> = ({
               <Option value="gpt-3.5-turbo-16k-0613">
                 GPT 3.5 TURBO 16K CONTEXT
               </Option>
+              <Option value="gpt-4-1106-preview	">
+                GPT 4 Turbo 🚀
+              </Option>
             </Select>
           </Form.Item>
         </ColumnBlock>
